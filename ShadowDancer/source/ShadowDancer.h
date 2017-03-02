@@ -8,7 +8,10 @@
 #ifndef SHADOWDANCER_H_
 #define SHADOWDANCER_H_
 
+#include "Component/MainBody.h"
+#include "Component/Motor.h"
 
+#include "Actor/Robot.h"
 
 
 
