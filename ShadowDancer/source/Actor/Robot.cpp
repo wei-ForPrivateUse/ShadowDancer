@@ -9,6 +9,7 @@
 
 Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 	MainBody::Configuration mbc;
+	mbc.Position.Set(0,0);
 	mbc.CircleShape.m_radius = 0.5;
 	mbc.Id = 99;
 	mb = AddComponent<MainBody>(&mbc);
@@ -27,7 +28,7 @@ Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 	m2 = AddComponent<Motor>(&mc);
 
 	GetDataPool().Set<float>(0, 1);
-	GetDataPool().Set<float>(0, 0);
+	GetDataPool().Set<float>(1, 0);
 
 }
 

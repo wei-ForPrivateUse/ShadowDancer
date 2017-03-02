@@ -13,6 +13,6 @@
 
 #include "Actor/Robot.h"
 
-
+#include "SceneMgr/FScene.h"
 
 #endif /* SHADOWDANCER_H_ */

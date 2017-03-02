@@ -17,7 +17,16 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 	bd.angle = static_cast<assa2d::Component*>(static_cast<assa2d::Actor*>(GetActor())->GetMainComponent())->GetBody()->GetAngle()+conf->Angle;
 	bd.userData = static_cast<assa2d::Node*>(this);
 
-	world -> CreateBody(&bd);
+	b2Body* body = world -> CreateBody(&bd);
+	SetBody(body);
+
+	b2FixtureDef fd;
+	fd.shape = &conf->PolygonShape;
+	fd.friction = conf->Friction;
+	fd.density = conf->Density;
+	fd.restitution = conf->Restitution;
+
+	GetBody() -> CreateFixture(&fd);
 
 	b2RevoluteJointDef rjd;
 	rjd.Initialize(GetBody(), static_cast<assa2d::Component*>(static_cast<assa2d::Actor*>(GetActor())->GetMainComponent())->GetBody(), GetBody()->GetWorldPoint(conf->Anchor));
