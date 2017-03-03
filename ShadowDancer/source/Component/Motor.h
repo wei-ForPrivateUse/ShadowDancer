@@ -8,7 +8,7 @@
 #ifndef COMPONENT_MOTOR_H_
 #define COMPONENT_MOTOR_H_
 
-#include "/home/usr3/wei/git/assassin2d/assassin2d/source/assassin2d.h"
+#include "assassin2d.h"
 
 class Motor : public assa2d::Component {
 public:
