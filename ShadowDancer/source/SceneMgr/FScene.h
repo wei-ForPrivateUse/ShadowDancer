@@ -9,13 +9,17 @@
 #define SCENEMGR_FSCENE_H_
 
 #include "../Actor/Robot.h"
+#include "../Object/Wall.h"
+#include "../Object/Block.h"
 
 class FScene : public assa2d::SceneMgr {
 public:
-	FScene(Configuration* conf);
+	FScene(Configuration* conf, ANNWeights* weights);
 	virtual ~FScene();
 
-
+	Robot* robot[30];
+	Wall* wall[10];
+	Block* block[2];
 };
 
 #endif /* SCENEMGR_FSCENE_H_ */

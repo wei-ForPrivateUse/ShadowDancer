@@ -39,25 +39,30 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 	_M_lateral_friction = conf->LateralFriction;
 	_M_forward_friction = conf->ForwardFriction;
 	_M_force_factor = conf->ForceFactor;
+	_M_speed_factor = conf->SpeedFactor;
 
-	_T_max_friction = 1.0f * 10.0f * _M_force_factor;
-	_T_max_sliding_impulse = _T_max_friction * _M_lateral_friction * scenemgr-> GetTimeStep();
-	_T_max_rolling_impulse = _T_max_friction * _M_forward_friction * scenemgr-> GetTimeStep();
+	SetTotalWeight(conf->TotalWeight);
 }
 
 Motor::~Motor() {
 	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
 	b2World* world = scenemgr->GetWorld();
-
-	world -> DestroyBody(GetBody());
+	if(world)
+		world -> DestroyBody(GetBody());
 }
 
 void Motor::Act() {
 	float32 currentspeed = GetBody()->GetLocalVector(GetForwardVelocity()).x;
-	float32 targetspeed = GetSharedData<float>(GetId());
+	float32 targetspeed = GetSharedData<float>(GetId()) * _M_speed_factor;
 
-	if(currentspeed < targetspeed) {
+	if(targetspeed < 0) {
+		targetspeed /= 3.0f;
+	}
+
+	if(currentspeed < targetspeed - 0.001) {
 		GetBody() ->ApplyForceToCenter(_T_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
+	} else if(currentspeed > targetspeed + 0.001) {
+		GetBody() ->ApplyForceToCenter(-0.5 * _T_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
 	}
 }
 
