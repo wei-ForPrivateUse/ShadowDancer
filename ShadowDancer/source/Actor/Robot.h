@@ -24,7 +24,7 @@ public:
 	virtual ~Robot();
 
 	MainBody* _M_mainbody;
-	IRSenser* _M_ir_senser[8];
+	IRSenser* _M_ir_senser[36];
 	ANN* _M_ann;
 	Motor* _M_motor[2];
 };

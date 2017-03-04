@@ -63,7 +63,7 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 	}
 
 	{
-		srand(9);
+		srand(time(NULL));
 		Robot::Configuration rc;
 
 		for(int32 i = 0; i < 5; i++) {
@@ -85,14 +85,31 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 	{
 		Block::Configuration bc;
 		bc.Id = 100;
-		bc.Position.Set(-5, 12);
+		bc.Tag = MAKE_TAG('p', 'o', 'i', 's');
+		bc.Position.Set(assa2d::RandomFloat(-22, 22), assa2d::RandomFloat(-22, 22));
 		bc.CircleShape.m_radius = 8;
 		block[0] = AddNode<Block>(&bc);
 
 		bc.Id = 101;
-		bc.Position.Set(-5, -12);
-		bc.CircleShape.m_radius = 2;
+		bc.Position.Set(assa2d::RandomFloat(-16, 16), assa2d::RandomFloat(-16, 16));
+		bc.CircleShape.m_radius = 9;
 		block[1] = AddNode<Block>(&bc);
+
+		bc.Id = 102;
+		bc.Tag = MAKE_TAG('f', 'o', 'o', 'd');
+		bc.Position.Set(assa2d::RandomFloat(-25, 25), assa2d::RandomFloat(-25, 25));
+		bc.CircleShape.m_radius = 2;
+		block[2] = AddNode<Block>(&bc);
+
+		bc.Id = 103;
+		bc.Position.Set(assa2d::RandomFloat(-25, 25), assa2d::RandomFloat(-25, 25));
+		bc.CircleShape.m_radius = 3;
+		block[3] = AddNode<Block>(&bc);
+
+		bc.Id = 104;
+		bc.Position.Set(assa2d::RandomFloat(-25, 25), assa2d::RandomFloat(-25, 25));
+		bc.CircleShape.m_radius = 2.5;
+		block[4] = AddNode<Block>(&bc);
 	}
 
 }

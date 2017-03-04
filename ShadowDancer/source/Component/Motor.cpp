@@ -47,8 +47,9 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 Motor::~Motor() {
 	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
 	b2World* world = scenemgr->GetWorld();
-	if(world)
+	if(world) {
 		world -> DestroyBody(GetBody());
+	}
 }
 
 void Motor::Act() {

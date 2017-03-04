@@ -53,7 +53,9 @@ Block::Block(Configuration* conf) : assa2d::Object(conf) {
 }
 
 Block::~Block() {
-	if(static_cast<assa2d::SceneMgr*>(GetSceneMgr()) -> GetWorld())
-		static_cast<assa2d::SceneMgr*>(GetSceneMgr()) -> GetWorld() -> DestroyBody(_M_body);
+	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
+	b2World* world = scenemgr -> GetWorld();
+	if(world)
+		world -> DestroyBody(_M_body);
 }
 

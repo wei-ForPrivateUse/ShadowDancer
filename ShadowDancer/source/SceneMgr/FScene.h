@@ -19,7 +19,7 @@ public:
 
 	Robot* robot[30];
 	Wall* wall[10];
-	Block* block[2];
+	Block* block[5];
 };
 
 #endif /* SCENEMGR_FSCENE_H_ */

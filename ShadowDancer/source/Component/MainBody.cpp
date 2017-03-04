@@ -34,7 +34,10 @@ MainBody::MainBody(Configuration* conf) : assa2d::Component(conf) {
 }
 
 MainBody::~MainBody() {
-	if(static_cast<assa2d::SceneMgr*>(GetSceneMgr()) -> GetWorld())
-		static_cast<assa2d::SceneMgr*>(GetSceneMgr()) -> GetWorld() -> DestroyBody(GetBody());
+	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
+	b2World* world = scenemgr->GetWorld();
+	if(world) {
+		world -> DestroyBody(GetBody());
+	}
 }
 

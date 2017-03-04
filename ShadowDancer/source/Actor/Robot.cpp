@@ -13,7 +13,7 @@ Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 		mbc.Position = conf->Position;
 		mbc.Angle = conf->Angle;
 		mbc.CircleShape.m_radius = 0.5;
-		mbc.Id = 30;
+		mbc.Id = 300;
 		_M_mainbody = AddComponent<MainBody>(&mbc);
 	}
 	SetMainComponent(_M_mainbody);
@@ -38,43 +38,19 @@ Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 		irc.Priority = 0;
 		irc.Position.Set(0.0f, 0.0f);
 
-		irc.Id = 0;
-		irc.Angle = M_PI / 10.0f;
-		_M_ir_senser[0] = AddComponent<IRSenser>(&irc);
-
-		irc.Id = 1;
-		irc.Angle = M_PI / 10.0f * 3.0f;
-		_M_ir_senser[1] = AddComponent<IRSenser>(&irc);
-
-		irc.Id = 2;
-		irc.Angle = M_PI_2;
-		_M_ir_senser[2] = AddComponent<IRSenser>(&irc);
-
-		irc.Id = 3;
-		irc.Angle = M_PI / 8.0 * 7.0f;
-		_M_ir_senser[3] = AddComponent<IRSenser>(&irc);
-
-		irc.Id = 4;
-		irc.Angle = - M_PI / 8.0 * 7.0f;
-		_M_ir_senser[4] = AddComponent<IRSenser>(&irc);
-
-		irc.Id = 5;
-		irc.Angle = - M_PI_2;
-		_M_ir_senser[5] = AddComponent<IRSenser>(&irc);
-
-		irc.Id = 6;
-		irc.Angle = - M_PI / 10.0f * 3.0f;
-		_M_ir_senser[6] = AddComponent<IRSenser>(&irc);
-
-		irc.Id = 7;
-		irc.Angle = - M_PI / 10.0f;
-		_M_ir_senser[7] = AddComponent<IRSenser>(&irc);
+		for(int i = 0; i < 36; i++) {
+			irc.Id = i;
+			irc.Angle = M_PI / 18.0f * i;
+			_M_ir_senser[i] = AddComponent<IRSenser>(&irc);
+		}
 	}
 
 	{
 		ANN::Configuration ac;
 		ac.Id = 1000;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7};
+		for(int i = 0; i < 36; i++) {
+			ac.InputIndex.push_back(i);
+		}
 		ac.OutputIndex = {50, 51};
 		ac.Priority = 1;
 		_M_ann = AddComponent<ANN>(&ac);

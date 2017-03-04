@@ -14,8 +14,19 @@ class FMonitor : public assa2d::Monitor , public b2ContactListener {
 public:
 	FMonitor() {
 		fitness = 0.0f;
+
+		poison = -1.0f;
+		food = 1.5f;
 	}
 	virtual ~FMonitor() { };
+
+	float32 poison;
+	float32 food;
+
+	void f(bul::manager::SceneMgr* s) {
+		auto a_s = static_cast<assa2d::SceneMgr*>(s);
+		a_s->GetContactMgr().AddContactListener(this);
+	}
 
 	void Initialize() {
 		auto b_s = const_cast<bul::manager::SceneMgr*>(GetSceneMgr());
@@ -32,21 +43,22 @@ public:
 		assa2d::Node* nA = static_cast<assa2d::Node*>(bA->GetUserData());
 		assa2d::Node* nB = static_cast<assa2d::Node*>(bB->GetUserData());
 
-		std::size_t idA = nA->GetId();
-		std::size_t idB = nB->GetId();
+		std::size_t tagA = nA->GetTag();
+		std::size_t tagB = nB->GetTag();
 
 		assa2d::Node_Type ntA = nA->GetType();
 		assa2d::Node_Type ntB = nB->GetType();
 
-		if(idA == 100 || idB == 100) {
+		if(tagA == MAKE_TAG('p', 'o', 'i', 's') || tagB == MAKE_TAG('p', 'o', 'i', 's')) {
 			if(ntA == assa2d::Node_Type::Actor_Component || ntB == assa2d::Node_Type::Actor_Component) {
-				fitness += 1.0f;
+				fitness += poison;
 			}
 		}
 
-		if(idA == 101 || idB == 101) {
+
+		if(tagA == MAKE_TAG('f', 'o', 'o', 'd') || tagB == MAKE_TAG('f', 'o', 'o', 'd')) {
 			if(ntA == assa2d::Node_Type::Actor_Component || ntB == assa2d::Node_Type::Actor_Component) {
-				fitness -= 1.0f;
+				fitness += food;
 			}
 		}
 	}
