@@ -21,7 +21,7 @@ public:
 	};
 
 	Robot(Configuration* conf);
-	virtual ~Robot();
+	virtual ~Robot() { }
 
 	MainBody* _M_mainbody;
 	IRSenser* _M_ir_senser[36];

@@ -8,7 +8,7 @@
 #ifndef OBJECT_BLOCK_H_
 #define OBJECT_BLOCK_H_
 
-#include <assassin2d.h>
+#include <assassin2d/assassin2d.h>
 
 class Block : public assa2d::Object {
 public:
@@ -16,7 +16,7 @@ public:
 		b2Vec2 Position;
 		float32 Angle;
 
-		assa2d::SDShapeType ShapeType = assa2d::SDShapeType::Circle;
+		assa2d::ShapeType ShapeType = assa2d::ShapeType::Circle;
 
 		b2PolygonShape PolygonShape;
 		b2CircleShape CircleShape;
@@ -31,9 +31,6 @@ public:
 
 	Block(Configuration* conf);
 	virtual ~Block();
-
-private:
-	b2Body* _M_body;
 };
 
 #endif /* OBJECT_BLOCK_H_ */

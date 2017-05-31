@@ -9,7 +9,6 @@
 
 Block::Block(Configuration* conf) : assa2d::Object(conf) {
 	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
-	b2World* world = scenemgr -> GetWorld();
 
 	b2BodyDef bd;
 	bd.userData = static_cast<assa2d::Node*>(this);
@@ -21,41 +20,39 @@ Block::Block(Configuration* conf) : assa2d::Object(conf) {
 	bd.position = conf->Position;
 	bd.angle = conf->Angle;
 
-	_M_body = world -> CreateBody(&bd);
+	b2Body* body = GetWorld() -> CreateBody(&bd);
+	SetBody(body);
 
 	b2FixtureDef fd;
-	if(conf->ShapeType == assa2d::SDShapeType::Circle) {
+	if(conf->ShapeType == assa2d::ShapeType::Circle) {
 		fd.shape = &conf->CircleShape;
-	} else if (conf->ShapeType == assa2d::SDShapeType::Polygon) {
+	} else if (conf->ShapeType == assa2d::ShapeType::Polygon) {
 		fd.shape = &conf->PolygonShape;
 	}
 	fd.density = conf->Density;
 	fd.restitution = conf->Restitution;
 	fd.friction = conf->Friction;
 
-	_M_body -> CreateFixture(&fd);
+	GetBody() -> CreateFixture(&fd);
 
 	if(conf->GroundFrictionEnabled) {
-		float32 radius = b2Sqrt(2.0f * _M_body->GetInertia() / _M_body->GetMass());
+		float32 radius = b2Sqrt(2.0f * GetBody()->GetInertia() / GetBody()->GetMass());
 
 		b2FrictionJointDef fjd;
-		fjd.localAnchorA = _M_body->GetLocalCenter();
+		fjd.localAnchorA = GetBody()->GetLocalCenter();
 		fjd.localAnchorB.SetZero();
-		fjd.bodyA = _M_body;
+		fjd.bodyA = GetBody();
 		fjd.bodyB = scenemgr -> GetGround();
 		fjd.collideConnected = true;
-		fjd.maxForce = _M_body->GetMass() * 10.0f;
-		fjd.maxTorque = _M_body->GetMass() * radius * 10.0f;
+		fjd.maxForce = GetBody()->GetMass() * 10.0f;
+		fjd.maxTorque = GetBody()->GetMass() * radius * 10.0f;
 
-		world -> CreateJoint(&fjd);
+		GetWorld() -> CreateJoint(&fjd);
 	}
-
 }
 
 Block::~Block() {
-	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
-	b2World* world = scenemgr -> GetWorld();
-	if(world)
-		world -> DestroyBody(_M_body);
+	GetWorld() -> DestroyBody(GetBody());
+	SetBody(nullptr);
 }
 

@@ -8,11 +8,14 @@
 #ifndef COMPONENT_MOTOR_H_
 #define COMPONENT_MOTOR_H_
 
-#include <assassin2d.h>
+#include <assassin2d/assassin2d.h>
 
 class Motor : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
+		b2Vec2 Position;
+		float32 Angle = 0.0f;
+
 		b2PolygonShape PolygonShape;
 
 		b2Vec2 Anchor;

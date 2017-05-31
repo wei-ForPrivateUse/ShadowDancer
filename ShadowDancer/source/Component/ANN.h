@@ -13,7 +13,7 @@
 #include <iostream>
 #include <functional>
 
-#include <assassin2d.h>
+#include <assassin2d/assassin2d.h>
 
 /// ANN weight.
 struct ANNWeights {
@@ -234,20 +234,20 @@ struct ANNWeights {
 /// ANN controller.
 class ANN : public assa2d::Component {
 public:
-	struct Configuration : assa2d::Component::Configuration {
+	struct Configuration : public assa2d::Component::Configuration {
 		std::vector<std::size_t> InputIndex;
 		std::vector<std::size_t> OutputIndex;
 	};
 
 	ANN(Configuration* conf);
-	virtual ~ANN();
+	virtual ~ANN() { }
 
 	void SetWeights(ANNWeights* weights);
 
 	void _COUT_Output() const;
 
 protected:
-	virtual void Act();
+	virtual void Act() override;
 
 	float32 ActivationFunction(float32 sum) const;
 

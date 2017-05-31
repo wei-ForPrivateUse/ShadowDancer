@@ -15,7 +15,7 @@
 class FScene : public assa2d::SceneMgr {
 public:
 	FScene(Configuration* conf, ANNWeights* weights);
-	virtual ~FScene();
+	virtual ~FScene() { }
 
 	Robot* robot[30];
 	Wall* wall[10];

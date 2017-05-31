@@ -8,16 +8,13 @@
 #include "Motor.h"
 
 Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
-	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
-	b2World* world = scenemgr->GetWorld();
-
 	b2BodyDef bd;
+	bd.userData = static_cast<assa2d::Node*>(this);
 	bd.type = b2_dynamicBody;
 	bd.position = static_cast<assa2d::Component*>(static_cast<assa2d::Actor*>(GetActor())->GetMainComponent())->GetBody()->GetWorldPoint(conf->Position);
 	bd.angle = static_cast<assa2d::Component*>(static_cast<assa2d::Actor*>(GetActor())->GetMainComponent())->GetBody()->GetAngle()+conf->Angle;
-	bd.userData = static_cast<assa2d::Node*>(this);
 
-	b2Body* body = world -> CreateBody(&bd);
+	b2Body* body = GetWorld() -> CreateBody(&bd);
 	SetBody(body);
 
 	b2FixtureDef fd;
@@ -34,7 +31,7 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 	rjd.lowerAngle = conf->LowerAngle;
 	rjd.upperAngle = conf->UpperAngle;
 
-	world -> CreateJoint(&rjd);
+	GetWorld() -> CreateJoint(&rjd);
 
 	_M_lateral_friction = conf->LateralFriction;
 	_M_forward_friction = conf->ForwardFriction;
@@ -45,11 +42,8 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 }
 
 Motor::~Motor() {
-	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
-	b2World* world = scenemgr->GetWorld();
-	if(world) {
-		world -> DestroyBody(GetBody());
-	}
+	GetWorld() -> DestroyBody(GetBody());
+	SetBody(nullptr);
 }
 
 void Motor::Act() {

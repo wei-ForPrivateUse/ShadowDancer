@@ -8,9 +8,9 @@
 #ifndef MONITOR_FMONITOR_H_
 #define MONITOR_FMONITOR_H_
 
-#include <assassin2d.h>
+#include <assassin2d/assassin2d.h>
 
-class FMonitor : public assa2d::Monitor , public b2ContactListener {
+class FMonitor : public assa2d::Monitor , public assa2d::ContactListener {
 public:
 	FMonitor() {
 		fitness = 0.0f;
@@ -36,10 +36,10 @@ public:
 	void Step() {};
 	void Finalize() {};
 
-	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+	virtual void PreSolve(const b2Contact* contact, const b2Manifold* oldManifold) override
 	{
-		b2Body* bA = contact->GetFixtureA()->GetBody();
-		b2Body* bB = contact->GetFixtureB()->GetBody();
+		const b2Body* bA = contact->GetFixtureA()->GetBody();
+		const b2Body* bB = contact->GetFixtureB()->GetBody();
 		assa2d::Node* nA = static_cast<assa2d::Node*>(bA->GetUserData());
 		assa2d::Node* nB = static_cast<assa2d::Node*>(bB->GetUserData());
 

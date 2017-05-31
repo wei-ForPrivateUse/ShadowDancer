@@ -8,7 +8,7 @@
 #ifndef SHADOWDANCER_H_
 #define SHADOWDANCER_H_
 
-#include "assassin2d.h"
+#include <assassin2d/assassin2d.h>
 
 #include "Component/MainBody.h"
 #include "Component/Motor.h"

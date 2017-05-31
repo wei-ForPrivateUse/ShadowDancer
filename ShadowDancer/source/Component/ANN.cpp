@@ -14,10 +14,6 @@ ANN::ANN(Configuration* conf) : assa2d::Component(conf) {
 	_M_output_index = conf->OutputIndex;
 }
 
-ANN::~ANN() {
-	// TODO Auto-generated destructor stub
-}
-
 void ANN::Act() {
 	for(std::size_t i = 0 ; i < _T_output_tmp.size(); i++) {
 		std::vector<float32> current_res;

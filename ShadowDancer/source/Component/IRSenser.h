@@ -8,7 +8,7 @@
 #ifndef COMPONENT_IRSENSER_H_
 #define COMPONENT_IRSENSER_H_
 
-#include <assassin2d.h>
+#include <assassin2d/assassin2d.h>
 
 class IRRayCastClosestCallback : public b2RayCastCallback {
 public:
@@ -19,7 +19,7 @@ public:
 		_M_point.SetZero();
 	}
 
-	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) {
+	virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) override {
 		b2Body* body = fixture->GetBody();
 		assa2d::Node* node = static_cast<assa2d::Node*>(body->GetUserData());
 		if(node == nullptr) {
@@ -54,20 +54,23 @@ public:
 class IRSenser : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
+		b2Vec2 Position;
+		float32 Angle = 0.0f;
+
 		float32 Range = 10.0f;
 	};
 
 	IRSenser(Configuration* conf);
-	virtual ~IRSenser();
+	virtual ~IRSenser() { }
 
 protected:
 	virtual void Act() override;
 
 private:
-	float32 _M_range;
-
 	b2Vec2 _M_position;
 	float32 _M_angle;
+
+	float32 _M_range;
 };
 
 #endif /* COMPONENT_IRSENSER_H_ */

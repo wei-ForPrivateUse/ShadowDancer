@@ -8,12 +8,15 @@
 #ifndef COMPONENT_MAINBODY_H_
 #define COMPONENT_MAINBODY_H_
 
-#include <assassin2d.h>
+#include <assassin2d/assassin2d.h>
 
 class MainBody : public assa2d::Component {
 public:
-	struct Configuration : assa2d::Component::Configuration {
-		assa2d::SDShapeType ShapeType = assa2d::SDShapeType::Circle;
+	struct Configuration : public assa2d::Component::Configuration {
+		b2Vec2 Position;
+		float32 Angle = 0.0f;
+
+		assa2d::ShapeType ShapeType = assa2d::ShapeType::Circle;
 
 		b2PolygonShape PolygonShape;
 		b2CircleShape CircleShape;

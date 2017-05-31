@@ -114,7 +114,3 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 
 }
 
-FScene::~FScene() {
-	// TODO Auto-generated destructor stub
-}
-

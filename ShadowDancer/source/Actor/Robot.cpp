@@ -56,8 +56,3 @@ Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 		_M_ann = AddComponent<ANN>(&ac);
 	}
 }
-
-Robot::~Robot() {
-	// TODO Auto-generated destructor stub
-}
-
