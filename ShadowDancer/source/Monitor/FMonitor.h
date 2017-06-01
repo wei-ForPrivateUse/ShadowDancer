@@ -29,8 +29,7 @@ public:
 	}
 
 	void Initialize() {
-		auto b_s = const_cast<bul::manager::SceneMgr*>(GetSceneMgr());
-		auto a_s = static_cast<assa2d::SceneMgr*>(b_s);
+		auto a_s = static_cast<const assa2d::SceneMgr*>(GetSceneMgr());
 		a_s->GetContactMgr().AddContactListener(this);
 	};
 	void Step() {};
