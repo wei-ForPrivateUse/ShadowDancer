@@ -16,3 +16,6 @@ OmniCamera::~OmniCamera() {
 	// TODO Auto-generated destructor stub
 }
 
+void OmniCamera::Act() {
+
+}
