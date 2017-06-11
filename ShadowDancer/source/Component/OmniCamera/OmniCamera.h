@@ -11,12 +11,14 @@
 #include <vector>
 #include <set>
 
+#include <tuple>
+
 #include <assassin2d/assassin2d.h>
 
 template<typename...>
 class OmniCamera;
 
-template<typename... _Tpls>
+template<typename _Tp>
 class Observer {
 public:
 	Observer() { }

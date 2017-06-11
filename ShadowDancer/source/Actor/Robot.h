@@ -11,7 +11,7 @@
 #include "../Component/MainBody.h"
 #include "../Component/Motor.h"
 #include "../Component/IRSenser.h"
-#include "../Component/ANN.h"
+#include "../Component/Controller/ANN.h"
 
 class Robot : public assa2d::Actor {
 public:
