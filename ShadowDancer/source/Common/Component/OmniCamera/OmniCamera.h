@@ -9,48 +9,112 @@
 #define COMPONENT_OMNICAMERA_H_
 
 #include <type_traits>
-#include <tuple>
+#include <stdexcept>
+#include <vector>
+#include <set>
 
 #include <assassin2d/assassin2d.h>
 
+/// Forward-declaration.
+template<typename>
+class OmniCamera;
 
-
-template<typename... _Tpls>
-class OmniCamera final : public assa2d::Component {
+/// An observer return std::vector<_Tp> format information to the omni-camera.
+template<typename _Tp>
+class Observer {
 public:
-	struct Configuration : public assa2d::Component::Configuration {
-		std::size_t OutputStartIndex;
+	struct Configuration {
+		std::size_t StartIndex = 0;
+
+		assa2d::SceneMgr* SceneManager = nullptr;
 	};
 
-	OmniCamera(Configuration* conf, typename _Tpls::Configuration... ob_confs) :
-			assa2d::Component(conf), m_observers(ob_confs...) {
-		m_output_start_index = conf->OutputStartIndex;
+	Observer(Configuration* conf) : m_scenemgr(conf->SceneManager) {
+		m_start_index = conf->StartIndex;
 	}
-	virtual ~OmniCamera() { }
+	virtual ~Observer() { }
+
+	/// Getter.
+	std::size_t GetStartIndex() const {
+		return m_start_index;
+	}
+
+	assa2d::SceneMgr* GetSceneMgr() {
+		return m_scenemgr;
+	}
+
+	const assa2d::SceneMgr* GetSceneMgr() const {
+		return m_scenemgr;
+	}
+
+	/// Setter.
+	void SetStartIndex(std::size_t index) {
+		m_start_index = index;
+	}
+
 
 protected:
+	/// Report to the omnicamera at each timestep.
+	virtual std::vector<_Tp> Report() = 0;
+
+private:
+	template<typename>
+	friend class OmniCamera;
+
+	std::size_t m_start_index;
+
+	assa2d::SceneMgr* const m_scenemgr;
+};
+
+/// An omni-camera uses observers to provide
+template<typename _Tp>
+class OmniCamera final : public assa2d::Component {
+public:
+	typedef typedef assa2d::Component::Configuration Configuration;
+
+	OmniCamera(Configuration* conf) : assa2d::Component(conf) { }
+
+	/// Release all observers.
+	virtual ~OmniCamera() {
+		for(auto iter : m_observer_list) {
+			delete iter;
+		}
+		m_observer_list.clear();
+	}
+
+	/// Add a new observer.
+	template<typename _Ob_Tp>
+	_Ob_Tp* AddObserver(typename _Ob_Tp::Configuration* conf) {
+		static_assert(std::is_base_of<Observer<_Tp>, _Ob_Tp>::value,
+				"OmniCamera::AddObserver(...): Type '_Ob_Tp' must be a derived type of Observer<_Tp>.");
+
+		conf->SceneManager = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
+
+		_Ob_Tp* observer = new _Ob_Tp(conf);
+		m_observer_list.insert(observer);
+
+		return observer;
+	}
+
+	/// Remove an observer if it exists.
+	void RemoveObserver(Observer<_Tp>* observer) {
+		if(!m_observer_list.count(observer)) {
+			throw std::out_of_range("bul::common::Container<...>::EraseByValue(...) : Value does not exist.");
+		}
+
+		m_observer_list.erase(observer);
+		delete observer;
+	}
+
+protected:
+	/// Call each observer at each timestep.
 	virtual void Act() override {
 
 
 	}
 
-	template<std::size_t _Index>
-	void _M_GetReport() {
-		auto const& observer = std::get<_Index>(m_observers);
-		auto const& report = observer.Report();
-
-
-	}
-
-	template<std::size_t _Index>
-	void _M_SetOutput() {
-
-	}
-
 private:
-	std::size_t m_output_start_index;
-
-	std::tuple<_Tpls...> m_observers;
+	std::set<Observer<_Tp>*> m_observer_list;
 };
 
 #endif /* COMPONENT_OMNICAMERA_H_ */
