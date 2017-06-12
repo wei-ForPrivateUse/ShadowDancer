@@ -8,44 +8,49 @@
 #ifndef COMPONENT_OMNICAMERA_H_
 #define COMPONENT_OMNICAMERA_H_
 
-#include <vector>
-#include <set>
-
+#include <type_traits>
 #include <tuple>
 
 #include <assassin2d/assassin2d.h>
 
-template<typename...>
-class OmniCamera;
 
-template<typename _Tp>
-class Observer {
-public:
-	Observer() { }
-	virtual ~Observer() { }
-
-	virtual void Report(std::size_t index) = 0;
-
-protected:
-
-private:
-	std
-};
 
 template<typename... _Tpls>
-class OmniCamera : public assa2d::Component {
+class OmniCamera final : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
+		std::size_t OutputStartIndex;
+	};
 
+	OmniCamera(Configuration* conf, typename _Tpls::Configuration... ob_confs) :
+			assa2d::Component(conf), m_observers(ob_confs...) {
+		m_output_start_index = conf->OutputStartIndex;
 	}
-	OmniCamera(Configuration* conf);
-	virtual ~OmniCamera();
+	virtual ~OmniCamera() { }
 
 protected:
-	virtual void Act() override;
+	virtual void Act() override {
+
+
+	}
+
+	template<std::size_t _Index>
+	void _M_GetReport() {
+		auto const& observer = std::get<_Index>(m_observers);
+		auto const& report = observer.Report();
+
+
+	}
+
+	template<std::size_t _Index>
+	void _M_SetOutput() {
+
+	}
 
 private:
-	std::vector<std::size_t>
+	std::size_t m_output_start_index;
+
+	std::tuple<_Tpls...> m_observers;
 };
 
 #endif /* COMPONENT_OMNICAMERA_H_ */
