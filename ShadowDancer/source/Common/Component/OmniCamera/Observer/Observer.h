@@ -1,0 +1,15 @@
+/*
+ * Observer.h
+ *
+ *  Created on: Jun 13, 2017
+ *      Author: wei
+ */
+
+#ifndef COMMON_COMPONENT_OMNICAMERA_OBSERVER_OBSERVER_H_
+#define COMMON_COMPONENT_OMNICAMERA_OBSERVER_OBSERVER_H_
+
+
+
+
+
+#endif /* COMMON_COMPONENT_OMNICAMERA_OBSERVER_OBSERVER_H_ */
