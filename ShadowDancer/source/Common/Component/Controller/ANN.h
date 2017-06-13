@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef COMPONENT_ANN_H_
-#define COMPONENT_ANN_H_
+#ifndef COMMON_COMPONENT_CONTROLLER_ANN_H_
+#define COMMON_COMPONENT_CONTROLLER_ANN_H_
 
 #include <vector>
 #include <random>
@@ -283,4 +283,4 @@ inline float32 ANN::ActivationFunction(float32 sum) const {
 	return -1.0f + 2.0f / (1.0f + expf(-sum));
 }
 
-#endif /* COMPONENT_ANN_H_ */
+#endif /* COMMON_COMPONENT_CONTROLLER_ANN_H_ */

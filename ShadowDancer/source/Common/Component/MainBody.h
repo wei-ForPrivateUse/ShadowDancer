@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef COMPONENT_MAINBODY_H_
-#define COMPONENT_MAINBODY_H_
+#ifndef COMMON_COMPONENT_MAINBODY_H_
+#define COMMON_COMPONENT_MAINBODY_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -33,4 +33,4 @@ protected:
 	virtual void Act() override { }
 };
 
-#endif /* COMPONENT_MAINBODY_H_ */
+#endif /* COMMON_COMPONENT_MAINBODY_H_ */

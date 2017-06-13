@@ -5,11 +5,11 @@
  *      Author: wei
  */
 
-#ifndef SHADOWDANCER_H_
-#define SHADOWDANCER_H_
+#ifndef __SHADOWDANCER__
+#define __SHADOWDANCER__
 
 #include <assassin2d/assassin2d.h>
 
 #include "Interface/JNA_Functions.h"
 
-#endif /* SHADOWDANCER_H_ */
+#endif /* __SHADOWDANCER__ */

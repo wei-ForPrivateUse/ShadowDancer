@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef MONITOR_FMONITOR_H_
-#define MONITOR_FMONITOR_H_
+#ifndef TESTS_SAMPLE_MONITOR_FMONITOR_H_
+#define TESTS_SAMPLE_MONITOR_FMONITOR_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -65,4 +65,4 @@ public:
 	float32 fitness;
 };
 
-#endif /* MONITOR_FMONITOR_H_ */
+#endif /* TESTS_SAMPLE_MONITOR_FMONITOR_H_ */

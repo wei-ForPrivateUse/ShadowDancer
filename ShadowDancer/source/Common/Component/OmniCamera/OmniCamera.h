@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef COMPONENT_OMNICAMERA_H_
-#define COMPONENT_OMNICAMERA_H_
+#ifndef COMMON_COMPONENT_OMNICAMERA_OMNICAMERA_H_
+#define COMMON_COMPONENT_OMNICAMERA_OMNICAMERA_H_
 
 #include <type_traits>
 #include <stdexcept>
@@ -76,8 +76,8 @@ public:
 
 	/// Release all observers.
 	virtual ~OmniCamera() {
-		for(auto iter : m_observer_list) {
-			delete iter;
+		for(auto observer : m_observer_list) {
+			delete observer;
 		}
 		m_observer_list.clear();
 	}
@@ -109,12 +109,18 @@ public:
 protected:
 	/// Call each observer at each timestep.
 	virtual void Act() override {
-
-
+		for(auto observer : m_observer_list) {
+			auto const& result_vec = observer->Report();
+			std::size_t index = observer->GetStartIndex();
+			for(auto result : result_vec) {
+				SetSharedData<_Tp>(index, result);
+				index++;
+			}
+		}
 	}
 
 private:
 	std::set<Observer<_Tp>*> m_observer_list;
 };
 
-#endif /* COMPONENT_OMNICAMERA_H_ */
+#endif /* COMMON_COMPONENT_OMNICAMERA_OMNICAMERA_H_ */

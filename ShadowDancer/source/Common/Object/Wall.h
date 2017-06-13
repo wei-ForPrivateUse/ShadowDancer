@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef OBJECT_WALL_H_
-#define OBJECT_WALL_H_
+#ifndef COMMON_OBJECT_WALL_H_
+#define COMMON_OBJECT_WALL_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -24,4 +24,4 @@ public:
 	virtual ~Wall();
 };
 
-#endif /* OBJECT_WALL_H_ */
+#endif /* COMMON_OBJECT_WALL_H_ */

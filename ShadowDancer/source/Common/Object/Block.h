@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef OBJECT_BLOCK_H_
-#define OBJECT_BLOCK_H_
+#ifndef COMMON_OBJECT_BLOCK_H_
+#define COMMON_OBJECT_BLOCK_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -33,4 +33,4 @@ public:
 	virtual ~Block();
 };
 
-#endif /* OBJECT_BLOCK_H_ */
+#endif /* COMMON_OBJECT_BLOCK_H_ */

@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef OBJECT_ROBOT_H_
-#define OBJECT_ROBOT_H_
+#ifndef TESTS_SAMPLE_ACTOR_ROBOT_H_
+#define TESTS_SAMPLE_ACTOR_ROBOT_H_
 
 #include "../Component/MainBody.h"
 #include "../Component/Motor.h"
@@ -29,4 +29,4 @@ public:
 	Motor* _M_motor[2];
 };
 
-#endif /* OBJECT_ROBOT_H_ */
+#endif /* TESTS_SAMPLE_ACTOR_ROBOT_H_ */

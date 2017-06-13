@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef COMPONENT_MOTOR_H_
-#define COMPONENT_MOTOR_H_
+#ifndef COMMON_COMPONENT_MOTOR_H_
+#define COMMON_COMPONENT_MOTOR_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -75,6 +75,7 @@ inline b2Vec2 Motor::GetForwardVelocity() const {
 inline float32 Motor::GetTotalWeight() const {
 	return _M_total_weight;
 }
+
 inline void Motor::SetTotalWeight(float32 weight) {
 	_M_total_weight = weight;
 
@@ -85,5 +86,4 @@ inline void Motor::SetTotalWeight(float32 weight) {
 	_T_max_rolling_impulse = _T_max_friction * _M_forward_friction * scenemgr-> GetTimeStep();
 }
 
-
-#endif /* COMPONENT_MOTOR_H_ */
+#endif /* COMMON_COMPONENT_MOTOR_H_ */

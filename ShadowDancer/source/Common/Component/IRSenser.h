@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef COMPONENT_IRSENSER_H_
-#define COMPONENT_IRSENSER_H_
+#ifndef COMMON_COMPONENT_IRSENSER_H_
+#define COMMON_COMPONENT_IRSENSER_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -73,4 +73,4 @@ private:
 	float32 _M_range;
 };
 
-#endif /* COMPONENT_IRSENSER_H_ */
+#endif /* COMMON_COMPONENT_IRSENSER_H_ */

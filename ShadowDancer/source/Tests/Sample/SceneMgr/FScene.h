@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef SCENEMGR_FSCENE_H_
-#define SCENEMGR_FSCENE_H_
+#ifndef TESTS_SAMPLE_SCENEMGR_FSCENE_H_
+#define TESTS_SAMPLE_SCENEMGR_FSCENE_H_
 
 #include "../../../Common/Object/Block.h"
 #include "../../../Common/Object/Wall.h"
@@ -22,4 +22,4 @@ public:
 	Block* block[5];
 };
 
-#endif /* SCENEMGR_FSCENE_H_ */
+#endif /* TESTS_SAMPLE_SCENEMGR_FSCENE_H_ */
