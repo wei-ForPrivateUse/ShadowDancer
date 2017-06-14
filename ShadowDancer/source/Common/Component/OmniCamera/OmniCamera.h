@@ -26,25 +26,25 @@ public:
 	struct Configuration {
 		std::size_t StartIndex = 0;
 
-		assa2d::SceneMgr* SceneManager = nullptr;
+		OmniCamera<_Tp>* OmniCamera = nullptr;
 	};
 
-	Observer(Configuration* conf) : m_scenemgr(conf->SceneManager) {
+	Observer(Configuration* conf) : m_omnicamera(conf->OmniCamera) {
 		m_start_index = conf->StartIndex;
 	}
 	virtual ~Observer() { }
 
-	/// Getter.
+	/// Getters.
 	std::size_t GetStartIndex() const {
 		return m_start_index;
 	}
 
-	assa2d::SceneMgr* GetSceneMgr() {
-		return m_scenemgr;
+	OmniCamera<_Tp>* GetOmniCamera() {
+		return m_omnicamera;
 	}
 
-	const assa2d::SceneMgr* GetSceneMgr() const {
-		return m_scenemgr;
+	const OmniCamera<_Tp>* GetOmniCamera() const {
+		return m_omnicamera;
 	}
 
 	/// Setter.
@@ -63,7 +63,7 @@ private:
 
 	std::size_t m_start_index;
 
-	assa2d::SceneMgr* const m_scenemgr;
+	OmniCamera<_Tp>* const m_omnicamera;
 };
 
 /// An omni-camera uses observers to provide
@@ -88,7 +88,7 @@ public:
 		static_assert(std::is_base_of<Observer<_Tp>, _Ob_Tp>::value,
 				"OmniCamera::AddObserver(...): Type '_Ob_Tp' must be a derived type of Observer<_Tp>.");
 
-		conf->SceneManager = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
+		conf->OmniCamera = this;
 
 		_Ob_Tp* observer = new _Ob_Tp(conf);
 		m_observer_list.insert(observer);

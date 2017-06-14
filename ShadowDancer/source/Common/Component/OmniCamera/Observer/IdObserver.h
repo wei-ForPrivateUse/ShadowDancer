@@ -1,0 +1,15 @@
+/*
+ * IdObserver.h
+ *
+ *  Created on: Jun 14, 2017
+ *      Author: wei
+ */
+
+#ifndef COMMON_COMPONENT_OMNICAMERA_OBSERVER_IDOBSERVER_H_
+#define COMMON_COMPONENT_OMNICAMERA_OBSERVER_IDOBSERVER_H_
+
+#include "../OmniCamera.h"
+
+
+
+#endif /* COMMON_COMPONENT_OMNICAMERA_OBSERVER_IDOBSERVER_H_ */
