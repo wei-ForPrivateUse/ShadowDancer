@@ -10,6 +10,7 @@
 
 #include <assassin2d/assassin2d.h>
 
+/// Main frame for an actor.
 class MainBody : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
@@ -30,6 +31,7 @@ public:
 	virtual ~MainBody();
 
 protected:
+	/// Nothing to do.
 	virtual void Act() override { }
 };
 

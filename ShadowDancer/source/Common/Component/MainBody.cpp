@@ -32,6 +32,5 @@ MainBody::MainBody(Configuration* conf) : assa2d::Component(conf) {
 
 MainBody::~MainBody() {
 	GetWorld() -> DestroyBody(GetBody());
-	SetBody(nullptr);
 }
 

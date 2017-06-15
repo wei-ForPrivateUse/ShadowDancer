@@ -99,7 +99,7 @@ public:
 	/// Remove an observer if it exists.
 	void RemoveObserver(Observer<_Tp>* observer) {
 		if(!m_observer_list.count(observer)) {
-			throw std::out_of_range("bul::common::Container<...>::EraseByValue(...) : Value does not exist.");
+			throw std::out_of_range("OmniCamera::RemoveObserver(...): observer does not exist.");
 		}
 
 		m_observer_list.erase(observer);

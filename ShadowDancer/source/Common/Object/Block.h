@@ -10,6 +10,7 @@
 
 #include <assassin2d/assassin2d.h>
 
+/// Static or dynamic block (e.g. obstacle).
 class Block : public assa2d::Object {
 public:
 	struct Configuration : public assa2d::Object::Configuration {

@@ -10,6 +10,7 @@
 
 #include <assassin2d/assassin2d.h>
 
+/// Ray cast callback.
 class IRRayCastClosestCallback : public b2RayCastCallback {
 public:
 	IRRayCastClosestCallback(assa2d::Actor* actor) {
@@ -19,6 +20,7 @@ public:
 		_M_point.SetZero();
 	}
 
+	/// See b2RayCastCallback for details.
 	virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) override {
 		b2Body* body = fixture->GetBody();
 		assa2d::Node* node = static_cast<assa2d::Node*>(body->GetUserData());
@@ -64,6 +66,7 @@ public:
 	virtual ~IRSenser() { }
 
 protected:
+	/// Detect distance from specific position and angle (in the sight of this actor's main component).
 	virtual void Act() override;
 
 private:

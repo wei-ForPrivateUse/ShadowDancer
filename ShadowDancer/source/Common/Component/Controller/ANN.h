@@ -15,7 +15,7 @@
 
 #include <assassin2d/assassin2d.h>
 
-/// ANN weight.
+/// ANN weights.
 struct ANNWeights {
 	ANNWeights(std::vector<std::size_t> const& node_number, std::vector<bool> const& recurrent, std::vector<bool> const& bias,
 			bool randomize = false, float32 weightlowerboundary = -1.0f, float32 weightupperboundary = 1.0f,
@@ -70,10 +70,12 @@ struct ANNWeights {
 	}
 	~ANNWeights() { }
 
+	/// Randomize with default boundaries.
 	void Randomize() {
 		Randomize(WeightLowerBoundary, WeightUpperBoundary, BiasLowerBoundary, BiasUpperBoundary);
 	}
 
+	/// Randomize with new boundaries.
 	void Randomize(float32 weightlowerboundary, float32 weightupperboundary, float32 biaslowerboundary, float32 biasupperboundary) {
 		std::random_device rd;
 		std::mt19937 gen(rd());
@@ -103,6 +105,7 @@ struct ANNWeights {
 		}
 	}
 
+	/// Set all weights to average value.
 	void SetAverage() {
 		for(auto& i : ForwardWeights) {
 			for(auto& j : i) {
@@ -127,6 +130,7 @@ struct ANNWeights {
 		}
 	}
 
+	/// Set weights with array.
 	void Set(double weights[]) {
 		int index = 0;
 		for(std::size_t i = 0; i < ForwardWeights.size(); i++) {
@@ -158,6 +162,7 @@ struct ANNWeights {
 		}
 	}
 
+	/// Getters.
 	std::size_t GetLayerCount() const {
 		return RecurrentEnabled.size();
 	}
@@ -166,12 +171,14 @@ struct ANNWeights {
 		return RecurrentWeights[layer].size();
 	}
 
+	/// Check boundaries.
 	float32 _CheckValue(float32 value, float32 lowerboundary, float32 upperboundary) {
 		value = value > upperboundary ? upperboundary : value;
 		value = value < lowerboundary ? lowerboundary : value;
 		return value;
 	}
 
+	/// Output weights.
 	void _COUT_Output() const {
 		std::cout<<"Layers: "<<RecurrentWeights.size()<<" -> {";
 		for(auto const& i : RecurrentWeights) {
@@ -231,7 +238,7 @@ struct ANNWeights {
 	std::vector<bool> BiasEnabled;
 };
 
-/// ANN controller.
+/// FF-ANN controller.
 class ANN : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
@@ -242,13 +249,17 @@ public:
 	ANN(Configuration* conf);
 	virtual ~ANN() { }
 
+	/// Set weights.
 	void SetWeights(ANNWeights* weights);
 
+	/// Output temporary calculation results.
 	void _COUT_Output() const;
 
 protected:
+	/// Calculate outputs.
 	virtual void Act() override;
 
+	/// Logistic activation function
 	float32 ActivationFunction(float32 sum) const;
 
 private:

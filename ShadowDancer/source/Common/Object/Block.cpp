@@ -53,6 +53,5 @@ Block::Block(Configuration* conf) : assa2d::Object(conf) {
 
 Block::~Block() {
 	GetWorld() -> DestroyBody(GetBody());
-	SetBody(nullptr);
 }
 

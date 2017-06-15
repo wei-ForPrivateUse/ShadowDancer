@@ -9,8 +9,8 @@
 
 Wall::Wall(Configuration* conf) : assa2d::Object(conf) {
 	b2BodyDef bd;
-	bd.position.Set(0.0f, 0.0f);
 	bd.userData = static_cast<assa2d::Node*>(this);
+	bd.position.Set(0.0f, 0.0f);
 
 	b2Body* body = GetWorld() -> CreateBody(&bd);
 	SetBody(body);
@@ -29,6 +29,5 @@ Wall::Wall(Configuration* conf) : assa2d::Object(conf) {
 
 Wall::~Wall() {
 	GetWorld() -> DestroyBody(GetBody());
-	SetBody(nullptr);
 }
 

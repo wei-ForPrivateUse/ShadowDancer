@@ -10,6 +10,7 @@
 
 #include <assassin2d/assassin2d.h>
 
+/// Static wall between two points.
 class Wall : public assa2d::Object {
 public:
 	struct Configuration : public assa2d::Object::Configuration {
