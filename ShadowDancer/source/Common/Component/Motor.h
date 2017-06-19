@@ -10,56 +10,66 @@
 
 #include <assassin2d/assassin2d.h>
 
+/// Motor.
 class Motor : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
+		/// Relative position & angle (in the sight of main component).
 		b2Vec2 Position;
 		float32 Angle = 0.0f;
 
+		/// Shape.
 		b2PolygonShape PolygonShape;
 
+		/// Anchor position and allowed angle.
 		b2Vec2 Anchor;
 		float32 UpperAngle = 0.0f;
 		float32 LowerAngle = 0.0f;
 
+		/// Rigid body attributes.
 		float32 Density = 1.0f;
 		float32 Friction = 0.1f;
 		float32 Restitution = 0.3f;
 
-		float32 LateralFriction = 5.0f;
-		float32 ForwardFriction = 0.1f;
-		float32 ForceFactor = 2.0f;
-		float32 SpeedFactor = 5.0f;
+		/// Motor attributes.
+		float32 MaxPower = 1.0f;
+		float32 MaxSpeed = 3.0f;
+		float32 MaxForce = 1.0f;
+		float32 MaxBackPower = 0.3f;
+		float32 MaxBackSpeed = 1.0f;
+		float32 MaxBackForce = 0.3f;
 
-		float32 TotalWeight = 1.0f;
+		/// Indexes.
+		std::size_t TargetForceIndex = 0;
+		std::size_t PowerRequestIndex = 0;
 	};
 
 	Motor(Configuration* conf);
 	virtual ~Motor();
 
-	/// Get current weight, which is used to calculate frictions and powers.
-	float32 GetTotalWeight() const;
-
-	/// Set total weight.
-	void SetTotalWeight(float32 weight);
-
 protected:
+	/// Apply motor force.
 	virtual void Act() override;
+
+	/// Apply ground friction.
 	virtual void Act_Anyway() override;
 
+	/// Get lateral velocity.
 	b2Vec2 GetLateralVelocity() const;
+
+	/// Get forward velocity.
 	b2Vec2 GetForwardVelocity() const;
 
 private:
-	float32 _M_lateral_friction;
-	float32 _M_forward_friction;
-	float32 _M_force_factor;
-	float32 _M_speed_factor;
-	float32 _M_total_weight;
+	std::size_t m_target_force_index;
+	std::size_t m_power_request_index;
 
-	float32 _T_max_friction;
-	float32 _T_max_sliding_impulse;
-	float32 _T_max_rolling_impulse;
+	float32 m_max_power;
+	float32 m_max_speed;
+	float32 m_max_force;
+	float32 m_max_back_power;
+	float32 m_max_back_speed;
+	float32 m_max_back_force;
 };
 
 inline b2Vec2 Motor::GetLateralVelocity() const {
@@ -70,20 +80,6 @@ inline b2Vec2 Motor::GetLateralVelocity() const {
 inline b2Vec2 Motor::GetForwardVelocity() const {
 	b2Vec2 cfn = GetBody()->GetWorldVector(b2Vec2(1,0));
 	return b2Dot(cfn, GetBody()->GetLinearVelocity()) * cfn;
-}
-
-inline float32 Motor::GetTotalWeight() const {
-	return _M_total_weight;
-}
-
-inline void Motor::SetTotalWeight(float32 weight) {
-	_M_total_weight = weight;
-
-	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
-
-	_T_max_friction = _M_total_weight * 10.0f * _M_force_factor;
-	_T_max_sliding_impulse = _T_max_friction * _M_lateral_friction * scenemgr-> GetTimeStep();
-	_T_max_rolling_impulse = _T_max_friction * _M_forward_friction * scenemgr-> GetTimeStep();
 }
 
 #endif /* COMMON_COMPONENT_MOTOR_H_ */

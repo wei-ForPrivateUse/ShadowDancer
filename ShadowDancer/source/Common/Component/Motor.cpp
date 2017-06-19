@@ -33,48 +33,84 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 
 	GetWorld() -> CreateJoint(&rjd);
 
-	_M_lateral_friction = conf->LateralFriction;
-	_M_forward_friction = conf->ForwardFriction;
-	_M_force_factor = conf->ForceFactor;
-	_M_speed_factor = conf->SpeedFactor;
+	m_max_power = conf->MaxPower;
+	m_max_speed = conf->MaxSpeed;
+	m_max_force = conf->MaxSpeed;
+	m_max_back_power = conf->MaxBackPower;
+	m_max_back_speed = conf->MaxBackSpeed;
+	m_max_back_force = conf->MaxBackForce;
 
-	SetTotalWeight(conf->TotalWeight);
+	m_target_force_index = conf->TargetForceIndex;
+	m_power_request_index = conf->PowerRequestIndex;
 }
 
 Motor::~Motor() {
 	GetWorld() -> DestroyBody(GetBody());
-	SetBody(nullptr);
 }
 
 void Motor::Act() {
+	float32 inputfactor = GetSharedData<float>(m_target_force_index);
+	float32 availablepower = GetSharedData<float>(m_power_request_index);
+
 	float32 currentspeed = GetBody()->GetLocalVector(GetForwardVelocity()).x;
-	float32 targetspeed = GetSharedData<float>(GetId()) * _M_speed_factor;
+
+	bool samedirection = currentspeed * inputfactor > 0;
+
+
+	if(inputfactor > 0) {
+		if(currentspeed > 0) {
+			float32 a = m_max_power / currentspeed;
+		} else {
+
+		}
+	} else {
+		if(currentspeed < 0) {
+
+		} else {
+
+		}
+	}
+
+
+
+
+
+	float32 currentspeed = GetBody()->GetLocalVector(GetForwardVelocity()).x;
+	float32 targetspeed = GetSharedData<float>(GetId()) * m_speed_factor;
 
 	if(targetspeed < 0) {
 		targetspeed /= 3.0f;
 	}
 
 	if(currentspeed < targetspeed - 0.001) {
-		GetBody() ->ApplyForceToCenter(_T_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
+		GetBody() ->ApplyForceToCenter(t_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
 	} else if(currentspeed > targetspeed + 0.001) {
-		GetBody() ->ApplyForceToCenter(-0.5 * _T_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
+		GetBody() ->ApplyForceToCenter(-0.5 * t_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
 	}
 }
 
 void Motor::Act_Anyway() {
 	b2Vec2 lateralimpulse = GetBody()->GetMass() * -GetLateralVelocity();
-	if(lateralimpulse.Length() > _T_max_sliding_impulse) {
-		lateralimpulse *= _T_max_sliding_impulse / lateralimpulse.Length();
+	if(lateralimpulse.Length() > t_max_sliding_impulse) {
+		lateralimpulse *= t_max_sliding_impulse / lateralimpulse.Length();
 	}
 	GetBody() -> ApplyLinearImpulse(lateralimpulse, GetBody()->GetWorldCenter(), true);
 
 	GetBody() ->ApplyAngularImpulse(0.1f * GetBody()->GetInertia() * -GetBody()->GetAngularVelocity(), true);
 
 	b2Vec2 forwardimpulse = GetBody()->GetMass() * -GetForwardVelocity();
-	if(forwardimpulse.Length() > _T_max_rolling_impulse) {
-		forwardimpulse *= _T_max_rolling_impulse / forwardimpulse.Length();
+	if(forwardimpulse.Length() > t_max_rolling_impulse) {
+		forwardimpulse *= t_max_rolling_impulse / forwardimpulse.Length();
 	}
 	GetBody() -> ApplyLinearImpulse(forwardimpulse, GetBody()->GetWorldCenter(), true);
 }
+
+m_total_weight = weight;
+
+assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
+
+t_max_friction = m_total_weight * 10.0f * m_force_factor;
+t_max_sliding_impulse = t_max_friction * m_lateral_friction * scenemgr-> GetTimeStep();
+t_max_rolling_impulse = t_max_friction * m_forward_friction * scenemgr-> GetTimeStep();
 
 
