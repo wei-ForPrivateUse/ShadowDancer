@@ -8,7 +8,12 @@
 #ifndef COMMON_COMPONENT_MOTOR_H_
 #define COMMON_COMPONENT_MOTOR_H_
 
-#include <assassin2d/assassin2d.h>
+/// Motor attributes.
+struct MotorAttribute {
+	float32 MaxPower;
+	float32 MaxSpeed;
+	float32 MaxForce;
+};
 
 /// Motor.
 class Motor : public assa2d::Component {
@@ -32,12 +37,8 @@ public:
 		float32 Restitution = 0.3f;
 
 		/// Motor attributes.
-		float32 MaxPower = 1.0f;
-		float32 MaxSpeed = 3.0f;
-		float32 MaxForce = 1.0f;
-		float32 MaxBackPower = 0.3f;
-		float32 MaxBackSpeed = 1.0f;
-		float32 MaxBackForce = 0.3f;
+		MotorAttribute ForwardAttributes = {1.0f, 3.0f, 1.0f};
+		MotorAttribute BackwardAttributes = {0.3f, 1.0f, 0.3f};
 
 		/// Indexes.
 		std::size_t TargetForceIndex = 0;
@@ -64,12 +65,8 @@ private:
 	std::size_t m_target_force_index;
 	std::size_t m_power_request_index;
 
-	float32 m_max_power;
-	float32 m_max_speed;
-	float32 m_max_force;
-	float32 m_max_back_power;
-	float32 m_max_back_speed;
-	float32 m_max_back_force;
+	MotorAttribute m_forward_attributes;
+	MotorAttribute m_backward_attributes;
 };
 
 inline b2Vec2 Motor::GetLateralVelocity() const {

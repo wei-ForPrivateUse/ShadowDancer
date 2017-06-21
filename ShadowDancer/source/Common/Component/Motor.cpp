@@ -33,12 +33,8 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 
 	GetWorld() -> CreateJoint(&rjd);
 
-	m_max_power = conf->MaxPower;
-	m_max_speed = conf->MaxSpeed;
-	m_max_force = conf->MaxSpeed;
-	m_max_back_power = conf->MaxBackPower;
-	m_max_back_speed = conf->MaxBackSpeed;
-	m_max_back_force = conf->MaxBackForce;
+	m_forward_attributes = conf->ForwardAttributes;
+	m_backward_attributes = conf->BackwardAttributes;
 
 	m_target_force_index = conf->TargetForceIndex;
 	m_power_request_index = conf->PowerRequestIndex;
@@ -49,27 +45,25 @@ Motor::~Motor() {
 }
 
 void Motor::Act() {
-	float32 inputfactor = GetSharedData<float>(m_target_force_index);
-	float32 availablepower = GetSharedData<float>(m_power_request_index);
-
+	float32 targetspeed = GetSharedData<float>(m_target_force_index);
 	float32 currentspeed = GetBody()->GetLocalVector(GetForwardVelocity()).x;
 
-	bool samedirection = currentspeed * inputfactor > 0;
-
-
-	if(inputfactor > 0) {
-		if(currentspeed > 0) {
-			float32 a = m_max_power / currentspeed;
-		} else {
-
-		}
-	} else {
-		if(currentspeed < 0) {
-
-		} else {
-
-		}
+	MotorAttribute* attributes = nullptr;
+	if(targetspeed > currentspeed + 0.001f) {
+		attributes = &m_forward_attributes;
+	} else if(targetspeed < currentspeed - 0.001f){
+		attributes = &m_backward_attributes;
 	}
+
+	float32 availablepower = GetSharedData<float>(m_power_request_index);
+	float32 power = std::min(attributes->MaxPower, availablepower);
+
+	if(currentspeed * targetspeed > 0) {
+		force = std::max(2,3);
+	}
+
+
+
 
 
 
