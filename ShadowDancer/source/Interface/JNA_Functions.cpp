@@ -9,7 +9,7 @@
 
 double test(double w[]);
 
-
+/// JNA interface function.
 double evaluateFcns(double individual[], int func_index)
 {
 	double fitness = 0.0;

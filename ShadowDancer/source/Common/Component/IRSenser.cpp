@@ -12,6 +12,8 @@ IRSenser::IRSenser(Configuration* conf) : assa2d::Component(conf) {
 	_M_angle = conf->Angle;
 
 	_M_range = conf->Range;
+
+	_M_output_index = conf->OutputIndex;
 }
 
 void IRSenser::Act() {
@@ -27,9 +29,9 @@ void IRSenser::Act() {
 	GetWorld() -> RayCast(&callback, sp, ep);
 
 	if(callback._M_hit) {
-		SetSharedData<float>(GetId(), (callback._M_point - sp).Length() / _M_range);
+		SetSharedData<float>(_M_output_index, (callback._M_point - sp).Length() / _M_range);
 	} else {
-		SetSharedData<float>(GetId(), 1.0f);
+		SetSharedData<float>(_M_output_index, 1.0f);
 	}
 }
 

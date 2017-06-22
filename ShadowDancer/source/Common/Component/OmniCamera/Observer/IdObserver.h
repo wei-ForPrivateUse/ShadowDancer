@@ -12,8 +12,8 @@
 
 #include <assassin2d/assassin2d.h>
 
-#include "../../Common.h"
-#include "../OmniCamera.h"
+#include "Common/Common.h"
+#include "Common/Component/OmniCamera/OmniCamera.h"
 
 /// Observe specific ids.
 class IdObserver : public Observer<float> {

@@ -26,10 +26,10 @@ public:
 	struct Configuration {
 		std::size_t StartIndex = 0;
 
-		OmniCamera<_Tp>* OmniCamera = nullptr;
+		OmniCamera<_Tp>* Parent = nullptr;
 	};
 
-	Observer(Configuration* conf) : m_omnicamera(conf->OmniCamera) {
+	Observer(Configuration* conf) : m_omnicamera(conf->Parent) {
 		m_start_index = conf->StartIndex;
 	}
 	virtual ~Observer() { }
@@ -70,7 +70,7 @@ private:
 template<typename _Tp>
 class OmniCamera final : public assa2d::Component {
 public:
-	typedef typedef assa2d::Component::Configuration Configuration;
+	typedef typename assa2d::Component::Configuration Configuration;
 
 	OmniCamera(Configuration* conf) : assa2d::Component(conf) { }
 
@@ -88,7 +88,7 @@ public:
 		static_assert(std::is_base_of<Observer<_Tp>, _Ob_Tp>::value,
 				"OmniCamera::AddObserver(...): Type '_Ob_Tp' must be a derived type of Observer<_Tp>.");
 
-		conf->OmniCamera = this;
+		conf->Parent = this;
 
 		_Ob_Tp* observer = new _Ob_Tp(conf);
 		m_observer_list.insert(observer);

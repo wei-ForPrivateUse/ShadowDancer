@@ -35,8 +35,10 @@ Motor::Motor(Configuration* conf) : assa2d::Component(conf) {
 
 	m_forward_attributes = conf->ForwardAttributes;
 	m_backward_attributes = conf->BackwardAttributes;
+	m_sliding_friction = conf->SlidingFriction;
+	m_rolling_friction = conf->RollingFriction;
 
-	m_target_force_index = conf->TargetForceIndex;
+	m_target_speed_index = conf->TargetSpeedIndex;
 	m_power_request_index = conf->PowerRequestIndex;
 }
 
@@ -45,66 +47,53 @@ Motor::~Motor() {
 }
 
 void Motor::Act() {
-	float32 targetspeed = GetSharedData<float>(m_target_force_index);
+	float32 speedfactor = GetSharedData<float>(m_target_speed_index);
+	float32 targetspeed = speedfactor * (speedfactor>0.0f ? m_forward_attributes.MaxSpeed : m_backward_attributes.MaxSpeed);
 	float32 currentspeed = GetBody()->GetLocalVector(GetForwardVelocity()).x;
 
 	MotorAttribute* attributes = nullptr;
+	int32 direction = 0;
 	if(targetspeed > currentspeed + 0.001f) {
 		attributes = &m_forward_attributes;
+		direction = 1;
 	} else if(targetspeed < currentspeed - 0.001f){
 		attributes = &m_backward_attributes;
+		direction = -1;
+	} else {
+		return;
 	}
 
 	float32 availablepower = GetSharedData<float>(m_power_request_index);
 	float32 power = std::min(attributes->MaxPower, availablepower);
 
-	if(currentspeed * targetspeed > 0) {
-		force = std::max(2,3);
+	float32 force = 0.0f;
+	if(currentspeed * direction > 0) {
+		force = std::min(attributes->MaxForce, std::fabs(power/currentspeed));
+	} else {
+		force = attributes->MaxForce;
 	}
 
-
-
-
-
-
-
-
-	float32 currentspeed = GetBody()->GetLocalVector(GetForwardVelocity()).x;
-	float32 targetspeed = GetSharedData<float>(GetId()) * m_speed_factor;
-
-	if(targetspeed < 0) {
-		targetspeed /= 3.0f;
-	}
-
-	if(currentspeed < targetspeed - 0.001) {
-		GetBody() ->ApplyForceToCenter(t_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
-	} else if(currentspeed > targetspeed + 0.001) {
-		GetBody() ->ApplyForceToCenter(-0.5 * t_max_friction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
-	}
+	GetBody() -> ApplyForceToCenter(force * direction * GetBody()->GetWorldVector(b2Vec2(1,0)), true);
 }
 
 void Motor::Act_Anyway() {
+	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
+	float32 maxfriction = std::max(m_forward_attributes.MaxForce, m_backward_attributes.MaxForce);
+	float32 maxslidingimpulse = maxfriction * m_sliding_friction * scenemgr-> GetTimeStep();
+	float32 maxrollingimpulse = maxfriction * m_rolling_friction * scenemgr-> GetTimeStep();
+
 	b2Vec2 lateralimpulse = GetBody()->GetMass() * -GetLateralVelocity();
-	if(lateralimpulse.Length() > t_max_sliding_impulse) {
-		lateralimpulse *= t_max_sliding_impulse / lateralimpulse.Length();
+	if(lateralimpulse.Length() > maxslidingimpulse) {
+		lateralimpulse *= maxslidingimpulse / lateralimpulse.Length();
 	}
 	GetBody() -> ApplyLinearImpulse(lateralimpulse, GetBody()->GetWorldCenter(), true);
 
 	GetBody() ->ApplyAngularImpulse(0.1f * GetBody()->GetInertia() * -GetBody()->GetAngularVelocity(), true);
 
 	b2Vec2 forwardimpulse = GetBody()->GetMass() * -GetForwardVelocity();
-	if(forwardimpulse.Length() > t_max_rolling_impulse) {
-		forwardimpulse *= t_max_rolling_impulse / forwardimpulse.Length();
+	if(forwardimpulse.Length() > maxrollingimpulse) {
+		forwardimpulse *= maxrollingimpulse / forwardimpulse.Length();
 	}
 	GetBody() -> ApplyLinearImpulse(forwardimpulse, GetBody()->GetWorldCenter(), true);
 }
-
-m_total_weight = weight;
-
-assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
-
-t_max_friction = m_total_weight * 10.0f * m_force_factor;
-t_max_sliding_impulse = t_max_friction * m_lateral_friction * scenemgr-> GetTimeStep();
-t_max_rolling_impulse = t_max_friction * m_forward_friction * scenemgr-> GetTimeStep();
-
 

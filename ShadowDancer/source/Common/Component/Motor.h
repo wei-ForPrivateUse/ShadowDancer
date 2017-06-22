@@ -8,6 +8,8 @@
 #ifndef COMMON_COMPONENT_MOTOR_H_
 #define COMMON_COMPONENT_MOTOR_H_
 
+#include <assassin2d/assassin2d.h>
+
 /// Motor attributes.
 struct MotorAttribute {
 	float32 MaxPower;
@@ -39,9 +41,11 @@ public:
 		/// Motor attributes.
 		MotorAttribute ForwardAttributes = {1.0f, 3.0f, 1.0f};
 		MotorAttribute BackwardAttributes = {0.3f, 1.0f, 0.3f};
+	    float32 SlidingFriction = 5.0f;
+	    float32 RollingFriction = 0.1f;
 
 		/// Indexes.
-		std::size_t TargetForceIndex = 0;
+		std::size_t TargetSpeedIndex = 0;
 		std::size_t PowerRequestIndex = 0;
 	};
 
@@ -62,11 +66,13 @@ protected:
 	b2Vec2 GetForwardVelocity() const;
 
 private:
-	std::size_t m_target_force_index;
-	std::size_t m_power_request_index;
-
 	MotorAttribute m_forward_attributes;
 	MotorAttribute m_backward_attributes;
+	float32 m_sliding_friction;
+	float32 m_rolling_friction;
+
+	std::size_t m_target_speed_index;
+	std::size_t m_power_request_index;
 };
 
 inline b2Vec2 Motor::GetLateralVelocity() const {

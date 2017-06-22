@@ -10,6 +10,7 @@
 
 #include <assassin2d/assassin2d.h>
 
-#include "Interface/JNA_Functions.h"
+#include "Tests/Sample/SceneMgr/FScene.h"
+#include "Tests/Sample/Monitor/FMonitor.h"
 
 #endif /* __SHADOWDANCER__ */

@@ -60,6 +60,8 @@ public:
 		float32 Angle = 0.0f;
 
 		float32 Range = 10.0f;
+
+		std::size_t OutputIndex = 0;
 	};
 
 	IRSenser(Configuration* conf);
@@ -74,6 +76,8 @@ private:
 	float32 _M_angle;
 
 	float32 _M_range;
+
+	std::size_t _M_output_index;
 };
 
 #endif /* COMMON_COMPONENT_IRSENSER_H_ */

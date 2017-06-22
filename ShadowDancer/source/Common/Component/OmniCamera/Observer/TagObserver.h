@@ -14,8 +14,8 @@
 
 #include <assassin2d/assassin2d.h>
 
-#include "../../Common.h"
-#include "../OmniCamera.h"
+#include "Common/Common.h"
+#include "Common/Component/OmniCamera/OmniCamera.h"
 
 /// Functor.
 struct _Tag_Observer_Comp {
@@ -78,7 +78,7 @@ protected:
 	/// Report to the omni-camera.
 	virtual std::vector<float> Report() override {
 		auto const& node_list = GetOmniCamera()->GetSceneMgr()->GetNodesByTag(m_target_tag);
-		if(node_list.count() < GetOutputCount()) {
+		if(node_list.size() < GetOutputCount()) {
 			throw std::runtime_error("TagObserver::Report(...): insufficient nodes to sort.");
 		}
 		std::vector<assa2d::Node*> ordered_node_list(GetOutputCount());
