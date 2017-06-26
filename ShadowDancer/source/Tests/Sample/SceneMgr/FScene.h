@@ -8,9 +8,10 @@
 #ifndef TESTS_SAMPLE_SCENEMGR_FSCENE_H_
 #define TESTS_SAMPLE_SCENEMGR_FSCENE_H_
 
-#include "../../../Common/Object/Block.h"
-#include "../../../Common/Object/Wall.h"
+#include "Common/Object/Block.h"
+#include "Common/Object/Wall.h"
 #include "../Actor/Robot.h"
+#include "Tests/Sample/Trigger/Nest.h"
 
 /// Sample scene.
 class FScene : public assa2d::SceneMgr {

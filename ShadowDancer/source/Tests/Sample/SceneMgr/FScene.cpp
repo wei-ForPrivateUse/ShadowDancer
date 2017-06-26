@@ -71,7 +71,6 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 	}
 
 	{
-		//std::vector<b2Vec2> pos = {b2Vec2(-20, 5), b2Vec2};
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('f', 'o', 'o', 'd');
 		bc.Id = 200;
@@ -98,6 +97,15 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 		bc.Position.Set(assa2d::RandomFloat(-25, 25), assa2d::RandomFloat(-25, 25));
 		bc.CircleShape.m_radius = 2.5;
 		AddNode<Block>(&bc);
+	}
+
+	{
+		Nest::Configuration nc;
+		nc.Id = 9999;
+		nc.LeftTop = b2Vec2(-10.0f, 10.0f);
+		nc.RightBottom = b2Vec2(10.0f, -10.0f);
+		nc.TargetTag = MAKE_TAG('f', 'o', 'o', 'd');
+		AddNode<Nest>(&nc);
 	}
 
 }

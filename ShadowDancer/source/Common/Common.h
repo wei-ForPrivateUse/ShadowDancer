@@ -22,7 +22,7 @@ inline b2Vec2 const& GetNodePosition(assa2d::Node* node) {
 		return static_cast<assa2d::Object*>(node)->GetPosition();
 		break;
 	default:
-		throw std::runtime_error("_Tag_Observer_Comp::operator()(...) : unexpected node type.");
+		throw std::runtime_error("GetNodePosition()(...) : unexpected node type.");
 		break;
 	}
 }

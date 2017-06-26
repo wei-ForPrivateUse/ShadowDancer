@@ -103,7 +103,7 @@ Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 		ioc.ReportDistance = false;
 		ioc.TargetId = {9999};
 		ioc.StartIndex = 40;
-		m_omnicamera -> AddObserver<IdObserver>(&ioc);
+		//m_omnicamera -> AddObserver<IdObserver>(&ioc);
 	}
 
 	{
