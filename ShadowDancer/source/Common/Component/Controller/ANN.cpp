@@ -42,14 +42,6 @@ void ANN::Act() {
 	for(std::size_t r = 0; r < _T_output_tmp[_T_output_tmp.size()-1].size(); r++) {
 		SetSharedData<float>(_M_output_index[r], _T_output_tmp[_T_output_tmp.size()-1][r]);
 	}
-
-	/////
-//	if(GetActor()->GetId() == 0) {
-//		for(int i = 0; i < 62; i++) {
-//			std::cout<<GetSharedData<float>(i)<<", ";
-//		}
-//		std::cout<<std::endl;
-//	}
 }
 
 void ANN::_COUT_Output() const {

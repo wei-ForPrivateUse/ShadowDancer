@@ -20,6 +20,15 @@
 /// Functor.
 struct _Tag_Observer_Comp {
 	bool operator()(assa2d::Node* a, assa2d::Node* b) {
+		if(!selfvisibility) {
+			if(a == datum) {
+				return false;
+			}
+			if(b == datum) {
+				return  true;
+			}
+		}
+
 		b2Vec2 const& pos_datum = datum->GetMainComponent()->GetPosition();
 		b2Vec2 const& pos_a = GetNodePosition(a);
 		b2Vec2 const& pos_b = GetNodePosition(b);
@@ -27,6 +36,7 @@ struct _Tag_Observer_Comp {
 		return (pos_datum-pos_a).LengthSquared() < (pos_datum-pos_b).LengthSquared();
 	}
 
+	bool selfvisibility = false;
 	assa2d::Actor* datum = nullptr;
 };
 
@@ -37,6 +47,8 @@ public:
 		std::size_t TargetTag = 0;
 		std::size_t OutputCount = 0;
 		float32 Range = 0.0f;
+
+		bool SelfVisibility = false;
 	};
 
 	TagObserver(Configuration* conf) : Observer<float>(conf) {
@@ -45,6 +57,7 @@ public:
 		m_range = conf->Range;
 
 		m_comp.datum = static_cast<assa2d::Actor*>(GetOmniCamera()->GetActor());
+		m_comp.selfvisibility = conf->SelfVisibility;
 	}
 	virtual ~TagObserver() { }
 
@@ -78,15 +91,18 @@ protected:
 	/// Report to the omni-camera.
 	virtual std::vector<float> Report() override {
 		auto const& node_list = GetOmniCamera()->GetSceneMgr()->GetNodesByTag(m_target_tag);
-		if(node_list.size() < GetOutputCount()) {
-			throw std::runtime_error("TagObserver::Report(...): insufficient nodes to sort.");
-		}
 		std::vector<assa2d::Node*> ordered_node_list(GetOutputCount());
 		std::partial_sort_copy(node_list.begin(), node_list.end(), ordered_node_list.begin(), ordered_node_list.end(), m_comp);
 		std::vector<float> result;
+
 		for(auto node : ordered_node_list) {
+			if(node == GetOmniCamera()->GetActor() || node == nullptr) {
+				throw std::runtime_error("TagObserver::Report(...): insufficient nodes to sort.");
+			}
+
 			b2Vec2 const& pos_d = static_cast<assa2d::Actor*>(GetOmniCamera()->GetActor())->GetMainComponent()->GetPosition();
 			b2Vec2 const& pos_t = GetNodePosition(node);
+
 			float32 dist = (pos_d-pos_t).Length();
 			if(dist > GetRange()) {
 				result.push_back(1.0f);

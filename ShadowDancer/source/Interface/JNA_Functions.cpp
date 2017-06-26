@@ -26,21 +26,24 @@ double evaluateFcns(double individual[], int func_index)
 
 double test(double w[])
 {
-	ANNWeights* weights = new ANNWeights({36,20, 2}, {false, true, false}, {false, true, true});
+	ANNWeights* weights = new ANNWeights({28, 20, 2}, {false, true, false}, {false, true, true}, true);
 	weights->Set(w);
 
 	double fitness = 0.0;
 
-	for(int i = 0; i < 20; i++) {
+	for(int i = 0; i < 5; i++) {
 		FScene::Configuration fc;
+		fc.MaxStep = 6000;
 		FMonitor monitor;
 		assa2d::SceneMgr* scenemgr = new FScene(&fc, weights);
 		scenemgr->Run(&monitor);
 
 		delete scenemgr;
 
-		fitness += monitor.fitness;
+		fitness += monitor.GetFitness();
 	}
+
+	fitness /= 5.0f;
 
 	delete weights;
 

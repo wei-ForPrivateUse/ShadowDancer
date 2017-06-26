@@ -10,31 +10,72 @@
 
 #include <assassin2d/assassin2d.h>
 
+#include "Tests/Sample/SceneMgr/FScene.h"
+
+/// Awards.
+struct Award {
+	float32 Contact;
+	float32 DistanceMoved;
+	float32 Goal;
+};
+
+/// Evaluate this simulation.
 class FMonitor : public assa2d::Monitor , public assa2d::ContactListener {
 public:
 	FMonitor() {
-		fitness = 0.0f;
+		m_awards = {0.01, 2500.0f, 3000.0f};
 
-		poison = -1.0f;
-		food = 1.5f;
+		m_fitness = 0.0f;
 	}
 	virtual ~FMonitor() { };
 
-	float32 poison;
-	float32 food;
-
+	/// Backdoor.
 	void f(bul::manager::SceneMgr* s) {
 		auto a_s = static_cast<assa2d::SceneMgr*>(s);
 		a_s->GetContactMgr().AddContactListener(this);
 	}
 
-	void Initialize() {
-		auto a_s = static_cast<const assa2d::SceneMgr*>(GetSceneMgr());
-		a_s->GetContactMgr().AddContactListener(this);
-	};
-	void Step() {};
-	void Finalize() {};
+	/// Get fitness.
+	float32 GetFitness() const {
+		return m_fitness;
+	}
 
+protected:
+	/// Add this monitor to contact listener list & save original position of foods.
+	void Initialize() {
+		auto a_s = static_cast<const FScene*>(GetSceneMgr());
+		a_s->GetContactMgr().AddContactListener(this);
+
+		for(auto node : *a_s->m_food_list) {
+			m_original_position[node] = GetNodePosition(node);
+		}
+	};
+
+	/// Nothing to do.
+	void Step() {};
+
+	/// Calculate moved and goal awards.
+	void Finalize() {
+		auto a_s = static_cast<const FScene*>(GetSceneMgr());
+
+		m_fitness += a_s->m_nest->GetGoodFoodsCollected() * m_awards.Goal;
+		m_fitness -= a_s->m_nest->GetBadFoodsCollected() * m_awards.Goal;
+
+		for(auto node : *a_s->m_food_list) {
+			auto const& pos_n = GetNodePosition(node);
+			auto const& pos_o = m_original_position[node];
+
+			float32 dist_n = pos_n.Length();
+			float32 dist_o = pos_o.Length();
+
+			int32 flag = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			if(dist_n < dist_o) {
+				m_fitness += flag * m_awards.DistanceMoved * (dist_o - dist_n) / dist_o;
+			}
+		}
+	};
+
+	/// Calculate contact awards.
 	virtual void PreSolve(const b2Contact* contact, const b2Manifold* oldManifold) override
 	{
 		const b2Body* bA = contact->GetFixtureA()->GetBody();
@@ -48,21 +89,21 @@ public:
 		assa2d::Node_Type ntA = nA->GetType();
 		assa2d::Node_Type ntB = nB->GetType();
 
-		if(tagA == MAKE_TAG('p', 'o', 'i', 's') || tagB == MAKE_TAG('p', 'o', 'i', 's')) {
-			if(ntA == assa2d::Node_Type::Actor_Component || ntB == assa2d::Node_Type::Actor_Component) {
-				fitness += poison;
-			}
+		if(tagA == MAKE_TAG('f', 'o', 'o', 'd') && ntB == assa2d::Node_Type::Actor_Component) {
+			int32 flag = static_cast<assa2d::Object*>(nA)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			m_fitness += flag* m_awards.Contact;
 		}
 
-
-		if(tagA == MAKE_TAG('f', 'o', 'o', 'd') || tagB == MAKE_TAG('f', 'o', 'o', 'd')) {
-			if(ntA == assa2d::Node_Type::Actor_Component || ntB == assa2d::Node_Type::Actor_Component) {
-				fitness += food;
-			}
+		if(tagB == MAKE_TAG('f', 'o', 'o', 'd') && ntA == assa2d::Node_Type::Actor_Component) {
+			int32 flag = static_cast<assa2d::Object*>(nB)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			m_fitness += flag* m_awards.Contact;
 		}
 	}
 
-	float32 fitness;
+private:
+	Award m_awards;
+	float32 m_fitness;
+	std::map<assa2d::Node*, b2Vec2> m_original_position;
 };
 
 #endif /* TESTS_SAMPLE_MONITOR_FMONITOR_H_ */

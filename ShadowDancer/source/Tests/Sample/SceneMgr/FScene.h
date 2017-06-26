@@ -18,6 +18,9 @@ class FScene : public assa2d::SceneMgr {
 public:
 	FScene(Configuration* conf, ANNWeights* weights);
 	virtual ~FScene() { }
+
+	const std::list<assa2d::Node*>*  m_food_list;
+	Nest* m_nest;
 };
 
 #endif /* TESTS_SAMPLE_SCENEMGR_FSCENE_H_ */

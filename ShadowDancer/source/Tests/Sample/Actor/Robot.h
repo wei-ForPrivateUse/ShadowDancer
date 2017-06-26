@@ -26,6 +26,11 @@ public:
 	Robot(Configuration* conf);
 	virtual ~Robot() { }
 
+protected:
+	///
+	virtual void PreAct() override;
+
+public:
 	MainBody* m_mainbody;
 	IRSenser* m_ir_senser[8];
 	OmniCamera<float>* m_omnicamera;

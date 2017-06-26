@@ -82,6 +82,7 @@ protected:
 			auto node = scenemgr->GetNodeById(id);
 			b2Vec2 const& pos_d = static_cast<assa2d::Actor*>(GetOmniCamera()->GetActor())->GetMainComponent()->GetPosition();
 			b2Vec2 const& pos_t = GetNodePosition(node);
+
 			float32 dist = (pos_d-pos_t).Length();
 			if(dist > GetRange()) {
 				if(IsDistanceReported()) {

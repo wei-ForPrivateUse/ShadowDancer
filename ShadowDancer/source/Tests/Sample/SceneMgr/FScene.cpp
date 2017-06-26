@@ -14,23 +14,23 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 		wc.Tag = MAKE_TAG('w', 'a', 'l', 'l');
 
 		wc.Id = 1000;
-		wc.StartPoint = b2Vec2(-25.0f, -25.0f);
-		wc.EndPoint = b2Vec2(25.0f, -25.0f);
+		wc.StartPoint = b2Vec2(-35.0f, -35.0f);
+		wc.EndPoint = b2Vec2(35.0f, -35.0f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 1001;
-		wc.StartPoint = b2Vec2(25.0f, -25.0f);
-		wc.EndPoint = b2Vec2(25.0f, 25.0f);
+		wc.StartPoint = b2Vec2(35.0f, -35.0f);
+		wc.EndPoint = b2Vec2(35.0f, 35.0f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 1002;
-		wc.StartPoint = b2Vec2(25.0f, 25.0f);
-		wc.EndPoint = b2Vec2(-25.0f, 25.0f);
+		wc.StartPoint = b2Vec2(35.0f, 35.0f);
+		wc.EndPoint = b2Vec2(-35.0f, 35.0f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 1003;
-		wc.StartPoint = b2Vec2(-25.0f, 25.0f);
-		wc.EndPoint = b2Vec2(-25.0f, -25.0f);
+		wc.StartPoint = b2Vec2(-35.0f, 35.0f);
+		wc.EndPoint = b2Vec2(-35.0f, -35.0f);
 		AddNode<Wall>(&wc);
 	}
 
@@ -59,7 +59,7 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 	{
 		Block::Configuration bc;
 		bc.StaticBody = true;
-		bc.CircleShape.m_radius = 3;
+		bc.CircleShape.m_radius = 3.5;
 		bc.Tag = MAKE_TAG('o', 'b', 's', 't');
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 2; j++) {
@@ -73,30 +73,30 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 	{
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('f', 'o', 'o', 'd');
-		bc.Id = 200;
-		bc.Position.Set(assa2d::RandomFloat(-22, 22), assa2d::RandomFloat(-22, 22));
-		bc.CircleShape.m_radius = 2;
+
+		bc.Id = 290;
+		bc.Position.Set(100.0f, 100.0f);
+		bc.CircleShape.m_radius = 1.0f;
+		AddNode<Block>(&bc);
+		bc.Id = 291;
+		bc.Position.Set(110.0f, 110.0f);
 		AddNode<Block>(&bc);
 
-		bc.Id = 201;
-		bc.Position.Set(assa2d::RandomFloat(-16, 16), assa2d::RandomFloat(-16, 16));
-		bc.CircleShape.m_radius = 3;
-		AddNode<Block>(&bc);
+		for(std::size_t i = 200; i < 206; i++) {
+			bc.Id = i;
 
-		bc.Id = 202;
-		bc.Position.Set(assa2d::RandomFloat(-25, 25), assa2d::RandomFloat(-25, 25));
-		bc.CircleShape.m_radius = 1;
-		AddNode<Block>(&bc);
+			float32 x, y;
+			do {
+				x = assa2d::RandomFloat(-30, 30);
+				y = assa2d::RandomFloat(-30, 30);
+			} while((x>-18.5f&&x<18.5f) && (y>-18.5f&&y<18.5f));
+			bc.Position.Set(x, y);
 
-		bc.Id = 203;
-		bc.Position.Set(assa2d::RandomFloat(-25, 25), assa2d::RandomFloat(-25, 25));
-		bc.CircleShape.m_radius = 3;
-		AddNode<Block>(&bc);
+			bool isbadfood = assa2d::RandomFloat()>0 ? true : false;
+			bc.CircleShape.m_radius = isbadfood ? assa2d::RandomFloat(1.5f, 2.0f) : assa2d::RandomFloat(3.0f, 3.7f);
 
-		bc.Id = 204;
-		bc.Position.Set(assa2d::RandomFloat(-25, 25), assa2d::RandomFloat(-25, 25));
-		bc.CircleShape.m_radius = 2.5;
-		AddNode<Block>(&bc);
+			AddNode<Block>(&bc);
+		}
 	}
 
 	{
@@ -105,8 +105,9 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 		nc.LeftTop = b2Vec2(-10.0f, 10.0f);
 		nc.RightBottom = b2Vec2(10.0f, -10.0f);
 		nc.TargetTag = MAKE_TAG('f', 'o', 'o', 'd');
-		AddNode<Nest>(&nc);
+		m_nest = AddNode<Nest>(&nc);
 	}
 
+	m_food_list = &GetNodesByTag(MAKE_TAG('f', 'o', 'o', 'd'));
 }
 

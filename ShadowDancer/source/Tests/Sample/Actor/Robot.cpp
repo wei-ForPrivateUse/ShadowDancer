@@ -96,14 +96,6 @@ Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 		toc.TargetTag = MAKE_TAG('o', 'b', 's', 't');
 		toc.StartIndex = 30;
 		m_omnicamera -> AddObserver<TagObserver>(&toc);
-
-		IdObserver::Configuration ioc;
-		ioc.Range = 15;
-		ioc.ReportAngle = true;
-		ioc.ReportDistance = false;
-		ioc.TargetId = {9999};
-		ioc.StartIndex = 40;
-		//m_omnicamera -> AddObserver<IdObserver>(&ioc);
 	}
 
 	{
@@ -132,4 +124,21 @@ Robot::Robot(Configuration* conf) : assa2d::Actor(conf) {
 
 	GetDataPool().Set<float>(60, 100.0f);
 	GetDataPool().Set<float>(61, 100.0f);
+}
+
+void Robot::PreAct() {
+	b2Vec2 const& pos_d = GetMainComponent()->GetPosition();
+	b2Vec2 pos_t = b2Vec2(0.0f, 0.0f);
+
+	if(pos_d == pos_t) {
+		GetDataPool().Set<float>(40, 1.0f);
+		GetDataPool().Set<float>(41, 0.0f);
+	} else {
+		b2Vec2 const& l_pos = GetMainComponent()->GetBody()->GetLocalVector(pos_t-pos_d);
+		float32 c_ang = l_pos.x / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
+		float32 s_ang = l_pos.y / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
+
+		GetDataPool().Set<float>(40, c_ang);
+		GetDataPool().Set<float>(41, s_ang);
+	}
 }
