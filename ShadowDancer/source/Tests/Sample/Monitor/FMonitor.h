@@ -26,6 +26,8 @@ public:
 		m_awards = {0.01, 2500.0f, 3000.0f};
 
 		m_fitness = 0.0f;
+
+		m_minus = false;
 	}
 	virtual ~FMonitor() { };
 
@@ -59,7 +61,11 @@ protected:
 		auto a_s = static_cast<const FScene*>(GetSceneMgr());
 
 		m_fitness += a_s->m_nest->GetGoodFoodsCollected() * m_awards.Goal;
-		m_fitness -= a_s->m_nest->GetBadFoodsCollected() * m_awards.Goal;
+		if(m_minus) {
+			m_fitness -= a_s->m_nest->GetBadFoodsCollected() * m_awards.Goal;
+		} else {
+			m_fitness += a_s->m_nest->GetBadFoodsCollected() * m_awards.Goal;
+		}
 
 		for(auto node : *a_s->m_food_list) {
 			auto const& pos_n = GetNodePosition(node);
@@ -68,7 +74,10 @@ protected:
 			float32 dist_n = pos_n.Length();
 			float32 dist_o = pos_o.Length();
 
-			int32 flag = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			int32 flag = 1;
+			if(m_minus) {
+				flag = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			}
 			if(dist_n < dist_o) {
 				m_fitness += flag * m_awards.DistanceMoved * (dist_o - dist_n) / dist_o;
 			}
@@ -90,12 +99,18 @@ protected:
 		assa2d::Node_Type ntB = nB->GetType();
 
 		if(tagA == MAKE_TAG('f', 'o', 'o', 'd') && ntB == assa2d::Node_Type::Actor_Component) {
-			int32 flag = static_cast<assa2d::Object*>(nA)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			int32 flag = 1;
+			if(m_minus) {
+				flag = static_cast<assa2d::Object*>(nA)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			}
 			m_fitness += flag* m_awards.Contact;
 		}
 
 		if(tagB == MAKE_TAG('f', 'o', 'o', 'd') && ntA == assa2d::Node_Type::Actor_Component) {
-			int32 flag = static_cast<assa2d::Object*>(nB)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			int32 flag = 1;
+			if(m_minus) {
+				flag = static_cast<assa2d::Object*>(nB)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : -1;
+			}
 			m_fitness += flag* m_awards.Contact;
 		}
 	}
@@ -103,6 +118,7 @@ protected:
 private:
 	Award m_awards;
 	float32 m_fitness;
+	bool m_minus;
 	std::map<assa2d::Node*, b2Vec2> m_original_position;
 };
 

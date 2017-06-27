@@ -32,8 +32,12 @@ double test(double w[])
 	double fitness = 0.0;
 
 	for(int i = 0; i < 5; i++) {
+		b2Vec2 gravity;
+		gravity.Set(0.0f, 0.0f);
+		b2World* world = new b2World(gravity);
 		FScene::Configuration fc;
 		fc.MaxStep = 6000;
+		fc.World = world;
 		FMonitor monitor;
 		assa2d::SceneMgr* scenemgr = new FScene(&fc, weights);
 		scenemgr->Run(&monitor);
