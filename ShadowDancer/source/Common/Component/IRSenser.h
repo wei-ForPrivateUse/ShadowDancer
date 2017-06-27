@@ -14,10 +14,10 @@
 class IRRayCastClosestCallback : public b2RayCastCallback {
 public:
 	IRRayCastClosestCallback(assa2d::Actor* actor) {
-		_M_actor = actor;
+		m_actor = actor;
 
-		_M_hit = false;
-		_M_point.SetZero();
+		m_hit = false;
+		m_point.SetZero();
 	}
 
 	/// See b2RayCastCallback for details.
@@ -29,27 +29,27 @@ public:
 		}
 		if(node->GetType() == assa2d::Node_Type::Actor_Component) {
 			assa2d::Actor* actor = static_cast<assa2d::Actor*>(static_cast<assa2d::Component*>(node)->GetActor());
-			if(actor == _M_actor) {
+			if(actor == m_actor) {
 				return -1.0f;
 			}
 		}
 		if(node->GetType() == assa2d::Node_Type::Actor) {
 			assa2d::Actor* actor = static_cast<assa2d::Actor*>(node);
-			if(actor == _M_actor) {
+			if(actor == m_actor) {
 				return -1.0f;
 			}
 		}
 
-		_M_hit = true;
-		_M_point = point;
+		m_hit = true;
+		m_point = point;
 
 		return fraction;
 	}
 
-	assa2d::Actor* _M_actor;
+	assa2d::Actor* m_actor;
 
-	bool _M_hit;
-	b2Vec2 _M_point;
+	bool m_hit;
+	b2Vec2 m_point;
 };
 
 /// IRSenser.
@@ -72,12 +72,12 @@ protected:
 	virtual void Act() override;
 
 private:
-	b2Vec2 _M_position;
-	float32 _M_angle;
+	b2Vec2 m_position;
+	float32 m_angle;
 
-	float32 _M_range;
+	float32 m_range;
 
-	std::size_t _M_output_index;
+	std::size_t m_output_index;
 };
 
 #endif /* COMMON_COMPONENT_IRSENSER_H_ */

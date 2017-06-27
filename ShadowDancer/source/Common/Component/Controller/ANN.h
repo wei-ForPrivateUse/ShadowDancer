@@ -263,27 +263,27 @@ protected:
 	float32 ActivationFunction(float32 sum) const;
 
 private:
-	ANNWeights* _M_weights;
+	ANNWeights* m_weights;
 
-	std::vector<std::size_t> _M_input_index;
-	std::vector<std::size_t> _M_output_index;
+	std::vector<std::size_t> m_input_index;
+	std::vector<std::size_t> m_output_index;
 
-	std::vector<std::vector<float32>> _T_output_tmp;
+	std::vector<std::vector<float32>> t_output_tmp;
 };
 
 inline void ANN::SetWeights(ANNWeights* weights) {
-	_M_weights = weights;
+	m_weights = weights;
 
-	if(weights->GetNodeNumber(0) != _M_input_index.size() || weights->GetNodeNumber(weights->GetLayerCount()-1) != _M_output_index.size()) {
+	if(weights->GetNodeNumber(0) != m_input_index.size() || weights->GetNodeNumber(weights->GetLayerCount()-1) != m_output_index.size()) {
 		throw std::runtime_error("ANN::SetWeights(...) : ill-formated weights.");
 	}
 
-	_T_output_tmp.resize(weights->GetLayerCount());
+	t_output_tmp.resize(weights->GetLayerCount());
 	for(std::size_t i = 0; i < weights->GetLayerCount(); i ++) {
-		_T_output_tmp[i].resize(weights->GetNodeNumber(i));
+		t_output_tmp[i].resize(weights->GetNodeNumber(i));
 	}
 
-	for(auto& i : _T_output_tmp) {
+	for(auto& i : t_output_tmp) {
 		for(auto& j : i) {
 			j = 0.0f;
 		}
