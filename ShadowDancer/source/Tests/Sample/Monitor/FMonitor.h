@@ -22,12 +22,12 @@ struct Award {
 /// Evaluate this simulation.
 class FMonitor : public assa2d::Monitor , public assa2d::ContactListener {
 public:
-	FMonitor() {
+	FMonitor(bool flag) {
 		m_awards = {0.01, 2500.0f, 3000.0f};
 
 		m_fitness = 0.0f;
 
-		m_minus = false;
+		m_minus = flag;
 	}
 	virtual ~FMonitor() { };
 
