@@ -39,8 +39,8 @@ public:
 		float32 Restitution = 0.3f;
 
 		/// Motor attributes.
-		MotorAttribute ForwardAttributes = {1.0f, 3.0f, 1.0f};
-		MotorAttribute BackwardAttributes = {0.3f, 1.0f, 0.3f};
+		MotorAttribute ForwardAttributes = {16.0f, 5.0f, 40.0f};
+		MotorAttribute BackwardAttributes = {8.0f, 2.0f, 20.0f};
 	    float32 SlidingFriction = 5.0f;
 	    float32 RollingFriction = 0.1f;
 

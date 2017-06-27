@@ -35,6 +35,7 @@ public:
 	}
 	virtual ~Nest() { }
 
+	/// Getters.
 	int32 GetGoodFoodsCollected() const {
 		return m_collected_good_food;
 	}

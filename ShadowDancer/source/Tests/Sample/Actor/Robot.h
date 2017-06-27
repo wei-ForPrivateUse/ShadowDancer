@@ -27,7 +27,7 @@ public:
 	virtual ~Robot() { }
 
 protected:
-	///
+	/// Calculate nest direction.
 	virtual void PreAct() override;
 
 public:
