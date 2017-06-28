@@ -34,7 +34,7 @@ double test(double w[], bool flag)
 
 	double fitness = 0.0;
 
-	for(int i = 0; i < 6; i++) {
+	for(int i = 0; i < 8; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
@@ -51,7 +51,7 @@ double test(double w[], bool flag)
 		fitness += monitor.GetFitness();
 	}
 
-	fitness /= 6.0f;
+	fitness /= 8.0f;
 
 	delete weights;
 
