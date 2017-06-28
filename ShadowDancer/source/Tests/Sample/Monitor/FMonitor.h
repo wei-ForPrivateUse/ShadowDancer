@@ -53,8 +53,18 @@ protected:
 		}
 	};
 
-	/// Nothing to do.
-	void Step() {};
+	/// Add extra bonus.
+	void Step() {
+		auto a_s = static_cast<const FScene*>(GetSceneMgr());
+
+		m_fitness += a_s->m_nest->GetGoodFoodsCollected() * 0.2f;
+		if(m_minus) {
+			m_fitness -= a_s->m_nest->GetBadFoodsCollected() * 0.2f;
+		} else {
+			m_fitness += a_s->m_nest->GetBadFoodsCollected() * 0.2f;
+		}
+
+	};
 
 	/// Calculate moved and goal awards.
 	void Finalize() {
