@@ -93,8 +93,8 @@ FScene::FScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 			bc.Position.Set(x, y);
 
 			bool isbadfood = (i-200) > 2 ? true : false;
-			bc.CircleShape.m_radius = isbadfood ? assa2d::RandomFloat(1.5f, 2.0f) : assa2d::RandomFloat(3.0f, 3.7f);
-			bc.Density = isbadfood ? 1.8f : 0.6f;
+			bc.CircleShape.m_radius = isbadfood ? 1.5 : 5;
+			bc.Density = isbadfood ? 1.0f : 0.25f;
 			AddNode<Block>(&bc);
 		}
 	}
