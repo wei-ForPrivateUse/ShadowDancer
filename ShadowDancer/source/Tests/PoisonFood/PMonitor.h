@@ -40,7 +40,7 @@ public:
 		return m_fitness;
 	}
 
-//protected:
+protected:
 	/// Add this monitor to contact listener list & save original position of foods.
 	void Initialize() {
 		auto a_s = static_cast<const PScene*>(GetSceneMgr());
