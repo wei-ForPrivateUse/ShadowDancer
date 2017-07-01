@@ -22,7 +22,7 @@ struct PAward {
 /// Evaluate this simulation.
 class PMonitor : public assa2d::Monitor , public assa2d::ContactListener {
 public:
-	PMonitor(bool flag) {
+	PMonitor() {
 		m_awards = {0.01, 2500.0f, 3000.0f};
 
 		m_fitness = 0.0f;
