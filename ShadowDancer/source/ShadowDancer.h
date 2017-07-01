@@ -10,7 +10,7 @@
 
 #include <assassin2d/assassin2d.h>
 
-#include "Tests/Sample/SceneMgr/FScene.h"
 #include "Tests/Sample/Monitor/FMonitor.h"
+#include "Tests/PoisonFood/PMonitor.h"
 
 #endif /* __SHADOWDANCER__ */
