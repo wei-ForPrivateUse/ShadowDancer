@@ -89,7 +89,7 @@ PScene::PScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 			do {
 				x = assa2d::RandomFloat(-45, 45);
 				y = assa2d::RandomFloat(-45, 45);
-			} while((x>-20.0f&&x<20.0f) && (y>20.0f&&y<20.0f));
+			} while((x>-20.0f&&x<20.0f) && (y>-20.0f&&y<20.0f));
 			bc.Position.Set(x, y);
 
 			bool isbadfood = (i-200) > 2 ? true : false;
