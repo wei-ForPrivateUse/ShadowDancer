@@ -22,10 +22,12 @@ struct PAward {
 /// Evaluate this simulation.
 class PMonitor : public assa2d::Monitor , public assa2d::ContactListener {
 public:
-	PMonitor() {
-		m_awards = {0.01, 2500.0f, 3000.0f};
+	PMonitor(std::size_t flag) {
+		m_awards = {0.01, 4500.0f, 5000.0f};
 
 		m_fitness = 0.0f;
+
+		m_flag = flag;
 	}
 	virtual ~PMonitor() { };
 
@@ -63,7 +65,24 @@ protected:
 		auto a_s = static_cast<const PScene*>(GetSceneMgr());
 
 		m_fitness += a_s->m_nest->GetGoodFoodsCollected() * m_awards.Goal;
-		m_fitness -= a_s->m_nest->GetBadFoodsCollected() * m_awards.Goal;
+
+		switch(m_flag) {
+		case 0: {
+			m_fitness += a_s->m_nest->GetBadFoodsCollected() * m_awards.Goal;
+		}
+		break;
+		case 1: {
+
+		}
+		break;
+		case 2: {
+			m_fitness -= a_s->m_nest->GetBadFoodsCollected() * m_awards.Goal;
+		}
+		break;
+		default:
+			break;
+		}
+
 
 		for(auto node : *a_s->m_food_list) {
 			auto const& pos_n = GetNodePosition(node);
@@ -72,9 +91,27 @@ protected:
 			float32 dist_n = pos_n.Length();
 			float32 dist_o = pos_o.Length();
 
-			int32 flag = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : 0;
+			bool goodfood = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? true : false;
+
 			if(dist_n < dist_o) {
-				m_fitness += flag * m_awards.DistanceMoved * (dist_o - dist_n) / dist_o;
+				switch(m_flag) {
+				case 0: {
+					m_fitness += m_awards.DistanceMoved * (dist_o - dist_n) / dist_o;
+				}
+				break;
+				case 1: {
+					int32 flag = goodfood ? 1 : 0;
+					m_fitness += flag * m_awards.DistanceMoved * (dist_o - dist_n) / dist_o;
+				}
+				break;
+				case 2: {
+					int32 flag = goodfood ? 1 : 0;
+					m_fitness += flag * m_awards.DistanceMoved * (dist_o - dist_n) / dist_o;
+				}
+				break;
+				default:
+					break;
+				}
 			}
 		}
 	};
@@ -94,21 +131,58 @@ protected:
 		assa2d::Node_Type ntB = nB->GetType();
 
 		if(tagA == MAKE_TAG('f', 'o', 'o', 'd') && ntB == assa2d::Node_Type::Actor_Component) {
-			int32 flag = static_cast<assa2d::Object*>(nA)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : 0;
+			bool goodfood = static_cast<assa2d::Object*>(nA)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? true : false;
 
-			m_fitness += flag* m_awards.Contact;
+			switch(m_flag) {
+			case 0: {
+				m_fitness += m_awards.Contact;
+			}
+			break;
+			case 1: {
+				int32 flag = goodfood ? 1 : 0;
+				m_fitness += flag * m_awards.Contact;
+			}
+			break;
+			case 2: {
+				int32 flag = goodfood ? 1 : 0;
+				m_fitness += flag * m_awards.Contact;
+			}
+			break;
+			default:
+				break;
+			}
+
 		}
 
 		if(tagB == MAKE_TAG('f', 'o', 'o', 'd') && ntA == assa2d::Node_Type::Actor_Component) {
-			int32 flag = static_cast<assa2d::Object*>(nB)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? 1 : 0;
+			bool goodfood = static_cast<assa2d::Object*>(nB)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? true : false;
 
-			m_fitness += flag* m_awards.Contact;
+			switch(m_flag) {
+			case 0: {
+				m_fitness += m_awards.Contact;
+			}
+			break;
+			case 1: {
+				int32 flag = goodfood ? 1 : 0;
+				m_fitness += flag * m_awards.Contact;
+			}
+			break;
+			case 2: {
+				int32 flag = goodfood ? 1 : 0;
+				m_fitness += flag * m_awards.Contact;
+			}
+			break;
+			default:
+				break;
+			}
 		}
 	}
 
 private:
 	PAward m_awards;
 	float32 m_fitness;
+
+	std::size_t m_flag;
 
 	std::map<assa2d::Node*, b2Vec2> m_original_position;
 };

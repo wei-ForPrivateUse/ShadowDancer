@@ -8,7 +8,7 @@
 #include "JNA_Functions.h"
 
 double test(double w[], bool flag);
-double test1(double w[]);
+double test1(double w[], std::size_t flag);
 
 /// JNA interface function.
 double evaluateFcns(double individual[], int func_index)
@@ -22,8 +22,14 @@ double evaluateFcns(double individual[], int func_index)
 	case 1:
 		fitness = test(individual, true);
 		break;
-	case 2:
-		fitness = test1(individual);
+	case 100:
+		fitness = test1(individual, 0);
+		break;
+	case 101:
+		fitness = test1(individual, 1);
+		break;
+	case 102:
+		fitness = test1(individual, 2);
 		break;
 	default:
 		break;
@@ -62,7 +68,7 @@ double test(double w[], bool flag)
 	return fitness;
 }
 
-double test1(double w[]) {
+double test1(double w[], std::size_t flag) {
 	ANNWeights* weights = new ANNWeights({28, 20, 2}, {false, true, false}, {false, true, true}, true);
 	weights->Set(w);
 
@@ -76,7 +82,7 @@ double test1(double w[]) {
 		PScene::Configuration pc;
 		pc.MaxStep = 12000;
 		pc.World = world;
-		PMonitor monitor;
+		PMonitor monitor(flag);
 
 		assa2d::SceneMgr* scenemgr = new PScene(&pc, weights);
 		scenemgr->Run(&monitor);

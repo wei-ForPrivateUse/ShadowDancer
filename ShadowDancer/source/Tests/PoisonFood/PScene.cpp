@@ -59,12 +59,12 @@ PScene::PScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 	{
 		Block::Configuration bc;
 		bc.StaticBody = true;
-		bc.CircleShape.m_radius = 3.0f;
+		bc.CircleShape.m_radius = 4.0f;
 		bc.Tag = MAKE_TAG('o', 'b', 's', 't');
 		for(int i = 0; i < 2; i++) {
 			for(int j = 0; j < 2; j++) {
 				bc.Id = 100 + i*2 + j;
-				bc.Position.Set(-15.0f + 30*i, -15.0f + 30*j);
+				bc.Position.Set(-16.0f + 32*i, -16.0f + 32*j);
 				AddNode<Block>(&bc);
 			}
 		}
@@ -89,12 +89,12 @@ PScene::PScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 			do {
 				x = assa2d::RandomFloat(-45, 45);
 				y = assa2d::RandomFloat(-45, 45);
-			} while((x>-20.0f&&x<20.0f) && (y>-20.0f&&y<20.0f));
+			} while((x>-22.0f&&x<22.0f) && (y>-22.0f&&y<22.0f));
 			bc.Position.Set(x, y);
 
 			bool isbadfood = (i-200) > 2 ? true : false;
 			bc.CircleShape.m_radius = isbadfood ? 2 : 4;
-			bc.Density = isbadfood ? 0.75f : 0.3f;
+			bc.Density = isbadfood ? 1.0f : 0.45f;
 			AddNode<Block>(&bc);
 		}
 	}
@@ -102,8 +102,8 @@ PScene::PScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 	{
 		PNest::Configuration nc;
 		nc.Id = 9999;
-		nc.LeftTop = b2Vec2(-12.0f, 12.0f);
-		nc.RightBottom = b2Vec2(12.0f, -12.0f);
+		nc.LeftTop = b2Vec2(-11.0f, 11.0f);
+		nc.RightBottom = b2Vec2(11.0f, -11.0f);
 		nc.TargetTag = MAKE_TAG('f', 'o', 'o', 'd');
 		m_nest = AddNode<PNest>(&nc);
 	}
