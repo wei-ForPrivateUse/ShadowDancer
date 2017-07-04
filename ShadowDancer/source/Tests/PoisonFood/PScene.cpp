@@ -94,7 +94,7 @@ PScene::PScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 
 			bool isbadfood = (i-200) > 2 ? true : false;
 			bc.CircleShape.m_radius = isbadfood ? 2 : 4;
-			bc.Density = isbadfood ? 1.0f : 0.45f;
+			bc.Density = isbadfood ? 1.0f : 0.4f;
 			AddNode<Block>(&bc);
 		}
 	}

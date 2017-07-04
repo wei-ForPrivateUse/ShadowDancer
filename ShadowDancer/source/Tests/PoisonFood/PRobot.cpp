@@ -21,8 +21,8 @@ PRobot::PRobot(Configuration* conf) : assa2d::Actor(conf) {
 	{
 		Motor::Configuration mc;
 
-		mc.ForwardAttributes = {20.0f, 8.0f, 70.0f};
-		mc.BackwardAttributes = {10.0f, 3.0f, 35.0f};
+		mc.ForwardAttributes = {16.0f, 9.0f, 100.0f};
+		mc.BackwardAttributes = {8.0f, 3.0f, 50.0f};
 
 		mc.Id = 50;
 		mc.Priority = 2;

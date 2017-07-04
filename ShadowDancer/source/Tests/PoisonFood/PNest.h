@@ -75,7 +75,7 @@ protected:
 				bc.Position.Set(x, y);
 
 				bc.CircleShape.m_radius = !getgoodfood ? 2 : 4;
-				bc.Density = !getgoodfood ? 1.0f : 0.45f;
+				bc.Density = !getgoodfood ? 1.0f : 0.4f;
 				GetSceneMgr()->AddNode<Block>(&bc);
 			}
 		}
