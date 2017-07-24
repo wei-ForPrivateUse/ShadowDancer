@@ -7,7 +7,8 @@
 
 #include <Tests/PoisonFood/PScene.h>
 
-PScene::PScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf) {
+PScene::PScene(Configuration* conf, ANNWeights* weights,
+		std::pair<float32, float32> goodfood, std::pair<float32, float32> badfood) : assa2d::SceneMgr(conf) {
 	{
 		Wall::Configuration wc;
 
@@ -101,9 +102,11 @@ PScene::PScene(Configuration* conf, ANNWeights* weights) : assa2d::SceneMgr(conf
 
 	{
 		PNest::Configuration nc;
+		nc.GoodFood = goodfood;
+		nc.BadFood = badfood;
 		nc.Id = 9999;
-		nc.LeftTop = b2Vec2(-11.0f, 11.0f);
-		nc.RightBottom = b2Vec2(11.0f, -11.0f);
+		nc.LeftTop = b2Vec2(-12.0f, 12.0f);
+		nc.RightBottom = b2Vec2(12.0f, -12.0f);
 		nc.TargetTag = MAKE_TAG('f', 'o', 'o', 'd');
 		m_nest = AddNode<PNest>(&nc);
 	}

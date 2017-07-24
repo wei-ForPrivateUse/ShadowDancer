@@ -20,12 +20,18 @@ public:
 		b2Vec2 LeftTop;
 		b2Vec2 RightBottom;
 
+		std::pair<float32, float32> GoodFood = {4.0f, 0.4f};
+		std::pair<float32, float32> BadFood = {2.0f, 1.0f};
+
 		std::size_t TargetTag;
 	};
 
 	PNest(Configuration* conf) : assa2d::Trigger(conf) {
 		m_lefttop = conf->LeftTop;
 		m_rightbottom = conf->RightBottom;
+
+		m_good_food = conf->GoodFood;
+		m_bad_food = conf->BadFood;
 
 		m_target_tag = conf->TargetTag;
 
@@ -55,7 +61,8 @@ protected:
 			auto node = *tmp;
 			auto const& pos = GetNodePosition(node);
 			if((pos.x > m_lefttop.x && pos.x < m_rightbottom.x) && (pos.y > m_rightbottom.y && pos.y < m_lefttop.y)) {
-				bool getgoodfood = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius > 2.5f ? true : false;
+				float32 radius = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius;
+				bool getgoodfood = CheckGoodFood(radius);
 				if(getgoodfood) {
 					m_collected_good_food++;
 				} else {
@@ -74,16 +81,25 @@ protected:
 				} while((x>-22.0f&&x<22.0f) && (y>-22.0f&&y<22.0f));
 				bc.Position.Set(x, y);
 
-				bc.CircleShape.m_radius = !getgoodfood ? 2 : 4;
-				bc.Density = !getgoodfood ? 1.0f : 0.4f;
+				bc.CircleShape.m_radius = getgoodfood ? m_good_food.first : m_bad_food.first;
+				bc.Density = getgoodfood ? m_good_food.second : m_bad_food.second;
+
 				GetSceneMgr()->AddNode<Block>(&bc);
 			}
 		}
 	}
 
+	/// Check good food.
+	bool CheckGoodFood(float32 radius) const {
+		return fabs(radius-m_good_food.first) < 0.0001f;
+	}
+
 private:
 	b2Vec2 m_lefttop;
 	b2Vec2 m_rightbottom;
+
+	std::pair<float32, float32> m_good_food;
+	std::pair<float32, float32> m_bad_food;
 
 	std::size_t m_target_tag;
 

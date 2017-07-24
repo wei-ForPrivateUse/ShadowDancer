@@ -22,9 +22,10 @@ struct PAward {
 /// Evaluate this simulation.
 class PMonitor : public assa2d::Monitor , public assa2d::ContactListener {
 public:
-	PMonitor(std::size_t flag) {
+	PMonitor(std::size_t flag, float32 goodfoodradius = 4.0f) {
 		m_awards = {0.01, 4500.0f, 5000.0f};
 
+		m_good_food_radius = goodfoodradius;
 		m_fitness = 0.0f;
 
 		m_flag = flag;
@@ -91,7 +92,8 @@ protected:
 			float32 dist_n = pos_n.Length();
 			float32 dist_o = pos_o.Length();
 
-			bool goodfood = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? true : false;
+			float32 radius = static_cast<assa2d::Object*>(node)->GetBody()->GetFixtureList()->GetShape()->m_radius;
+			bool goodfood = Check(radius);
 
 			if(dist_n < dist_o) {
 				switch(m_flag) {
@@ -131,7 +133,8 @@ protected:
 		assa2d::Node_Type ntB = nB->GetType();
 
 		if(tagA == MAKE_TAG('f', 'o', 'o', 'd') && ntB == assa2d::Node_Type::Actor_Component) {
-			bool goodfood = static_cast<assa2d::Object*>(nA)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? true : false;
+			float32 radius = static_cast<assa2d::Object*>(nA)->GetBody()->GetFixtureList()->GetShape()->m_radius;
+			bool goodfood = Check(radius);
 
 			switch(m_flag) {
 			case 0: {
@@ -155,7 +158,8 @@ protected:
 		}
 
 		if(tagB == MAKE_TAG('f', 'o', 'o', 'd') && ntA == assa2d::Node_Type::Actor_Component) {
-			bool goodfood = static_cast<assa2d::Object*>(nB)->GetBody()->GetFixtureList()->GetShape()->m_radius>2.5f ? true : false;
+			float32 radius = static_cast<assa2d::Object*>(nB)->GetBody()->GetFixtureList()->GetShape()->m_radius;
+			bool goodfood = Check(radius);
 
 			switch(m_flag) {
 			case 0: {
@@ -178,9 +182,16 @@ protected:
 		}
 	}
 
+	/// Check good food.
+	bool Check(float32 radius) const {
+		return fabs(radius-m_good_food_radius) < 0.00001f;
+	}
+
 private:
 	PAward m_awards;
 	float32 m_fitness;
+
+	float32 m_good_food_radius;
 
 	std::size_t m_flag;
 
