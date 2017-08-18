@@ -8,8 +8,9 @@
 #include "JNA_Functions.h"
 
 double test(double w[], bool flag);
-double test1(double w[], std::size_t flag);
-double test2(double w[]);
+
+double poisionfood(double w[], std::size_t flag);
+double poisionfood_r(double w[]);
 
 /// JNA interface function.
 double evaluateFcns(double individual[], int func_index)
@@ -24,16 +25,16 @@ double evaluateFcns(double individual[], int func_index)
 		fitness = test(individual, true);
 		break;
 	case 100:
-		fitness = test1(individual, 0);
+		fitness = poisionfood(individual, 0);
 		break;
 	case 101:
-		fitness = test1(individual, 1);
+		fitness = poisionfood(individual, 1);
 		break;
 	case 102:
-		fitness = test1(individual, 2);
+		fitness = poisionfood(individual, 2);
 		break;
 	case 110:
-		fitness = test2(individual);
+		fitness = poisionfood_r(individual);
 		break;
 	default:
 		break;
@@ -72,7 +73,7 @@ double test(double w[], bool flag)
 	return fitness;
 }
 
-double test1(double w[], std::size_t flag) {
+double poisionfood(double w[], std::size_t flag) {
 	ANNWeights* weights = new ANNWeights({28, 20, 2}, {false, true, false}, {false, true, true}, true);
 	weights->Set(w);
 
@@ -103,7 +104,7 @@ double test1(double w[], std::size_t flag) {
 	return fitness;
 }
 
-double test2(double w[]) {
+double poisionfood_r(double w[]) {
 	ANNWeights* weights = new ANNWeights({28, 20, 2}, {false, true, false}, {false, true, true}, true);
 	weights->Set(w);
 
