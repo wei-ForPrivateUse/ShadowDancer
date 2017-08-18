@@ -83,7 +83,7 @@ PScene::PScene(Configuration* conf, ANNWeights* weights,
 		bc.Position.Set(210.0f, 210.0f);
 		AddNode<Block>(&bc);
 
-		for(std::size_t i = 200; i < 206; i++) {
+		for(std::size_t i = 200; i < 218; i++) {
 			bc.Id = i;
 
 			float32 x, y;
@@ -93,7 +93,7 @@ PScene::PScene(Configuration* conf, ANNWeights* weights,
 			} while((x>-22.0f&&x<22.0f) && (y>-22.0f&&y<22.0f));
 			bc.Position.Set(x, y);
 
-			bool isbadfood = (i-200) > 2 ? true : false;
+			bool isbadfood = (i-200) > 8 ? true : false;
 			bc.CircleShape.m_radius = isbadfood ? 2 : 4;
 			bc.Density = isbadfood ? 1.0f : 0.4f;
 			AddNode<Block>(&bc);
