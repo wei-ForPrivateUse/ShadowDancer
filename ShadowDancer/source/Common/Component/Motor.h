@@ -12,9 +12,9 @@
 
 /// Motor attributes.
 struct MotorAttribute {
-	float32 MaxPower;
-	float32 MaxSpeed;
 	float32 MaxForce;
+	float32 MaxSpeed;
+	float32 MaxPower;
 };
 
 /// Motor.
@@ -39,8 +39,8 @@ public:
 		float32 Restitution = 0.3f;
 
 		/// Motor attributes.
-		MotorAttribute ForwardAttributes = {16.0f, 5.0f, 40.0f};
-		MotorAttribute BackwardAttributes = {8.0f, 2.0f, 20.0f};
+		MotorAttribute ForwardAttributes = {3.0f, 5.0f, 10.0f};
+		MotorAttribute BackwardAttributes = {2.0f, 2.0f, 3.0f};
 	    float32 SlidingFriction = 5.0f;
 	    float32 RollingFriction = 0.1f;
 
@@ -52,6 +52,24 @@ public:
 	Motor(Configuration* conf);
 	virtual ~Motor();
 
+	/// Getters.
+	MotorAttribute const& GetForwardAttributes() const {
+		return m_forward_attributes;
+	}
+
+	MotorAttribute const& GetBackwardAttributes() const {
+		return m_backward_attributes;
+	}
+
+	/// Setters.
+	void SetForwardAttributes(MotorAttribute const& attribute) {
+		m_forward_attributes = attribute;
+	}
+
+	void SetBackwardAttributes(MotorAttribute const& attribute) {
+		m_backward_attributes = attribute;
+	}
+
 protected:
 	/// Apply motor force.
 	virtual void Act() override;
@@ -60,10 +78,16 @@ protected:
 	virtual void Act_Anyway() override;
 
 	/// Get lateral velocity.
-	b2Vec2 GetLateralVelocity() const;
+	b2Vec2 GetLateralVelocity() const {
+		b2Vec2 cln = GetBody()->GetWorldVector(b2Vec2(0,1));
+		return b2Dot(cln, GetBody()->GetLinearVelocity()) * cln;
+	}
 
 	/// Get forward velocity.
-	b2Vec2 GetForwardVelocity() const;
+	b2Vec2 GetForwardVelocity() const {
+		b2Vec2 cfn = GetBody()->GetWorldVector(b2Vec2(1,0));
+		return b2Dot(cfn, GetBody()->GetLinearVelocity()) * cfn;
+	}
 
 private:
 	MotorAttribute m_forward_attributes;
@@ -75,14 +99,5 @@ private:
 	std::size_t m_power_request_index;
 };
 
-inline b2Vec2 Motor::GetLateralVelocity() const {
-	b2Vec2 cln = GetBody()->GetWorldVector(b2Vec2(0,1));
-	return b2Dot(cln, GetBody()->GetLinearVelocity()) * cln;
-}
-
-inline b2Vec2 Motor::GetForwardVelocity() const {
-	b2Vec2 cfn = GetBody()->GetWorldVector(b2Vec2(1,0));
-	return b2Dot(cfn, GetBody()->GetLinearVelocity()) * cfn;
-}
 
 #endif /* COMMON_COMPONENT_MOTOR_H_ */
