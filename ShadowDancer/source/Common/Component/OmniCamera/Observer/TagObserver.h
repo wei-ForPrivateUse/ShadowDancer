@@ -105,8 +105,8 @@ protected:
 
 			float32 dist = (pos_d-pos_t).Length();
 			if(dist > GetRange()) {
-				result.push_back(1.0f);
-				result.push_back(1.0f);
+				result.push_back(2.0f);
+				result.push_back(0.0f);
 				result.push_back(0.0f);
 				continue;
 			}
