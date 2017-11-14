@@ -10,10 +10,18 @@
 
 #include <assassin2d/assassin2d.h>
 
-class J1_AC_Cleaner : public assa2d::Actor::Component {
+class J1_AC_Cleaner : public assa2d::Component {
 public:
-	J1_AC_Cleaner();
+	struct Configuration : public assa2d::Component::Configuration {
+
+	};
+
+	J1_AC_Cleaner(Configuration* conf);
 	virtual ~J1_AC_Cleaner();
+
+protected:
+	//
+	virtual void Act() override;
 };
 
 #endif /* TESTS_J1_J1_AC_CLEANER_H_ */

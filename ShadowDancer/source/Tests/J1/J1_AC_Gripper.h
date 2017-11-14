@@ -10,14 +10,24 @@
 
 #include <assassin2d/assassin2d.h>
 
-class J1_AC_Gripper : public assa2d::Actor::Component {
+class J1_AC_Gripper : public assa2d::Component {
 public:
-	J1_AC_Gripper();
+	struct Configuration : public assa2d::Component::Configuration {
+
+	};
+
+	J1_AC_Gripper(Configuration* conf);
 	virtual ~J1_AC_Gripper();
 
 protected:
 	//
 	virtual void Act() override;
+
+private:
+	std::size_t m_target_tag;
+
+
+	bool m_loaded;
 };
 
 #endif /* TESTS_J1_J1_AC_GRIPPER_H_ */

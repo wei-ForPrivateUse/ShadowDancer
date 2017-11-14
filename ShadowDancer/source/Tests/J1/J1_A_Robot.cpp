@@ -107,7 +107,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_omnicamera -> AddObserver<TagObserver>(&toc);
 
 		toc.OutputCount = 1;
-		toc.TargetTag = MAKE_TAG('e', 'n', 'e', 'm');
+		toc.TargetTag = MAKE_TAG('p', 'o', 'i', 's');
 		toc.StartIndex = 25;
 		m_omnicamera -> AddObserver<TagObserver>(&toc);
 	}

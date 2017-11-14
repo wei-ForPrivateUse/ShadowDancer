@@ -5,9 +5,9 @@
  *      Author: wei
  */
 
-#include <Tests/J1/J1_AC_Cleaner.h>
+#include "J1_AC_Cleaner.h"
 
-J1_AC_Cleaner::J1_AC_Cleaner() {
+J1_AC_Cleaner::J1_AC_Cleaner(Configuration* conf) : assa2d::Component(conf) {
 	// TODO Auto-generated constructor stub
 
 }

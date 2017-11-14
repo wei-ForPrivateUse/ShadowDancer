@@ -5,9 +5,9 @@
  *      Author: wei
  */
 
-#include <Tests/J1/J1_AC_Gripper.h>
+#include "J1_AC_Gripper.h"
 
-J1_AC_Gripper::J1_AC_Gripper() {
+J1_AC_Gripper::J1_AC_Gripper(Configuration* conf) : assa2d::Component(conf) {
 	// TODO Auto-generated constructor stub
 
 }
