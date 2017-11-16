@@ -21,7 +21,7 @@ public:
 
 protected:
 	//
-	virtual void Act() override;
+	virtual void Act() override { };
 
 private:
 	std::size_t m_target_tag;

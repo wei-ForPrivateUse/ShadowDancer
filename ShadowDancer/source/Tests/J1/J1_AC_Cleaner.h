@@ -21,7 +21,7 @@ public:
 
 protected:
 	//
-	virtual void Act() override;
+	virtual void Act() override { };
 };
 
 #endif /* TESTS_J1_J1_AC_CLEANER_H_ */

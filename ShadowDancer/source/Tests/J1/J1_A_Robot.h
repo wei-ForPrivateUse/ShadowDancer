@@ -30,7 +30,7 @@ public:
 
 protected:
 	///
-	virtual void PreAct() override;
+	virtual void PreAct() override { };
 
 public:
 	int m_mode;
