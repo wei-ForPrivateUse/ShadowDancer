@@ -1,12 +1,12 @@
 /*
- * OmniCamera.h
+ * Camera.h
  *
  *  Created on: Jun 4, 2017
  *      Author: wei
  */
 
-#ifndef COMMON_COMPONENT_OMNICAMERA_OMNICAMERA_H_
-#define COMMON_COMPONENT_OMNICAMERA_OMNICAMERA_H_
+#ifndef COMMON_COMPONENT_CAMERA_CAMERA_H_
+#define COMMON_COMPONENT_CAMERA_CAMERA_H_
 
 #include <type_traits>
 #include <stdexcept>
@@ -15,6 +15,67 @@
 
 #include <assassin2d/assassin2d.h>
 
+/// A camera provides visual information
+template<typename _Tp>
+class Camera final : public assa2d::Component {
+public:
+	struct Configuration {
+		std::pair<std::size_t, std::size_t> OutputIndexInterval = {0, 0};
+
+	};
+
+	Camera(Configuration* conf) : assa2d::Component(conf) { }
+	virtual ~Camera() { }
+
+protected:
+	///
+	virtual void Act() override {
+		for(auto observer : m_observer_list) {
+			auto const& result_vec = observer->Report();
+			std::size_t index = observer->GetStartIndex();
+			for(auto result : result_vec) {
+				SetSharedData<_Tp>(index, result);
+				index++;
+			}
+		}
+	}
+
+private:
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////
 /// Forward-declaration.
 template<typename>
 class OmniCamera;
@@ -123,4 +184,4 @@ private:
 	std::set<Observer<_Tp>*> m_observer_list;
 };
 
-#endif /* COMMON_COMPONENT_OMNICAMERA_OMNICAMERA_H_ */
+#endif /* COMMON_COMPONENT_CAMERA_CAMERA_H_ */
