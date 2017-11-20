@@ -99,5 +99,4 @@ private:
 	std::size_t m_power_request_index;
 };
 
-
 #endif /* COMMON_COMPONENT_MOTOR_H_ */

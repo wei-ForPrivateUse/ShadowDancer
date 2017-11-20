@@ -30,4 +30,3 @@ Wall::Wall(Configuration* conf) : assa2d::Object(conf) {
 Wall::~Wall() {
 	GetWorld() -> DestroyBody(GetBody());
 }
-

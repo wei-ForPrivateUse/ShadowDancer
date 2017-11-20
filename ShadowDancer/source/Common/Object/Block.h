@@ -26,12 +26,33 @@ public:
 		float32 Friction = 0.2f;
 		float32 Restitution = 0.3f;
 
-		bool GroundFrictionEnabled = true;
+		unsigned int Mark = 0;
+
 		bool StaticBody = false;
+
+		bool GroundFriction = true;
 	};
 
 	Block(Configuration* conf);
 	virtual ~Block();
+
+	/// Set ground friction.
+	void SetGroundFriction(bool flag);
+
+	/// Get mark.
+	unsigned int GetMark() const {
+		return m_mark;
+	}
+
+	/// Set mark.
+	void SetMark(unsigned int mark) {
+		m_mark = mark;
+	}
+
+private:
+	unsigned int m_mark;
+
+	b2Joint* m_ground_friction_joint;
 };
 
 #endif /* COMMON_OBJECT_BLOCK_H_ */

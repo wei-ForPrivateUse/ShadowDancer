@@ -34,4 +34,3 @@ void IRSenser::Act() {
 		SetSharedData<float>(m_output_index, 1.0f);
 	}
 }
-

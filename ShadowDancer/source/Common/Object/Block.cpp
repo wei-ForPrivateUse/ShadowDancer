@@ -35,7 +35,24 @@ Block::Block(Configuration* conf) : assa2d::Object(conf) {
 
 	GetBody() -> CreateFixture(&fd);
 
-	if(conf->GroundFrictionEnabled) {
+	m_mark = conf->Mark;
+
+	m_ground_friction_joint = nullptr;
+	SetGroundFriction(conf->GroundFriction);
+}
+
+Block::~Block() {
+	GetWorld() -> DestroyBody(GetBody());
+}
+
+void Block::SetGroundFriction(bool flag) {
+	if(m_ground_friction_joint && !flag) {
+		GetWorld() -> DestroyJoint(m_ground_friction_joint);
+
+		m_ground_friction_joint = nullptr;
+	} else if(!m_ground_friction_joint && flag) {
+		assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
+
 		float32 radius = b2Sqrt(2.0f * GetBody()->GetInertia() / GetBody()->GetMass());
 
 		b2FrictionJointDef fjd;
@@ -47,11 +64,6 @@ Block::Block(Configuration* conf) : assa2d::Object(conf) {
 		fjd.maxForce = GetBody()->GetMass() * 10.0f;
 		fjd.maxTorque = GetBody()->GetMass() * radius * 10.0f;
 
-		GetWorld() -> CreateJoint(&fjd);
+		m_ground_friction_joint = GetWorld() -> CreateJoint(&fjd);
 	}
 }
-
-Block::~Block() {
-	GetWorld() -> DestroyBody(GetBody());
-}
-

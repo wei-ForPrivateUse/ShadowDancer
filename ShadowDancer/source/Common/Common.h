@@ -18,6 +18,9 @@ inline b2Vec2 const& GetNodePosition(assa2d::Node* node) {
 	case bul::dynamics::Node_Type::Actor:
 		return static_cast<assa2d::Actor*>(node)->GetMainComponent()->GetPosition();
 		break;
+	case bul::dynamics::Node_Type::Actor_Component:
+		return static_cast<assa2d::Component*>(node)->GetPosition();
+		break;
 	case bul::dynamics::Node_Type::Object:
 		return static_cast<assa2d::Object*>(node)->GetPosition();
 		break;

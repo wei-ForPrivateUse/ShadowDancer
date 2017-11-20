@@ -96,4 +96,3 @@ void Motor::Act_Anyway() {
 	}
 	GetBody() -> ApplyLinearImpulse(forwardimpulse, GetBody()->GetWorldCenter(), true);
 }
-
