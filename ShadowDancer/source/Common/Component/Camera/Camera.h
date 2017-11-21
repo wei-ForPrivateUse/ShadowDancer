@@ -15,9 +15,9 @@
 
 /// A camera provides visual information
 template<typename _Tp>
-class Camera final : public assa2d::Component {
+class Camera : public assa2d::Component {
 public:
-	struct Configuration {
+	struct Configuration : assa2d::Component::Configuration {
 		std::pair<std::size_t, std::size_t> OutputIndexInterval = {0, 0};
 	};
 

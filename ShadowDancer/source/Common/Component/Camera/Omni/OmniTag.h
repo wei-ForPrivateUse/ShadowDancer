@@ -71,7 +71,7 @@ public:
 		std::size_t TargetTag = 0;
 		std::size_t OutputCount = 0;
 
-		_Tp::Configuration Predicate;
+		typename _Tp::Configuration Predicate;
 	};
 
 	OmniTag(Configuration* conf) : Camera<float>(conf), m_predicate(&conf->Predicate) {

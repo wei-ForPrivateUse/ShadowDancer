@@ -87,40 +87,35 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 
 	// omni-camera
 	{
-		OmniCamera<float>::Configuration occ;
-
-		occ.Priority = 0;
-		occ.Id = 20;
-		m_omnicamera = AddComponent<OmniCamera<float>>(&occ);
-
-		TagObserver::Configuration toc;
-		toc.Range = 20;
-
-		toc.OutputCount = 3;
-		toc.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
-		toc.StartIndex = 10;
-		m_omnicamera -> AddObserver<TagObserver>(&toc);
-
-		toc.OutputCount = 1;
-		toc.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
-		toc.StartIndex = 20;
-		m_omnicamera -> AddObserver<TagObserver>(&toc);
-
-		toc.OutputCount = 1;
-		toc.TargetTag = MAKE_TAG('p', 'o', 'i', 's');
-		toc.StartIndex = 25;
-		m_omnicamera -> AddObserver<TagObserver>(&toc);
+//		OmniCamera<float>::Configuration occ;
+//
+//		occ.Priority = 0;
+//		occ.Id = 20;
+//		m_omnicamera = AddComponent<OmniCamera<float>>(&occ);
+//
+//		TagObserver::Configuration toc;
+//		toc.Range = 20;
+//
+//		toc.OutputCount = 3;
+//		toc.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
+//		toc.StartIndex = 10;
+//		m_omnicamera -> AddObserver<TagObserver>(&toc);
+//
+//		toc.OutputCount = 1;
+//		toc.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
+//		toc.StartIndex = 20;
+//		m_omnicamera -> AddObserver<TagObserver>(&toc);
+//
+//		toc.OutputCount = 1;
+//		toc.TargetTag = MAKE_TAG('p', 'o', 'i', 's');
+//		toc.StartIndex = 25;
+//		m_omnicamera -> AddObserver<TagObserver>(&toc);
 	}
 
 	/////TODO
 	// anns
 	{
-		m_a_oa = nullptr;
-
-		m_a_value = nullptr;
-
-		m_a_avoid = nullptr;
-		m_a_recharge = nullptr;
+		m_a_arbi = nullptr;
 
 		m_a_s1 = nullptr;
 		m_a_s2 = nullptr;

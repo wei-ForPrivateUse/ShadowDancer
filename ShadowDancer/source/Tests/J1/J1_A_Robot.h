@@ -12,8 +12,8 @@
 #include "Common/Component/Motor.h"
 #include "Common/Component/IRSenser.h"
 #include "Common/Component/Controller/ANN.h"
-#include "Common/Component/OmniCamera/Observer/IdObserver.h"
-#include "Common/Component/OmniCamera/Observer/TagObserver.h"
+#include "Common/Component/Camera/Omni/OmniId.h"
+#include "Common/Component/Camera/Omni/OmniTag.h"
 
 
 class J1_A_Robot : public assa2d::Actor {
@@ -37,15 +37,13 @@ public:
 
 	MainBody* m_mainbody;
 	IRSenser* m_ir_senser[8];
-	OmniCamera<float>* m_omnicamera;
+	OmniId* m_omni_nest;
+	OmniTag<TagPredicate>* m_omni_robot;
+	OmniTag<TagPredicate>* m_omni_resource;
+	OmniTag<TagPredicate>* m_omni_package;
 	Motor* m_motor[2];
 
-	ANN* m_a_oa;
-
-	ANN* m_a_value;
-
-	ANN* m_a_avoid;
-	ANN* m_a_recharge;
+	ANN* m_a_arbi;
 
 	ANN* m_a_s1;
 	ANN* m_a_s2;
