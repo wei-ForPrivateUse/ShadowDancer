@@ -16,6 +16,34 @@
 #include "Common/Common.h"
 #include "Common/Component/Camera/Camera.h"
 
+/// Filter
+struct Filter {
+	bool operator()(assa2d::Node* node) {
+
+	}
+};
+
+/// Predicate with filter.
+template<typename _Tp>
+struct TagPredicate {
+	bool operator()(assa2d::Node* a, assa2d::Node* b) {
+
+	}
+
+	_Tp filter;
+};
+
+
+
+
+
+
+
+
+
+
+
+
 /// Functor.
 struct _Tag_Observer_Comp {
 	bool operator()(assa2d::Node* a, assa2d::Node* b) {
@@ -40,9 +68,9 @@ struct _Tag_Observer_Comp {
 };
 
 /// Observe specific tags.
-class TagObserver : public Observer<float> {
+class TagObserver : public Camera<float> {
 public:
-	struct Configuration : public Observer<float>::Configuration {
+	struct Configuration : public Camera<float>::Configuration {
 		std::size_t TargetTag = 0;
 		std::size_t OutputCount = 0;
 		float32 Range = 0.0f;
@@ -50,38 +78,22 @@ public:
 		bool SelfVisibility = false;
 	};
 
-	TagObserver(Configuration* conf) : Observer<float>(conf) {
+	TagObserver(Configuration* conf) : Camera<float>(conf) {
 		m_target_tag = conf->TargetTag;
 		m_output_count = conf->OutputCount;
 		m_range = conf->Range;
 
-		m_comp.datum = static_cast<assa2d::Actor*>(GetOmniCamera()->GetActor());
+		m_comp.datum = static_cast<assa2d::Actor*>(GetActor());
 		m_comp.selfvisibility = conf->SelfVisibility;
 	}
 	virtual ~TagObserver() { }
 
-	/// Getters
-	std::size_t GetTargetTag() const {
-		return m_target_tag;
-	}
-
-	std::size_t GetOutputCount() const {
-		return m_output_count;
-	}
-
+	/// Getter.
 	float32 GetRange() const {
 		return m_range;
 	}
 
-	/// Setters
-	void SetTargetTag(std::size_t tag) {
-		m_target_tag = tag;
-	}
-
-	void SetOutputCount(std::size_t count) {
-		m_output_count = count;
-	}
-
+	/// Setter.
 	void SetRange(float32 range) {
 		m_range = range;
 	}
@@ -89,17 +101,17 @@ public:
 protected:
 	/// Report to the omni-camera.
 	virtual std::vector<float> Report() override {
-		auto const& node_list = GetOmniCamera()->GetSceneMgr()->GetNodesByTag(m_target_tag);
+		auto const& node_list = GetSceneMgr()->GetNodesByTag(m_target_tag);
 		std::vector<assa2d::Node*> ordered_node_list(GetOutputCount());
 		std::partial_sort_copy(node_list.begin(), node_list.end(), ordered_node_list.begin(), ordered_node_list.end(), m_comp);
 		std::vector<float> result;
 
 		for(auto node : ordered_node_list) {
-			if(node == GetOmniCamera()->GetActor() || node == nullptr) {
+			if(node == GetActor() || node == nullptr) {
 				throw std::runtime_error("TagObserver::Report(...): insufficient nodes to sort.");
 			}
 
-			b2Vec2 const& pos_d = static_cast<assa2d::Actor*>(GetOmniCamera()->GetActor())->GetMainComponent()->GetPosition();
+			b2Vec2 const& pos_d = static_cast<assa2d::Actor*>(GetActor())->GetMainComponent()->GetPosition();
 			b2Vec2 const& pos_t = GetNodePosition(node);
 
 			float32 dist = (pos_d-pos_t).Length();
@@ -110,7 +122,7 @@ protected:
 				continue;
 			}
 			if(dist > 0.0f) {
-				b2Vec2 const& l_pos = static_cast<assa2d::Actor*>(GetOmniCamera()->GetActor())->GetMainComponent()->GetBody()->GetLocalVector(pos_t-pos_d);
+				b2Vec2 const& l_pos = static_cast<assa2d::Actor*>(GetActor())->GetMainComponent()->GetBody()->GetLocalVector(pos_t-pos_d);
 				float32 c_ang = l_pos.x / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
 				float32 s_ang = l_pos.y / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
 
