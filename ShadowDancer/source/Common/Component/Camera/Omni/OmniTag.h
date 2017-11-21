@@ -1,21 +1,20 @@
 /*
- * TagObserver.h
+ * OmniTag.h
  *
  *  Created on: Jun 14, 2017
  *      Author: wei
  */
 
-#ifndef COMMON_COMPONENT_OMNICAMERA_OBSERVER_TAGOBSERVER_H_
-#define COMMON_COMPONENT_OMNICAMERA_OBSERVER_TAGOBSERVER_H_
+#ifndef COMMON_COMPONENT_CAMERA_OMNI_OMNITAG_H_
+#define COMMON_COMPONENT_CAMERA_OMNI_OMNITAG_H_
 
-#include <stdexcept>
 #include <vector>
 #include <algorithm>
 
 #include <assassin2d/assassin2d.h>
 
 #include "Common/Common.h"
-#include "Common/Component/OmniCamera/OmniCamera.h"
+#include "Common/Component/Camera/Camera.h"
 
 /// Functor.
 struct _Tag_Observer_Comp {
@@ -135,4 +134,4 @@ private:
 	_Tag_Observer_Comp m_comp;
 };
 
-#endif /* COMMON_COMPONENT_OMNICAMERA_OBSERVER_TAGOBSERVER_H_ */
+#endif /* COMMON_COMPONENT_CAMERA_OMNI_OMNITAG_H_ */
