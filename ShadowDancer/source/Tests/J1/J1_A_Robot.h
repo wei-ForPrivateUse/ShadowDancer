@@ -15,6 +15,15 @@
 #include "Common/Component/Camera/Omni/OmniId.h"
 #include "Common/Component/Camera/Omni/OmniTag.h"
 
+struct Pred : public TagPredicate {
+	Pred(Configuration* conf): TagPredicate(conf){}
+	virtual bool FilterAdditional(assa2d::Node* node) override {
+		if(node->GetId() < 2)
+			return false;
+		return true;
+	}
+};
+
 
 class J1_A_Robot : public assa2d::Actor {
 public:

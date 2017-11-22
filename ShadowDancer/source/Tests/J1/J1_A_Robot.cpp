@@ -87,6 +87,27 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 
 	// omni-camera
 	{
+		OmniId::Configuration oic;
+		oic.Id = 20;
+		oic.Priority = 0;
+		oic.Range = 20;
+		oic.OutputIndexInterval = {10, 15};
+		oic.TargetId = {100, 200};
+		oic.ReportAngle = true;
+		oic.ReportDistance = true;
+		AddComponent<OmniId>(&oic);
+
+		OmniTag<Pred>::Configuration otc;
+		otc.Id = 21;
+		otc.Priority = 0;
+		otc.Range = 20;
+		otc.OutputIndexInterval = {20, 28};
+		otc.OutputCount = 3;
+		otc.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
+		otc.Predicate.Datum = this;
+		otc.Predicate.DatumExemption = true;
+		AddComponent<OmniTag<Pred>>(&otc);
+
 //		OmniCamera<float>::Configuration occ;
 //
 //		occ.Priority = 0;
