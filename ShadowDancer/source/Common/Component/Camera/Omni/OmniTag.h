@@ -131,6 +131,7 @@ protected:
 				result.push_back(0.0f);
 			}
 		}
+		_Fill(result);
 		return  result;
 	}
 
@@ -138,7 +139,7 @@ protected:
 	void _Fill(std::vector<float> & vec) {
 		std::size_t count = vec.size() / 3;
 		vec.resize(m_output_count * 3);
-		for(int i = count; i < m_output_count; i++) {
+		for(std::size_t i = count; i < m_output_count; i++) {
 			vec[i*3] = 2.0f;
 		}
 	}

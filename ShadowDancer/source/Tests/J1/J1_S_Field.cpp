@@ -73,14 +73,6 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
 
-		bc.Id = 290;
-		bc.Position.Set(200.0f, 200.0f);
-		bc.CircleShape.m_radius = 1.0f;
-		AddNode<Block>(&bc);
-		bc.Id = 291;
-		bc.Position.Set(210.0f, 210.0f);
-		AddNode<Block>(&bc);
-
 		for(std::size_t i = 200; i < 206; i++) {
 			bc.Id = i;
 
