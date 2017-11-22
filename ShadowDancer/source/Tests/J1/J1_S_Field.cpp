@@ -83,6 +83,7 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 			} while((x>-22.0f&&x<22.0f) && (y>-22.0f&&y<22.0f));
 			bc.Position.Set(x, y);
 
+
 			bool isbadfood = (i-200) > 2 ? true : false;
 			bc.CircleShape.m_radius = isbadfood ? 2 : 4;
 			bc.Density = isbadfood ? 1.0f : 0.4f;
