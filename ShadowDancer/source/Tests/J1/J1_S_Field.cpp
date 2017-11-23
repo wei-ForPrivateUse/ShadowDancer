@@ -8,48 +8,54 @@
 #include "J1_S_Field.h"
 
 J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
+	// Parameters.
+	m_max_resource = conf -> MaxResource;
+	m_max_package = conf -> MaxPackage;
+	m_resource_supplement = conf -> ResourceSupplement;
+	m_package_supplement = conf -> PackageSupplement;
+
 	// Walls.
 	{
 		Wall::Configuration wc;
 
 		wc.Tag = MAKE_TAG('w', 'a', 'l', 'l');
 
-		wc.Id = 1000;
+		wc.Id = 900;
 		wc.StartPoint = b2Vec2(41.42136f, 100.0f);
 		wc.EndPoint = b2Vec2(-41.42136f, 100.0f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 1001;
+		wc.Id = 901;
 		wc.StartPoint = b2Vec2(-41.42136f, 100.0f);
 		wc.EndPoint = b2Vec2(-100.0f, 41.42136f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 1002;
+		wc.Id = 902;
 		wc.StartPoint = b2Vec2(-100.0f, 41.42136f);
 		wc.EndPoint = b2Vec2(-100.0f, -41.42136f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 1003;
+		wc.Id = 903;
 		wc.StartPoint = b2Vec2(-100.0f, -41.42136f);
 		wc.EndPoint = b2Vec2(-41.42136f, -100.0f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 1004;
+		wc.Id = 904;
 		wc.StartPoint = b2Vec2(-41.42136f, -100.0f);
 		wc.EndPoint = b2Vec2(41.42136f, -100.0f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 1005;
+		wc.Id = 905;
 		wc.StartPoint = b2Vec2(41.42136f, -100.0f);
 		wc.EndPoint = b2Vec2(100.0f, -41.42136f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 1006;
+		wc.Id = 906;
 		wc.StartPoint = b2Vec2(100.0f, -41.42136f);
 		wc.EndPoint = b2Vec2(100.0f, 41.42136f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 1007;
+		wc.Id = 907;
 		wc.StartPoint = b2Vec2(100.0f, 41.42136f);
 		wc.EndPoint = b2Vec2(41.42136f, 100.0f);
 		AddNode<Wall>(&wc);
@@ -87,19 +93,20 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 	// Resources.
 	{
 		Block::Configuration bc;
-		bc.StaticBody = true;
-		bc.CircleShape.m_radius = 4.0f;
+		bc.CircleShape.m_radius = 0.4f;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 2; j++) {
-				bc.Id = 100 + i*2 + j;
-				bc.Position.Set(-16.0f + 32*i, -16.0f + 32*j);
-				AddNode<Block>(&bc);
-			}
+		for(std::size_t i = 0; i < m_max_resource; i++) {
+			bc.Id = 1000 + i;
+			float32 r = assa2d::RandomFloat(20.0f, 95.0f);
+			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
+			float32 x = r * std::cos(a);
+			float32 y = r * std::sin(a);
+			bc.Position.Set(x, y);
+			AddNode<Block>(&bc);
 		}
 	}
 
-	// Packages.
+	// Packages. TODO
 	{
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('p', 'a', 'c', 'k');

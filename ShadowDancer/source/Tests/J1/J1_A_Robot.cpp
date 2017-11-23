@@ -87,15 +87,15 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 
 	// omni-camera
 	{
-		OmniId::Configuration oic;
-		oic.Id = 20;
-		oic.Priority = 0;
-		oic.Range = 20;
-		oic.OutputIndexInterval = {10, 15};
-		oic.TargetId = {100, 200};
-		oic.ReportAngle = true;
-		oic.ReportDistance = true;
-		AddComponent<OmniId>(&oic);
+//		OmniId::Configuration oic;
+//		oic.Id = 20;
+//		oic.Priority = 0;
+//		oic.Range = 20;
+//		oic.OutputIndexInterval = {10, 15};
+//		oic.TargetId = {100, 200};
+//		oic.ReportAngle = true;
+//		oic.ReportDistance = true;
+//		AddComponent<OmniId>(&oic);
 
 		OmniTag<Pred>::Configuration otc;
 		otc.Id = 21;
@@ -107,30 +107,6 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		otc.Predicate.Datum = this;
 		otc.Predicate.DatumExemption = true;
 		AddComponent<OmniTag<Pred>>(&otc);
-
-//		OmniCamera<float>::Configuration occ;
-//
-//		occ.Priority = 0;
-//		occ.Id = 20;
-//		m_omnicamera = AddComponent<OmniCamera<float>>(&occ);
-//
-//		TagObserver::Configuration toc;
-//		toc.Range = 20;
-//
-//		toc.OutputCount = 3;
-//		toc.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
-//		toc.StartIndex = 10;
-//		m_omnicamera -> AddObserver<TagObserver>(&toc);
-//
-//		toc.OutputCount = 1;
-//		toc.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
-//		toc.StartIndex = 20;
-//		m_omnicamera -> AddObserver<TagObserver>(&toc);
-//
-//		toc.OutputCount = 1;
-//		toc.TargetTag = MAKE_TAG('p', 'o', 'i', 's');
-//		toc.StartIndex = 25;
-//		m_omnicamera -> AddObserver<TagObserver>(&toc);
 	}
 
 	/////TODO
@@ -142,9 +118,6 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_a_s2 = nullptr;
 		m_a_s3 = nullptr;
 	}
-
-	// initial mode
-	m_mode = conf -> Mode;
 }
 
 

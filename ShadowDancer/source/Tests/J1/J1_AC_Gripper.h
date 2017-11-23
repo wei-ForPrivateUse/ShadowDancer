@@ -13,19 +13,21 @@
 class J1_AC_Gripper : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
-
+		std::size_t TargetTag = 0;
+		unsigned int TargetMark = 0;
 	};
 
 	J1_AC_Gripper(Configuration* conf);
 	virtual ~J1_AC_Gripper();
 
 protected:
-	//
+	///
 	virtual void Act() override { };
+
 
 private:
 	std::size_t m_target_tag;
-
+	std::size_t m_target_mark;
 
 	bool m_loaded;
 };

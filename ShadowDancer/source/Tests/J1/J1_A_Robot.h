@@ -33,8 +33,6 @@ public:
 	struct Configuration : public assa2d::Actor::Configuration {
 		b2Vec2 Position;
 		float32 Angle;
-
-		int Mode;
 	};
 
 	J1_A_Robot(Configuration* conf);
@@ -45,11 +43,8 @@ protected:
 	virtual void PreAct() override { };
 
 public:
-	int m_mode;
-
 	MainBody* m_mainbody;
 	IRSenser* m_ir_senser[8];
-	OmniId* m_omni_nest;
 	OmniTag<TagPredicate>* m_omni_robot;
 	OmniTag<TagPredicate>* m_omni_resource;
 	OmniTag<TagPredicate>* m_omni_package;
