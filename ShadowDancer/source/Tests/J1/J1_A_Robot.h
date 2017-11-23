@@ -15,16 +15,19 @@
 #include "Common/Component/Camera/Omni/OmniId.h"
 #include "Common/Component/Camera/Omni/OmniTag.h"
 
+#include "Common/Object/Block.h"
+
+/// Predicate for resource
 struct Pred : public TagPredicate {
 	Pred(Configuration* conf): TagPredicate(conf){}
 	virtual bool FilterAdditional(assa2d::Node* node) override {
-		if(node->GetId() < 2)
-			return false;
-		return true;
+		if(static_cast<Block*>(node)->GetMark() == 1)
+			return true;
+		return false;
 	}
 };
 
-
+///
 class J1_A_Robot : public assa2d::Actor {
 public:
 	struct Configuration : public assa2d::Actor::Configuration {

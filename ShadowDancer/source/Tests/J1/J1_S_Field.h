@@ -5,6 +5,8 @@
  *      Author: wei
  */
 
+#include <cmath>
+
 #include "Common/Object/Block.h"
 #include "Common/Object/Wall.h"
 #include "J1_A_Robot.h"
@@ -17,6 +19,8 @@ class J1_S_Field : public assa2d::SceneMgr {
 public:
 	J1_S_Field(Configuration* conf);
 	virtual ~J1_S_Field() { }
+
+	J1_A_Robot* m_robot[50];
 };
 
 #endif /* TESTS_J1_J1_S_FIELD_H_ */
