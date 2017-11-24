@@ -17,7 +17,6 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 	// Walls.
 	{
 		Wall::Configuration wc;
-
 		wc.Tag = MAKE_TAG('w', 'a', 'l', 'l');
 
 		wc.Id = 900;
@@ -65,7 +64,6 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 	{
 		srand(time(NULL));
 		J1_A_Robot::Configuration rc;
-
 		rc.Tag = MAKE_TAG('r', 'o', 'b', 'o');
 
 		int l_count[6] = {30, 22, 17, 9, 5 ,1};
@@ -86,15 +84,18 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 			rc.Id = i;
             rc.Position.Set(x, y);
             rc.Angle = assa2d::RandomFloat(0, M_PI*2.0f);
-            m_robot[i] = AddNode<J1_A_Robot>(&rc);
+            m_robot.push_back(AddNode<J1_A_Robot>(&rc));
 		}
 	}
 
 	// Resources.
 	{
 		Block::Configuration bc;
-		bc.CircleShape.m_radius = 0.4f;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
+		bc.CircleShape.m_radius = 0.4f;
+		bc.GroundFrictionForce = 5.0f;
+		bc.GroundFrictionTorque = 5.0f;
+
 		for(std::size_t i = 0; i < m_max_resource; i++) {
 			bc.Id = 1000 + i;
 			float32 r = assa2d::RandomFloat(20.0f, 95.0f);
@@ -106,32 +107,32 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 		}
 	}
 
-	// Packages. TODO
+	// Packages.
 	{
-		Block::Configuration bc;
-		bc.Tag = MAKE_TAG('p', 'a', 'c', 'k');
+		J1_O_Package::Configuration pc;
+		pc.Tag = MAKE_TAG('p', 'a', 'c', 'k');
+		pc.StaticBody = true;
+		pc.ShapeType = assa2d::ShapeType::Polygon;
+		pc.PolygonShape.SetAsBox(1.5f, 2.0f);
 
-		for(std::size_t i = 200; i < 206; i++) {
-			bc.Id = i;
-
-			float32 x, y;
-			do {
-				x = assa2d::RandomFloat(-45, 45);
-				y = assa2d::RandomFloat(-45, 45);
-			} while((x>-22.0f&&x<22.0f) && (y>-22.0f&&y<22.0f));
-			bc.Position.Set(x, y);
-
-
-			bool isbadfood = (i-200) > 2 ? true : false;
-			bc.CircleShape.m_radius = isbadfood ? 2 : 4;
-			bc.Density = isbadfood ? 1.0f : 0.4f;
-			AddNode<Block>(&bc);
+		for(std::size_t i = 0; i < m_max_package; i++) {
+			pc.Id = 10000 + i;
+			float32 r = assa2d::RandomFloat(25.0f, 90.0f);
+			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
+			float32 x = r * std::cos(a);
+			float32 y = r * std::sin(a);
+			pc.Position.Set(x, y);
+			pc.Angle = assa2d::RandomFloat(0, M_PI*2.0f);
+			AddNode<J1_O_Package>(&pc);
 		}
 	}
 
 	// Trigger.
 	{
-
+		J1_T_Nest::Configuration nc;
+		nc.Id = 500;
+		nc.Tag = MAKE_TAG('n', 'e', 's', 't');
+		AddNode<J1_T_Nest>(&nc);
 	}
 }
 
