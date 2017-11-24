@@ -8,8 +8,6 @@
 #include "Block.h"
 
 Block::Block(Configuration* conf) : assa2d::Object(conf) {
-	assa2d::SceneMgr* scenemgr = static_cast<assa2d::SceneMgr*>(GetSceneMgr());
-
 	b2BodyDef bd;
 	bd.userData = static_cast<assa2d::Node*>(this);
 	if(conf->StaticBody) {
