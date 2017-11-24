@@ -8,6 +8,9 @@
 #include "Block.h"
 
 Block::Block(Configuration* conf) : assa2d::Object(conf) {
+	m_mark = conf->Mark;
+	m_ground_friction_joint = nullptr;
+
 	b2BodyDef bd;
 	bd.userData = static_cast<assa2d::Node*>(this);
 	if(conf->StaticBody) {
@@ -33,17 +36,14 @@ Block::Block(Configuration* conf) : assa2d::Object(conf) {
 
 	GetBody() -> CreateFixture(&fd);
 
-	m_mark = conf->Mark;
-
-	m_ground_friction_joint = nullptr;
-	SetGroundFriction(conf->GroundFriction);
+	SetGroundFriction(conf->GroundFriction, conf->GroundFrictionForce, conf->GroundFrictionTorque);
 }
 
 Block::~Block() {
 	GetWorld() -> DestroyBody(GetBody());
 }
 
-void Block::SetGroundFriction(bool flag) {
+void Block::SetGroundFriction(bool flag, float32 gff, float32 gft) {
 	if(m_ground_friction_joint && !flag) {
 		GetWorld() -> DestroyJoint(m_ground_friction_joint);
 
@@ -59,8 +59,8 @@ void Block::SetGroundFriction(bool flag) {
 		fjd.bodyA = GetBody();
 		fjd.bodyB = scenemgr -> GetGround();
 		fjd.collideConnected = true;
-		fjd.maxForce = GetBody()->GetMass() * 10.0f;
-		fjd.maxTorque = GetBody()->GetMass() * radius * 10.0f;
+		fjd.maxForce = GetBody()->GetMass() * 10.0f * gff;
+		fjd.maxTorque = GetBody()->GetMass() * radius * 10.0f * gft;
 
 		m_ground_friction_joint = GetWorld() -> CreateJoint(&fjd);
 	}

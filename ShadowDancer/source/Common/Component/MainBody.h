@@ -18,7 +18,6 @@ public:
 		float32 Angle = 0.0f;
 
 		assa2d::ShapeType ShapeType = assa2d::ShapeType::Circle;
-
 		b2PolygonShape PolygonShape;
 		b2CircleShape CircleShape;
 
