@@ -15,7 +15,7 @@ class Block : public assa2d::Object {
 public:
 	struct Configuration : public assa2d::Object::Configuration {
 		b2Vec2 Position;
-		float32 Angle;
+		float32 Angle = 0.0f;
 
 		assa2d::ShapeType ShapeType = assa2d::ShapeType::Circle;
 		b2PolygonShape PolygonShape;
