@@ -8,12 +8,6 @@
 #include "J1_S_Field.h"
 
 J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
-	// Parameters.
-	m_max_resource = conf -> MaxResource;
-	m_max_package = conf -> MaxPackage;
-	m_resource_supplement = conf -> ResourceSupplement;
-	m_package_supplement = conf -> PackageSupplement;
-
 	// Walls.
 	{
 		Wall::Configuration wc;
@@ -69,7 +63,7 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 		int l_count[6] = {30, 22, 17, 9, 5 ,1};
 		float l_radius[6] = {14, 11.3, 8, 5, 2, 0.2};
 		bool flag[6][30] = {false};
-		for(int i = 0; i < 50; i++) {
+		for(std::size_t i = 0; i < conf->Robot; i++) {
 			int l, p;
 			do {
 				l = assa2d::RandomFloat(0.0f, 5.9f);
@@ -96,7 +90,7 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 		bc.GroundFrictionForce = 5.0f;
 		bc.GroundFrictionTorque = 5.0f;
 
-		for(std::size_t i = 0; i < m_max_resource; i++) {
+		for(std::size_t i = 0; i < conf->Resource; i++) {
 			bc.Id = 1000 + i;
 			float32 r = assa2d::RandomFloat(20.0f, 95.0f);
 			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
@@ -115,7 +109,7 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 		pc.ShapeType = assa2d::ShapeType::Polygon;
 		pc.PolygonShape.SetAsBox(1.5f, 2.0f);
 
-		for(std::size_t i = 0; i < m_max_package; i++) {
+		for(std::size_t i = 0; i < conf->Package; i++) {
 			pc.Id = 10000 + i;
 			float32 r = assa2d::RandomFloat(25.0f, 90.0f);
 			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
@@ -132,6 +126,13 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 		J1_T_Nest::Configuration nc;
 		nc.Id = 500;
 		nc.Tag = MAKE_TAG('n', 'e', 's', 't');
+		nc.Resource = conf->Resource;
+		nc.Package = conf->Package;
+		nc.ResourceSupplement = conf->ResourceSupplement;
+		nc.PackageSupplement = conf->PackageSupplement;
+		nc.ResourceMask = conf->ResourceMask;
+		nc.NewResourceId = 1000 + conf->Resource;
+		nc.NewPackageId = 10000 + conf->Package;
 		AddNode<J1_T_Nest>(&nc);
 	}
 }
