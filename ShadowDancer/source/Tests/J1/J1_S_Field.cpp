@@ -126,6 +126,8 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 		J1_T_Nest::Configuration nc;
 		nc.Id = 500;
 		nc.Tag = MAKE_TAG('n', 'e', 's', 't');
+		nc.Position.SetZero();
+		nc.Radius = 16.0f;
 		nc.Resource = conf->Resource;
 		nc.Package = conf->Package;
 		nc.ResourceSupplement = conf->ResourceSupplement;

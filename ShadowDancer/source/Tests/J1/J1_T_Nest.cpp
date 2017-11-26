@@ -92,10 +92,27 @@ void J1_T_Nest::Act() {
 		}
 	}
 
-	// Check the number of resources and packages regularly, regenerate if necessary. TODO
-	if(m_package_supplement>0
-			&& GetSceneMgr()->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'))<m_max_package) {
+	// Check the number of resources and packages regularly, regenerate if necessary.
+	std::size_t package_count = GetSceneMgr()->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'));
+	if(m_package_supplement>0 && package_count<m_max_package) {
+		if(GetSceneMgr()->GetCurrentStep() % m_package_supplement == 0) {
+			AddPackage();
+		}
+	}
 
+	std::size_t count = GetSceneMgr()->CountNodesByTag(MAKE_TAG('r', 'e', 's', 'o'));
+	if(count > 0) {
+		for(auto resource : GetSceneMgr()->GetNodesByTag(MAKE_TAG('r', 'e', 's', 'o'))) {
+			unsigned int mask = static_cast<Block*>(resource)->GetMask() & m_resource_mask;
+			if(mask == m_resource_mask) {
+				count--;
+			}
+		}
+	}
+	if(m_resource_supplement>0 && count<m_max_resource) {
+		if(GetSceneMgr()->GetCurrentStep() % m_resource_supplement == 0) {
+			AddUnmaskedResource();
+		}
 	}
 }
 
