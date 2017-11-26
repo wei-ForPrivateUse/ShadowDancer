@@ -8,7 +8,7 @@
 #include "Block.h"
 
 Block::Block(Configuration* conf) : assa2d::Object(conf) {
-	m_mark = conf->Mark;
+	m_mask = conf->Mask;
 	m_ground_friction_joint = nullptr;
 
 	b2BodyDef bd;

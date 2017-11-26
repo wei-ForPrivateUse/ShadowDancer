@@ -21,7 +21,7 @@
 struct Pred : public TagPredicate {
 	Pred(Configuration* conf): TagPredicate(conf){}
 	virtual bool FilterAdditional(assa2d::Node* node) override {
-		if(static_cast<Block*>(node)->GetMark() == 1)
+		if(static_cast<Block*>(node)->GetMask() == 1)
 			return true;
 		return false;
 	}

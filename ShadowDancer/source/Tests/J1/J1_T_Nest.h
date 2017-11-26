@@ -59,6 +59,15 @@ protected:
 	/// Update and check packages & resources.
 	virtual void Act() override;
 
+	/// Add a package.
+	void AddPackage();
+
+	/// Add a unmasked resource.
+	void AddUnmaskedResource();
+
+	/// Add masked resources.
+	void AddMaskedResources(std::vector<b2Vec2> const& pos);
+
 private:
 	b2Vec2 m_position;
 	float32 m_radius;
@@ -71,7 +80,7 @@ private:
 
 	std::size_t m_package_collected;
 	std::size_t m_unmasked_resource_collected;
-	std::size_t m_masked_resource_collected;
+	std::size_t m_masked_resource_collected;	//resources from package.
 
 	std::size_t m_new_resource_id;
 	std::size_t m_new_package_id;

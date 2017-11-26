@@ -31,7 +31,7 @@ public:
 		float32 GroundFrictionForce = 1.0f;
 		float32 GroundFrictionTorque = 1.0f;
 
-		unsigned int Mark = 0;
+		unsigned int Mask = 0;
 	};
 
 	Block(Configuration* conf);
@@ -40,18 +40,18 @@ public:
 	/// Set ground friction.
 	void SetGroundFriction(bool flag, float32 gff, float32 gft);
 
-	/// Get mark.
-	unsigned int GetMark() const {
-		return m_mark;
+	/// Get mask.
+	unsigned int GetMask() const {
+		return m_mask;
 	}
 
-	/// Set mark.
-	void SetMark(unsigned int mark) {
-		m_mark = mark;
+	/// Set mask.
+	void SetMask(unsigned int mask) {
+		m_mask = mask;
 	}
 
 private:
-	unsigned int m_mark;
+	unsigned int m_mask;
 
 	b2Joint* m_ground_friction_joint;
 };

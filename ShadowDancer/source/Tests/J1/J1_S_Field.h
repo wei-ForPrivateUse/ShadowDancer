@@ -22,7 +22,7 @@ public:
 	struct Configuration : assa2d::SceneMgr::Configuration {
 		std::size_t Robot = 50;	// Number of robots.
 
-		std::size_t Resource = 50; // Number of resources.
+		std::size_t Resource = 5; // Number of resources.
 		std::size_t Package = 1;	// Number of packages.
 		int ResourceSupplement = -1; // Policy for resource supplement, -1 means recreate immediately.
 		int PackageSupplement = -1;	// Policy for package supplement, -1 means recreate immediately.
