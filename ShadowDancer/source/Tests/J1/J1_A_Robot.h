@@ -14,18 +14,10 @@
 #include "Common/Component/Controller/ANN.h"
 #include "Common/Component/Camera/Omni/OmniId.h"
 #include "Common/Component/Camera/Omni/OmniTag.h"
-
 #include "Common/Object/Block.h"
 
-/// Predicate for resource
-struct Pred : public TagPredicate {
-	Pred(Configuration* conf): TagPredicate(conf){}
-	virtual bool FilterAdditional(assa2d::Node* node) override {
-		if(static_cast<Block*>(node)->GetMask() == 1)
-			return true;
-		return false;
-	}
-};
+#include "J1_AC_Arbitrator.h"
+#include "J1_AC_Gripper.h"
 
 ///
 class J1_A_Robot : public assa2d::Actor {
@@ -38,6 +30,17 @@ public:
 	J1_A_Robot(Configuration* conf);
 	virtual ~J1_A_Robot() {}
 
+	int GetMode() const {
+		if(m_a_s1->IsActive()) {
+			return 1;
+		} else if(m_a_s2->IsActive()) {
+			return 2;
+		} else if(m_a_s3->IsActive()) {
+			return 3;
+		}
+		return 0;
+	}
+
 protected:
 	///
 	virtual void PreAct() override { };
@@ -45,12 +48,12 @@ protected:
 public:
 	MainBody* m_mainbody;
 	IRSenser* m_ir_senser[8];
-	OmniTag<TagPredicate>* m_omni_robot;
-	OmniTag<TagPredicate>* m_omni_resource;
-	OmniTag<TagPredicate>* m_omni_package;
+	Camera<float>* m_omni_robot;
+	Camera<float>* m_omni_resource;
+	Camera<float>* m_omni_package;
 	Motor* m_motor[2];
 
-	ANN* m_a_arbi;
+	J1_AC_Arbitrator* m_arbi;
 
 	ANN* m_a_s1;
 	ANN* m_a_s2;

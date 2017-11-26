@@ -7,6 +7,28 @@
 
 #include "J1_A_Robot.h"
 
+/// Predicate for resource.
+struct ResourcePred : public TagPredicate {
+	ResourcePred(Configuration* conf): TagPredicate(conf){}
+	virtual bool FilterAdditional(assa2d::Node* node) override {
+		unsigned int mask = static_cast<Block*>(node)->GetMask() & 0x1;
+		if(mask == 0x1)
+			return true;
+		return false;
+	}
+};
+
+/// Predicate for robot.
+struct RobotPred : public TagPredicate {
+	RobotPred(Configuration* conf): TagPredicate(conf){}
+	virtual bool FilterAdditional(assa2d::Node* node) override {
+		int mode = static_cast<J1_A_Robot*>(node)->GetMode();
+		if(mode != 1)
+			return true;
+		return false;
+	}
+};
+
 J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 	// mainbody
 	{
@@ -25,8 +47,8 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		Motor::Configuration mc;
 
 		mc.Priority = 4;
-		mc.ForwardAttributes = {16.0f, 9.0f, 100.0f};
-		mc.BackwardAttributes = {8.0f, 3.0f, 50.0f};
+		mc.ForwardAttributes = {50.0f, 9.0f, 100.0f};
+		mc.BackwardAttributes = {20.0f, 3.0f, 50.0f};
 		mc.PolygonShape.SetAsBox(0.25f, 0.1f);
 		mc.Anchor.Set(0.0f, 0.0f);
 
@@ -87,37 +109,72 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 
 	// omni-camera
 	{
-//		OmniId::Configuration oic;
-//		oic.Id = 20;
-//		oic.Priority = 0;
-//		oic.Range = 20;
-//		oic.OutputIndexInterval = {10, 15};
-//		oic.TargetId = {100, 200};
-//		oic.ReportAngle = true;
-//		oic.ReportDistance = true;
-//		AddComponent<OmniId>(&oic);
+		OmniTag<RobotPred>::Configuration otc_rp;
+		otc_rp.Id = 21;
+		otc_rp.Priority = 0;
+		otc_rp.Range = 12;
+		otc_rp.OutputIndexInterval = {20, 28};
+		otc_rp.OutputCount = 3;
+		otc_rp.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
+		otc_rp.Predicate.Datum = this;
+		otc_rp.Predicate.DatumExemption = true;
+		m_omni_robot = AddComponent<OmniTag<RobotPred>>(&otc_rp);
 
-		OmniTag<Pred>::Configuration otc;
-		otc.Id = 21;
-		otc.Priority = 0;
-		otc.Range = 20;
-		otc.OutputIndexInterval = {20, 28};
-		otc.OutputCount = 3;
-		otc.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
-		otc.Predicate.Datum = this;
-		otc.Predicate.DatumExemption = true;
-		AddComponent<OmniTag<Pred>>(&otc);
+		OmniTag<ResourcePred>::Configuration otc_rep;
+		otc_rep.Id = 22;
+		otc_rep.Priority = 0;
+		otc_rep.Range = 12;
+		otc_rep.OutputIndexInterval = {30, 32};
+		otc_rep.OutputCount = 1;
+		otc_rep.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
+		otc_rep.Predicate.Datum = this;
+		otc_rep.Predicate.DatumExemption = true;
+		m_omni_resource = AddComponent<OmniTag<ResourcePred>>(&otc_rep);
+
+		OmniTag<TagPredicate>::Configuration otc_tp;
+		otc_tp.Id = 23;
+		otc_tp.Priority = 0;
+		otc_tp.Range = 12;
+		otc_tp.OutputIndexInterval = {35, 37};
+		otc_tp.OutputCount = 1;
+		otc_tp.TargetTag = MAKE_TAG('p', 'a', 'c', 'k');
+		otc_tp.Predicate.Datum = this;
+		otc_tp.Predicate.DatumExemption = true;
+		m_omni_package = AddComponent<OmniTag<TagPredicate>>(&otc_tp);
 	}
 
 	/////TODO
 	// anns
 	{
-		m_a_arbi = nullptr;
+		J1_AC_Arbitrator::Configuration arbic;
+		arbic.Id = 30;
+		arbic.Priority = 1;
+		arbic.InputIndex = {40, 41, 42, 43, 44};
+		arbic.OutputIndex = {45, 46, 47};
+		m_arbi = AddComponent<J1_AC_Arbitrator>(&arbic);
 
-		m_a_s1 = nullptr;
-		m_a_s2 = nullptr;
-		m_a_s3 = nullptr;
+		ANN::Configuration ac;
+		ac.Priority = 2;
+
+		ac.Id = 31;
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 26, 27, 28};
+		ac.OutputIndex = {50, 51};
+		m_a_s1 = AddComponent<ANN>(&ac);
+
+		ac.Id = 32;
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 33};
+		ac.OutputIndex = {50, 51};
+		m_a_s2 = AddComponent<ANN>(&ac);
+
+		ac.Id = 33;
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 35, 36, 37};
+		ac.OutputIndex = {50, 51};
+		m_a_s3 = AddComponent<ANN>(&ac);
 	}
+
+	////
+	GetDataPool().Set<float>(60, 1000);
+	GetDataPool().Set<float>(61, 1000);
 }
 
 

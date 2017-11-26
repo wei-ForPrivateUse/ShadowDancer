@@ -7,7 +7,7 @@
 
 #include "J1_S_Field.h"
 
-J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
+J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3) : assa2d::SceneMgr(conf) {
 	// Walls.
 	{
 		Wall::Configuration wc;
@@ -78,7 +78,12 @@ J1_S_Field::J1_S_Field(Configuration* conf) : assa2d::SceneMgr(conf) {
 			rc.Id = i;
             rc.Position.Set(x, y);
             rc.Angle = assa2d::RandomFloat(0, M_PI*2.0f);
-            m_robot.push_back(AddNode<J1_A_Robot>(&rc));
+            auto robot = AddNode<J1_A_Robot>(&rc);
+            robot->m_arbi->SetWeights(arbi);
+            robot->m_a_s1->SetWeights(w1);
+            robot->m_a_s2->SetWeights(w2);
+            robot->m_a_s3->SetWeights(w3);
+            m_robot.push_back(robot);
 		}
 	}
 
