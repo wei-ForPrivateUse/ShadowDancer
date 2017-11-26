@@ -30,6 +30,7 @@ public:
 	J1_A_Robot(Configuration* conf);
 	virtual ~J1_A_Robot() {}
 
+	/// Get mode.
 	int GetMode() const {
 		if(m_a_s1->IsActive()) {
 			return 1;

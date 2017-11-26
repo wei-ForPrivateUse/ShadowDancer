@@ -16,9 +16,10 @@ J1_O_Package::J1_O_Package(Configuration* conf) : Block(conf) {
 }
 
 void J1_O_Package::PreSolve(Node* node, b2Contact* contact, const b2Manifold* oldManifold) {
-	// TODO verify robot mode
-	if(node->GetType()==bul::dynamics::Node_Type::Actor_Component
-			&& node->GetId()==0) {
-		m_current_touch++;
+	if(node->GetType()==bul::dynamics::Node_Type::Actor_Component && node->GetId()==52) {
+		auto robot = static_cast<J1_A_Robot*>(static_cast<assa2d::Component*>(node)->GetActor());
+		if(robot->GetMode() == 3) {
+			m_current_touch++;
+		}
 	}
 }

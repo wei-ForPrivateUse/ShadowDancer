@@ -11,6 +11,7 @@
 #include <assassin2d/assassin2d.h>
 
 #include "Common/Object/Block.h"
+#include "J1_A_Robot.h"
 
 class J1_T_Nest;
 
@@ -27,10 +28,10 @@ public:
 	J1_O_Package(Configuration* conf);
 	virtual ~J1_O_Package() { };
 
-//protected:
+protected:
 	virtual void PreSolve(Node* node, b2Contact* contact, const b2Manifold* oldManifold);
 
-//private:
+private:
 	friend class J1_T_Nest;
 
 	unsigned int m_target_tag;
