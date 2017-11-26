@@ -25,7 +25,7 @@ public:
 	virtual ~J1_AC_Arbitrator() { };
 
 protected:
-	///
+	/// Perform ANN::Act() and activate / deactivate sub controllers.
 	virtual void Act() override;
 
 private:
