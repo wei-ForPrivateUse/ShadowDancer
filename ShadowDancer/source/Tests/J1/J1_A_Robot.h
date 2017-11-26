@@ -25,6 +25,8 @@ public:
 	struct Configuration : public assa2d::Actor::Configuration {
 		b2Vec2 Position;
 		float32 Angle;
+
+		int TrainningMode = 0;
 	};
 
 	J1_A_Robot(Configuration* conf);
@@ -44,7 +46,7 @@ public:
 
 protected:
 	///
-	virtual void PreAct() override { };
+	virtual void PreAct() override;
 
 public:
 	MainBody* m_mainbody;
@@ -59,6 +61,9 @@ public:
 	ANN* m_a_s1;
 	ANN* m_a_s2;
 	ANN* m_a_s3;
+
+private:
+	int m_trainning_mode;
 };
 
 #endif /* TESTS_J1_J1_A_ROBOT_H_ */

@@ -65,6 +65,16 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_motor[1] = AddComponent<Motor>(&mc);
 	}
 
+	// Gripper
+	{
+		J1_AC_Gripper::Configuration gc;
+		gc.Id = 52;
+		gc.Priority = 3;
+		gc.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
+		gc.TargetMask = 0x1;
+		AddComponent<J1_AC_Gripper>(&gc);
+	}
+
 	// ir sensors
 	{
 		IRSenser::Configuration irc;
@@ -143,7 +153,6 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_omni_package = AddComponent<OmniTag<TagPredicate>>(&otc_tp);
 	}
 
-	/////TODO
 	// anns
 	{
 		J1_AC_Arbitrator::Configuration arbic;
@@ -173,9 +182,32 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_a_s3 = AddComponent<ANN>(&ac);
 	}
 
-	////
-	GetDataPool().Set<float>(60, 1000);
-	GetDataPool().Set<float>(61, 1000);
+	// Trainning mode.
+	m_trainning_mode = conf->TrainningMode;
+
+	// Set extra parameters for motors.
+	GetDataPool().Set<float>(60, 100.0f);
+	GetDataPool().Set<float>(61, 100.0f);
 }
 
+void J1_A_Robot::PreAct() {
+	switch(m_trainning_mode) {
+	case 1: {
+		m_arbi -> SetActive(false);
+		m_a_s1 -> SetActive(true);
+		m_a_s2 -> SetActive(false);
+		m_a_s3 -> SetActive(false);
+	}
+		break;
+	case 2: {
 
+	}
+		break;
+	case 3: {
+
+	}
+		break;
+	default:
+		break;
+	}
+}

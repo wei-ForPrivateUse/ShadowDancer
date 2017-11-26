@@ -10,6 +10,6 @@
 
 #include <assassin2d/assassin2d.h>
 
-#include "Tests/J1/J1_M_Monitor.h"
+#include <Tests/J1/J1_M_M1.h>
 
 #endif /* __SHADOWDANCER__ */
