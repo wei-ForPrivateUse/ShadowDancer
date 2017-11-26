@@ -151,6 +151,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		arbic.Priority = 1;
 		arbic.InputIndex = {40, 41, 42, 43, 44};
 		arbic.OutputIndex = {45, 46, 47};
+		arbic.SubControllerId = {31, 32, 33};
 		m_arbi = AddComponent<J1_AC_Arbitrator>(&arbic);
 
 		ANN::Configuration ac;

@@ -262,11 +262,12 @@ protected:
 	/// Logistic activation function
 	float32 ActivationFunction(float32 sum) const;
 
-private:
-	ANNWeights* m_weights;
-
+protected:
 	std::vector<std::size_t> m_input_index;
 	std::vector<std::size_t> m_output_index;
+
+private:
+	ANNWeights* m_weights;
 
 	std::vector<std::vector<float32>> t_output_tmp;
 };
