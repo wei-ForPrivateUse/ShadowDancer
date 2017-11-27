@@ -18,7 +18,8 @@ class J1_T_Nest;
 class J1_O_Package : public Block {
 public:
 	struct Configuration : public Block::Configuration {
-		unsigned int TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
+		unsigned int TargetTag = MAKE_TAG('g', 'r', 'i', 'p');
+		int TargetRobotMode = 3;
 
 		std::size_t MinStepTouch = 3;
 		std::size_t MaxStepTouch = 6;
@@ -35,11 +36,12 @@ private:
 	friend class J1_T_Nest;
 
 	unsigned int m_target_tag;
+	int m_target_robot_mode;
 
 	std::size_t m_min_step_touch;
 	std::size_t m_max_step_touch;
-
 	long int m_required_touch;
+
 	std::size_t m_current_touch;
 };
 

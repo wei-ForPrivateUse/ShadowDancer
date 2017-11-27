@@ -18,8 +18,8 @@ public:
 		b2Vec2 Position;					// Position of the nest.
 		float32 Radius = 16.0f;				// Radius of the nest.
 
-		std::size_t Resource = 50; 			// Number of resources.
-		std::size_t Package = 1;			// Number of packages.
+		std::size_t Resource = 40; 			// Number of resources.
+		std::size_t Package = 4;			// Number of packages.
 		int ResourceSupplement = -1;		// Policy for resource supplement,
 											// -1 means recreate immediately.
 		int PackageSupplement = -1;			// Policy for package supplement,

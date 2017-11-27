@@ -70,6 +70,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		J1_AC_Gripper::Configuration gc;
 		gc.Id = 52;
 		gc.Priority = 3;
+		gc.Tag = MAKE_TAG('g', 'r', 'i', 'p');
 		gc.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
 		gc.TargetMask = 0x1;
 		AddComponent<J1_AC_Gripper>(&gc);
@@ -200,11 +201,17 @@ void J1_A_Robot::PreAct() {
 	}
 		break;
 	case 2: {
-
+		m_arbi -> SetActive(false);
+		m_a_s1 -> SetActive(false);
+		m_a_s2 -> SetActive(true);
+		m_a_s3 -> SetActive(false);
 	}
 		break;
 	case 3: {
-
+		m_arbi -> SetActive(false);
+		m_a_s1 -> SetActive(false);
+		m_a_s2 -> SetActive(false);
+		m_a_s3 -> SetActive(true);
 	}
 		break;
 	default:
