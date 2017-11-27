@@ -47,8 +47,8 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		Motor::Configuration mc;
 
 		mc.Priority = 4;
-		mc.ForwardAttributes = {20.0f, 9.0f, 100.0f};
-		mc.BackwardAttributes = {10.0f, 3.0f, 30.0f};
+		mc.ForwardAttributes = {16.0f, 9.0f, 80.0f};
+		mc.BackwardAttributes = {10.0f, 3.0f, 10.0f};
 		mc.PolygonShape.SetAsBox(0.25f, 0.1f);
 		mc.Anchor.Set(0.0f, 0.0f);
 

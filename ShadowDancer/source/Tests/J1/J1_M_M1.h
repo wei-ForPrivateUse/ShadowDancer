@@ -79,7 +79,7 @@ protected:
 		auto ntB = nB->GetType();
 
 		if(ntA == assa2d::Node_Type::Actor_Component || ntB == assa2d::Node_Type::Actor_Component) {
-			fitness -= 1.0f;
+			fitness -= 100.0f;
 		}
 	}
 
