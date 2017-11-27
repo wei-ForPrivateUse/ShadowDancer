@@ -72,7 +72,9 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		gc.Priority = 3;
 		gc.Tag = MAKE_TAG('g', 'r', 'i', 'p');
 		gc.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
-		gc.TargetMask = 0x1;
+		gc.TargetStatusMask = 0x1;
+		gc.RequiredMode = 2;
+		gc.OutputIndex = 33;
 		AddComponent<J1_AC_Gripper>(&gc);
 	}
 
@@ -159,8 +161,8 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		J1_AC_Arbitrator::Configuration arbic;
 		arbic.Id = 30;
 		arbic.Priority = 1;
-		arbic.InputIndex = {40, 41, 42, 43, 44};
-		arbic.OutputIndex = {45, 46, 47};
+		arbic.InputIndex = {10, 11, 12, 13, 14};
+		arbic.OutputIndex = {40, 41, 42};
 		arbic.SubControllerId = {31, 32, 33};
 		m_arbi = AddComponent<J1_AC_Arbitrator>(&arbic);
 
@@ -173,7 +175,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_a_s1 = AddComponent<ANN>(&ac);
 
 		ac.Id = 32;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 33};
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 33, 15, 16};
 		ac.OutputIndex = {50, 51};
 		m_a_s2 = AddComponent<ANN>(&ac);
 

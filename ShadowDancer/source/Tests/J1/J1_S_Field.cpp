@@ -138,7 +138,7 @@ J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		nc.Package = conf->Package;
 		nc.ResourceSupplement = conf->ResourceSupplement;
 		nc.PackageSupplement = conf->PackageSupplement;
-		nc.ResourceMask = conf->ResourceMask;
+		nc.ResourceMask = 0x2;
 		nc.NewResourceId = 1000 + conf->Resource;
 		nc.NewPackageId = 10000 + conf->Package;
 		AddNode<J1_T_Nest>(&nc);

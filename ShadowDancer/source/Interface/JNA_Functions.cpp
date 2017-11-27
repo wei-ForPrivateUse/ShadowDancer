@@ -28,7 +28,7 @@ double test(double w[])
 {
 	ANNWeights* arbi = new ANNWeights({5, 10, 3}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* w1 = new ANNWeights({17, 20, 2}, {false, true, false}, {false, true, true}, true);
-	ANNWeights* w2 = new ANNWeights({12, 20, 2}, {false, true, false}, {false, true, true}, true);
+	ANNWeights* w2 = new ANNWeights({14, 20, 2}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* w3 = new ANNWeights({11, 20, 2}, {false, true, false}, {false, true, true}, true);
 
 	arbi->Randomize();

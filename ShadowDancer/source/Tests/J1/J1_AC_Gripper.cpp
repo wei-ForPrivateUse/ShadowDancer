@@ -36,7 +36,7 @@ J1_AC_Gripper::J1_AC_Gripper(Configuration* conf) : assa2d::Component(conf) {
 	GetWorld() -> CreateJoint(&rjd);
 
 	m_target_tag = conf->TargetTag;
-	m_target_mask = conf->TargetMask;
+	m_target_status_mask = conf->TargetStatusMask;
 
 	m_loaded = false;
 }

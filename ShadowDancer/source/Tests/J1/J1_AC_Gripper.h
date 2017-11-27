@@ -13,8 +13,11 @@
 class J1_AC_Gripper : public assa2d::Component {
 public:
 	struct Configuration : public assa2d::Component::Configuration {
-		std::size_t TargetTag = 0;
-		unsigned int TargetMask = 0;
+		std::size_t TargetTag = MAKE_TAG('r', 'e', 's', 'o');;
+		unsigned int TargetStatusMask = 0x1;
+		int RequiredMode = 2;
+
+		std::size_t OutputIndex = 0;
 	};
 
 	J1_AC_Gripper(Configuration* conf);
@@ -27,7 +30,7 @@ protected:
 
 private:
 	std::size_t m_target_tag;
-	std::size_t m_target_mask;
+	std::size_t m_target_status_mask;
 
 	bool m_loaded;
 };
