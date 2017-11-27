@@ -6,7 +6,6 @@
  */
 
 #include "J1_T_Nest.h"
-#include <iostream>
 
 J1_T_Nest::J1_T_Nest(Configuration* conf) : assa2d::Trigger(conf) {
 	m_position = conf->Position;

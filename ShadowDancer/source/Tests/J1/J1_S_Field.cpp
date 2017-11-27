@@ -144,4 +144,3 @@ J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		AddNode<J1_T_Nest>(&nc);
 	}
 }
-
