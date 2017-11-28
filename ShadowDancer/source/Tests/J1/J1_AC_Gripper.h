@@ -20,13 +20,15 @@ public:
 		int RequiredMode = 2;
 
 		std::size_t OutputIndex = 0;
+
+		std::size_t NullId = 999999;
 	};
 
 	J1_AC_Gripper(Configuration* conf);
 	virtual ~J1_AC_Gripper();
 
 protected:
-	/// Catch / drop if necessary.
+	/// Grip / drop if necessary.
 	virtual void Act() override;
 
 	/// Find touching resources.
@@ -45,10 +47,11 @@ private:
 
 	std::size_t m_output_index;
 
-	Block* m_gripping_resource;
-	b2Joint* m_gripping_joint;
+	std::size_t m_null_id;
 
-	Block* m_touching_resource;
+	std::size_t m_gripping_resource_id;
+	b2Joint* m_gripping_joint;
+	std::size_t m_touching_resource_id;
 };
 
 #endif /* TESTS_J1_J1_AC_GRIPPER_H_ */

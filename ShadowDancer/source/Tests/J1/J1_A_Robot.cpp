@@ -75,6 +75,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		gc.TargetStatusMask = 0x1;
 		gc.RequiredMode = 2;
 		gc.OutputIndex = 33;
+		gc.NullId = 999999;
 		AddComponent<J1_AC_Gripper>(&gc);
 	}
 
