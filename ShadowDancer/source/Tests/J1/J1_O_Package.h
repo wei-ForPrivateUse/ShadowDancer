@@ -30,7 +30,7 @@ public:
 	virtual ~J1_O_Package() { };
 
 protected:
-	virtual void PreSolve(Node* node, b2Contact* contact, const b2Manifold* oldManifold);
+	virtual void PreSolve(Node* node, b2Contact* contact, const b2Manifold* oldManifold) override;
 
 private:
 	friend class J1_T_Nest;
