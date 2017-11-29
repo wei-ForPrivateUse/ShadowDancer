@@ -7,7 +7,7 @@
 
 #include "JNA_Functions.h"
 
-double test(double w[]);
+double e1(double w[]);
 
 /// JNA interface function.
 double evaluateFcns(double individual[], int func_index)
@@ -15,8 +15,8 @@ double evaluateFcns(double individual[], int func_index)
 	double fitness = 0.0;
 	switch(func_index)
 	{
-	case 0:
-		fitness = test(individual);
+	case 1:
+		fitness = e1(individual);
 		break;
 	default:
 		break;
@@ -24,9 +24,9 @@ double evaluateFcns(double individual[], int func_index)
 	return fitness;
 }
 
-double test(double w[])
+double e1(double w[])
 {
-	ANNWeights* arbi = new ANNWeights({5, 10, 3}, {false, true, false}, {false, true, true}, true);
+	ANNWeights* arbi = new ANNWeights({6, 10, 3}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* w1 = new ANNWeights({17, 20, 2}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* w2 = new ANNWeights({14, 20, 2}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* w3 = new ANNWeights({11, 20, 2}, {false, true, false}, {false, true, true}, true);
@@ -47,7 +47,7 @@ double test(double w[])
 		J1_S_Field::Configuration fc;
 		fc.MaxStep = 12000;
 		fc.World = world;
-		fc.TrainningMode = 1;
+		fc.TrainingMode = 1;
 		J1_M_M1 monitor;
 
 		assa2d::SceneMgr* scenemgr = new J1_S_Field(&fc, arbi, w1, w2, w3);

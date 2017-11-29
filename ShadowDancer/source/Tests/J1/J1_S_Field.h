@@ -27,7 +27,7 @@ public:
 		int ResourceSupplement = -1; // Policy for resource supplement, -1 means recreate immediately.
 		int PackageSupplement = -1;	// Policy for package supplement, -1 means recreate immediately.
 
-		int TrainningMode = 0;
+		int TrainingMode = 0;
 	};
 
 	J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3);

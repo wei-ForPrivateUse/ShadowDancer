@@ -6,6 +6,7 @@
  */
 
 #include "J1_A_Robot.h"
+#include "J1_O_Package.h"
 
 /// Predicate for resource.
 struct ResourcePred : public TagPredicate {
@@ -162,7 +163,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		J1_AC_Arbitrator::Configuration arbic;
 		arbic.Id = 30;
 		arbic.Priority = 1;
-		arbic.InputIndex = {10, 11, 12, 13, 14};
+		arbic.InputIndex = {10, 11, 12, 13, 14, 15};
 		arbic.OutputIndex = {40, 41, 42};
 		arbic.SubControllerId = {31, 32, 33};
 		m_arbi = AddComponent<J1_AC_Arbitrator>(&arbic);
@@ -176,7 +177,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_a_s1 = AddComponent<ANN>(&ac);
 
 		ac.Id = 32;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 33, 15, 16};
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 33, 16, 17};
 		ac.OutputIndex = {50, 51};
 		m_a_s2 = AddComponent<ANN>(&ac);
 
@@ -186,8 +187,8 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		m_a_s3 = AddComponent<ANN>(&ac);
 	}
 
-	// Trainning mode.
-	m_trainning_mode = conf->TrainningMode;
+	// Training mode.
+	m_training_mode = conf->TrainingMode;
 
 	// Set extra parameters for motors.
 	GetDataPool().Set<float>(60, 100.0f);
@@ -195,7 +196,98 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 }
 
 void J1_A_Robot::PreAct() {
-	switch(m_trainning_mode) {
+	std::size_t robot_s1_count = 0;
+	std::size_t robot_s2_count = 0;
+	std::size_t robot_s3_count = 0;
+	std::size_t resource_count = 0;
+	std::size_t package_count = 0;
+
+	float32 c_ang = 1.0f;
+	float32 s_ang = 0.0f;
+
+	// Count robots.
+	auto const& robot_list = GetSceneMgr()->GetNodesByTag(MAKE_TAG('r', 'o', 'b', 'o'));
+	for(auto node : robot_list) {
+		auto robot = static_cast<J1_A_Robot*>(node);
+		if(robot != this) {
+			float32 dist_squared = (robot->GetMainComponent()->GetPosition()-this->GetMainComponent()->GetPosition()).LengthSquared();
+			float32 omni_range = static_cast<OmniTag<RobotPred>*>(m_omni_robot)->GetRange();
+			float32 omni_range_squared = omni_range * omni_range;
+			if(dist_squared < omni_range_squared) {
+				switch(robot->GetMode()) {
+				case 1: {
+					robot_s1_count++;
+				}
+					break;
+				case 2: {
+					robot_s2_count++;
+				}
+					break;
+				case 3: {
+					robot_s3_count++;
+				}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+
+	// Count resources.
+	if(GetSceneMgr()->CountNodesByTag(MAKE_TAG('r', 'e', 's', 'o')) > 0) {
+		auto const& resource_list = GetSceneMgr()->GetNodesByTag(MAKE_TAG('r', 'e', 's', 'o'));
+		for(auto node : resource_list) {
+			auto resource = static_cast<Block*>(node);
+			float32 dist_squared = (resource->GetPosition()-this->GetMainComponent()->GetPosition()).LengthSquared();
+			float32 omni_range = static_cast<OmniTag<ResourcePred>*>(m_omni_resource)->GetRange();
+			float32 omni_range_squared = omni_range * omni_range;
+			if(dist_squared < omni_range_squared) {
+				unsigned int mask = resource->GetMask() & 0x1;
+				if(mask != 0x1) {
+					resource_count++;
+				}
+			}
+
+		}
+	}
+
+	// Count Packages.
+	if(GetSceneMgr()->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k')) > 0) {
+		auto const& package_list = GetSceneMgr()->GetNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'));
+		for(auto node : package_list) {
+			auto package = static_cast<J1_O_Package*>(node);
+			float32 dist_squared = (package->GetPosition()-this->GetMainComponent()->GetPosition()).LengthSquared();
+			float32 omni_range = static_cast<OmniTag<TagPredicate>*>(m_omni_package)->GetRange();
+			float32 omni_range_squared = omni_range * omni_range;
+			if(dist_squared < omni_range_squared) {
+				package_count++;
+			}
+		}
+	}
+
+
+	// Angle of the nest.
+	b2Vec2 const& pos = this->GetMainComponent()->GetPosition();
+	if(pos == b2Vec2(0.0f, 0.0f)) { }
+	else {
+		b2Vec2 const& l_pos = this->GetMainComponent()->GetBody()->GetLocalVector(-pos);
+		c_ang = l_pos.x / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
+		s_ang = l_pos.y / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
+	}
+
+	// Set outputs.
+	GetDataPool().Set<float>(10, GetMode());
+	GetDataPool().Set<float>(11, robot_s1_count);
+	GetDataPool().Set<float>(12, robot_s2_count);
+	GetDataPool().Set<float>(13, robot_s3_count);
+	GetDataPool().Set<float>(14, resource_count);
+	GetDataPool().Set<float>(15, package_count);
+	GetDataPool().Set<float>(16, c_ang);
+	GetDataPool().Set<float>(17, s_ang);
+
+	// Training modes.
+	switch(m_training_mode) {
 	case 1: {
 		m_arbi -> SetActive(false);
 		m_a_s1 -> SetActive(true);
@@ -205,16 +297,28 @@ void J1_A_Robot::PreAct() {
 		break;
 	case 2: {
 		m_arbi -> SetActive(false);
-		m_a_s1 -> SetActive(false);
-		m_a_s2 -> SetActive(true);
 		m_a_s3 -> SetActive(false);
+
+		if(resource_count==0 && GetDataPool().Get<float>(33)==0.0f) {
+			m_a_s1 -> SetActive(true);
+			m_a_s2 -> SetActive(false);
+		} else {
+			m_a_s1 -> SetActive(false);
+			m_a_s2 -> SetActive(true);
+		}
 	}
 		break;
 	case 3: {
 		m_arbi -> SetActive(false);
-		m_a_s1 -> SetActive(false);
 		m_a_s2 -> SetActive(false);
-		m_a_s3 -> SetActive(true);
+
+		if(package_count == 0) {
+			m_a_s1 -> SetActive(true);
+			m_a_s3 -> SetActive(false);
+		} else {
+			m_a_s1 -> SetActive(false);
+			m_a_s3 -> SetActive(true);
+		}
 	}
 		break;
 	default:

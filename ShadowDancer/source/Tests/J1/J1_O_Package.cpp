@@ -6,6 +6,7 @@
  */
 
 #include "J1_O_Package.h"
+#include "J1_A_Robot.h"
 
 J1_O_Package::J1_O_Package(Configuration* conf) : Block(conf) {
 	m_target_tag = conf -> TargetTag;

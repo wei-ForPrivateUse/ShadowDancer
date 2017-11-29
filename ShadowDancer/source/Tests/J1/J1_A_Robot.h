@@ -24,9 +24,9 @@ class J1_A_Robot : public assa2d::Actor {
 public:
 	struct Configuration : public assa2d::Actor::Configuration {
 		b2Vec2 Position;
-		float32 Angle;
+		float32 Angle = 0.0f;
 
-		int TrainningMode = 0;
+		int TrainingMode = 0;
 	};
 
 	J1_A_Robot(Configuration* conf);
@@ -63,7 +63,7 @@ public:
 	ANN* m_a_s3;
 
 private:
-	int m_trainning_mode;
+	int m_training_mode;
 };
 
 #endif /* TESTS_J1_J1_A_ROBOT_H_ */

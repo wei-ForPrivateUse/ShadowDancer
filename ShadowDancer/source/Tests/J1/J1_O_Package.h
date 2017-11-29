@@ -11,7 +11,6 @@
 #include <assassin2d/assassin2d.h>
 
 #include "Common/Object/Block.h"
-#include "J1_A_Robot.h"
 
 class J1_T_Nest;
 

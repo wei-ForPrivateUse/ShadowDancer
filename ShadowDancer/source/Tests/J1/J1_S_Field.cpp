@@ -59,7 +59,7 @@ J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		srand(time(NULL));
 		J1_A_Robot::Configuration rc;
 		rc.Tag = MAKE_TAG('r', 'o', 'b', 'o');
-		rc.TrainningMode = conf->TrainningMode;
+		rc.TrainingMode = conf->TrainingMode;
 
 		int l_count[6] = {30, 22, 17, 9, 5 ,1};
 		float l_radius[6] = {14, 11.3, 8, 5, 2, 0.2};
