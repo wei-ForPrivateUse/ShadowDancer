@@ -12,7 +12,7 @@ J1_AC_Gripper::J1_AC_Gripper(Configuration* conf) : assa2d::Component(conf) {
 	b2BodyDef bd;
 	bd.userData = static_cast<assa2d::Node*>(this);
 	bd.type = b2_dynamicBody;
-	bd.position = static_cast<assa2d::Component*>(static_cast<assa2d::Actor*>(GetActor())->GetMainComponent())->GetBody()->GetWorldPoint(b2Vec2(0.45, 0));
+	bd.position = static_cast<assa2d::Component*>(static_cast<assa2d::Actor*>(GetActor())->GetMainComponent())->GetBody()->GetWorldPoint(b2Vec2(0.35f, 0.0f));
 	bd.angle = static_cast<assa2d::Component*>(static_cast<assa2d::Actor*>(GetActor())->GetMainComponent())->GetBody()->GetAngle();
 
 	b2Body* body = GetWorld() -> CreateBody(&bd);
@@ -20,7 +20,11 @@ J1_AC_Gripper::J1_AC_Gripper(Configuration* conf) : assa2d::Component(conf) {
 
 	b2FixtureDef fd;
 	b2PolygonShape s;
-	s.SetAsBox(0.1, 0.2);
+	b2Vec2 v[3];
+	v[0].Set(0.2f, 0.0f);
+	v[1].Set(-0.3f, 0.2f);
+	v[2].Set(-0.3f, -0.2f);
+	s.Set(v, 3);
 	fd.shape = &s;
 	fd.friction = 0.1f;
 	fd.density = 1.0f;
