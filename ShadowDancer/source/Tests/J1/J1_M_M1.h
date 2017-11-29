@@ -89,6 +89,4 @@ private:
 	std::vector<CheckPoint> m_check_point_vector;
 };
 
-
-
 #endif /* TESTS_J1_J1_M_M1_H_ */

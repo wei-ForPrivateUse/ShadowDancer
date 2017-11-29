@@ -36,6 +36,8 @@ public:
 public:
 	// Nodes.
 	std::vector<J1_A_Robot*> m_robot;
+
+	J1_T_Nest* m_nest;
 };
 
 #endif /* TESTS_J1_J1_S_FIELD_H_ */
