@@ -114,6 +114,9 @@ J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		pc.StaticBody = true;
 		pc.ShapeType = assa2d::ShapeType::Polygon;
 		pc.PolygonShape.SetAsBox(1.5f, 2.0f);
+		pc.MinStepTouch = conf->MinStepTouch;
+		pc.MaxStepTouch = conf->MaxStepTouch;
+		pc.RequiredTouch = conf->RequiredTouch;
 
 		for(std::size_t i = 0; i < conf->Package; i++) {
 			pc.Id = 10000 + i;

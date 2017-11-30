@@ -28,6 +28,10 @@ public:
 	J1_O_Package(Configuration* conf);
 	virtual ~J1_O_Package() { };
 
+	long int GetRequiredTouch() const {
+		return m_required_touch;
+	}
+
 protected:
 	virtual void PreSolve(Node* node, b2Contact* contact, const b2Manifold* oldManifold) override;
 
