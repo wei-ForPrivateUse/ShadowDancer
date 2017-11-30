@@ -172,7 +172,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		ac.Priority = 2;
 
 		ac.Id = 31;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 26, 27, 28};
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 26, 27, 28, 16, 17};
 		ac.OutputIndex = {50, 51};
 		m_a_s1 = AddComponent<ANN>(&ac);
 

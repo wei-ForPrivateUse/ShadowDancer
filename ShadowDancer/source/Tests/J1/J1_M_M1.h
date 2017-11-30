@@ -37,7 +37,7 @@ protected:
 		for(int i = -100; i < 100; i = i + 20){
 			for(int j = -100; j < 100; j = j + 20) {
 				cp.Position.Set(i, j);
-				if(cp.Position.LengthSquared() < 10000 && cp.Position.LengthSquared() > 256) {
+				if(cp.Position.LengthSquared() < 10000 && cp.Position.LengthSquared() > 625) {
 					m_check_point_vector.push_back(cp);
 				}
 			}
