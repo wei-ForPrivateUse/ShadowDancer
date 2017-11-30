@@ -122,7 +122,7 @@ void J1_T_Nest::AddPackage() {
 	pc.ShapeType = assa2d::ShapeType::Polygon;
 	pc.PolygonShape.SetAsBox(1.5f, 2.0f);
 	pc.Id = m_new_package_id++;
-	float32 r = assa2d::RandomFloat(25.0f, 90.0f);
+	float32 r = assa2d::RandomFloat(35.0f, 90.0f);
 	float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
 	float32 x = r * std::cos(a);
 	float32 y = r * std::sin(a);
@@ -138,7 +138,7 @@ void J1_T_Nest::AddUnmaskedResource() {
 	bc.GroundFrictionForce = 5.0f;
 	bc.GroundFrictionTorque = 5.0f;
 	bc.Id = m_new_resource_id++;
-	float32 r = assa2d::RandomFloat(20.0f, 95.0f);
+	float32 r = assa2d::RandomFloat(20.0f, 90.0f);
 	float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
 	float32 x = r * std::cos(a);
 	float32 y = r * std::sin(a);
