@@ -86,7 +86,7 @@ double e0(double w[], int robot) {
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
 		J1_S_Field::Configuration fc;
-		fc.MaxStep = 12000;
+		fc.MaxStep = 15000;
 		fc.World = world;
 		fc.TrainingMode = 0;
 		fc.Robot = robot;
