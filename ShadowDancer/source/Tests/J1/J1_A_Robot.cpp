@@ -282,7 +282,7 @@ void J1_A_Robot::PreAct() {
 	// Step robot count.
 	m_step_robot_count[GetSceneMgr()->GetCurrentStep()] = robot_s1_count + robot_s2_count + robot_s3_count;
 	std::size_t count = 0;
-	std::size_t start_step = GetSceneMgr()->GetCurrentStep()>=600 ? GetSceneMgr()->GetCurrentStep()-600 : 0;
+	std::size_t start_step = GetSceneMgr()->GetCurrentStep()>=1200 ? GetSceneMgr()->GetCurrentStep()-1200 : 0;
 
 	for(std::size_t i = start_step; i < GetSceneMgr()->GetCurrentStep(); i++) {
 		count += m_step_robot_count[i];
@@ -297,7 +297,7 @@ void J1_A_Robot::PreAct() {
 	GetDataPool().Set<float>(15, package_count);
 	GetDataPool().Set<float>(16, c_ang);
 	GetDataPool().Set<float>(17, s_ang);
-	GetDataPool().Set<float>(18, m_step_robot_count[GetSceneMgr()->GetCurrentStep()]);
+	GetDataPool().Set<float>(18, count/2000.0f);
 
 	// Training modes.
 	switch(m_training_mode) {

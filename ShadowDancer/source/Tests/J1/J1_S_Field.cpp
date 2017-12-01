@@ -120,7 +120,7 @@ J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 
 		for(std::size_t i = 0; i < conf->Package; i++) {
 			pc.Id = 10000 + i;
-			float32 r = assa2d::RandomFloat(35.0f, 90.0f);
+			float32 r = assa2d::RandomFloat(20.0f, 90.0f);
 			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
 			float32 x = r * std::cos(a);
 			float32 y = r * std::sin(a);

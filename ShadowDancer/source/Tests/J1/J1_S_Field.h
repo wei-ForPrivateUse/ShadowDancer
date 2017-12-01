@@ -25,15 +25,15 @@ public:
 		std::size_t Robot = 50;			// Number of robots.
 
 		// Nest parameters.
-		std::size_t Resource = 50;		// Number of resources.
-		std::size_t Package = 5;		// Number of packages.
+		std::size_t Resource = 30;		// Number of resources.
+		std::size_t Package = 6;		// Number of packages.
 		int ResourceSupplement = -1; 	// Policy for resource supplement, -1 means recreate immediately.
 		int PackageSupplement = -1;		// Policy for package supplement, -1 means recreate immediately.
 
 		// Package parameters.
 		std::size_t MinStepTouch = 3;
 		std::size_t MaxStepTouch = 6;
-		std::size_t RequiredTouch = 3600;
+		std::size_t RequiredTouch = 1800;
 	};
 
 	J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3);
