@@ -37,13 +37,13 @@ protected:
 		auto s = const_cast<J1_S_Field*>(a_s);
 
 		// Direct bonus.
-		fitness += s->m_nest->GetPackageCollected() * 1800.0f;
+		fitness += s->m_nest->GetPackageCollected() * 3600.0f;
 
 		// Bootstrapping part.
 		if(s->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k')) > 0) {
 			for(auto node : s->GetNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'))) {
 				auto package = static_cast<J1_O_Package*>(node);
-				fitness += 1800.0f - package->GetRequiredTouch();
+				fitness += 3600.0f - package->GetRequiredTouch();
 			}
 		}
 	};

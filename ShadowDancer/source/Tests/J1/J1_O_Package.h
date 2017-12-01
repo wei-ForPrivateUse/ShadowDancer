@@ -22,7 +22,7 @@ public:
 
 		std::size_t MinStepTouch = 3;
 		std::size_t MaxStepTouch = 6;
-		std::size_t RequiredTouch = 1800;
+		std::size_t RequiredTouch = 3600;
 	};
 
 	J1_O_Package(Configuration* conf);
