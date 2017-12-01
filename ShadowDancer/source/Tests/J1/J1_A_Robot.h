@@ -64,6 +64,8 @@ public:
 
 private:
 	int m_training_mode;
+
+	std::vector<std::size_t> m_step_robot_count;
 };
 
 #endif /* TESTS_J1_J1_A_ROBOT_H_ */

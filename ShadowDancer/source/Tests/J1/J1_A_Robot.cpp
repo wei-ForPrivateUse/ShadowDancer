@@ -193,6 +193,9 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 	// Set extra parameters for motors.
 	GetDataPool().Set<float>(60, 100.0f);
 	GetDataPool().Set<float>(61, 100.0f);
+
+	// Resize.
+	m_step_robot_count.resize(36000);
 }
 
 void J1_A_Robot::PreAct() {
@@ -276,6 +279,15 @@ void J1_A_Robot::PreAct() {
 		s_ang = l_pos.y / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
 	}
 
+	// Step robot count.
+	m_step_robot_count[GetSceneMgr()->GetCurrentStep()] = robot_s1_count + robot_s2_count + robot_s3_count;
+	std::size_t count = 0;
+	std::size_t start_step = GetSceneMgr()->GetCurrentStep()>=600 ? GetSceneMgr()->GetCurrentStep()-600 : 0;
+
+	for(std::size_t i = start_step; i < GetSceneMgr()->GetCurrentStep(); i++) {
+		count += m_step_robot_count[i];
+	}
+
 	// Set outputs.
 	GetDataPool().Set<float>(10, GetMode());
 	GetDataPool().Set<float>(11, robot_s1_count);
@@ -285,6 +297,7 @@ void J1_A_Robot::PreAct() {
 	GetDataPool().Set<float>(15, package_count);
 	GetDataPool().Set<float>(16, c_ang);
 	GetDataPool().Set<float>(17, s_ang);
+	GetDataPool().Set<float>(18, m_step_robot_count[GetSceneMgr()->GetCurrentStep()]);
 
 	// Training modes.
 	switch(m_training_mode) {
