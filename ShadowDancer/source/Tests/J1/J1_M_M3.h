@@ -16,11 +16,12 @@ class J1_M_M3 : public assa2d::Monitor, public assa2d::ContactListener {
 public:
 	J1_M_M3() {
 		fitness = 0.0f;
+		contact = 0;
 	};
 	virtual ~J1_M_M3() { };
 
 	float GetFitness() const {
-		return fitness;
+		return fitness * (1.0f - A(contact));
 	}
 
 protected:
@@ -61,20 +62,27 @@ protected:
 		auto tagB = nB->GetTag();
 
 		if(tagA == MAKE_TAG('w', 'a', 'l', 'l') || tagB == MAKE_TAG('w', 'a', 'l', 'l')) {
-			fitness -= 1.0f;
+			contact++;
 		}
 
 		if(ntA == assa2d::Node_Type::Actor_Component && ntB == assa2d::Node_Type::Actor_Component) {
 			auto robotA = static_cast<assa2d::Component*>(nA)->GetActor();
 			auto robotB = static_cast<assa2d::Component*>(nB)->GetActor();
 			if(robotA != robotB) {
-				fitness -= 1.0f;
+				contact++;
 			}
 		}
 	}
 
+	float32 A(float32 sum) const {
+		float32 t = sum + 10.0f;
+		float32 tmp = log10(t)/log10(100);
+		return -0.5f + 1.0f / (1.0f + expf(-tmp));
+	}
+
 private:
 	float32 fitness;
+	int32 contact;
 };
 
 #endif /* TESTS_J1_J1_M_M3_H_ */
