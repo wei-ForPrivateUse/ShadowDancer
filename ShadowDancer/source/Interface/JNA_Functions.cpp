@@ -268,7 +268,8 @@ double e0_test(double w[]) {
 		fc.MaxStep = 12000;
 		fc.World = world;
 		fc.TrainingMode = 0;
-		fc.Resource = 0;
+		fc.Resource = 30;
+		fc.ResourceSupplement = 0;
 		fc.Robot = 30;
 		J1_M_M0 monitor;
 
