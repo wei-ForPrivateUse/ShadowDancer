@@ -16,10 +16,10 @@ class J1_T_Nest : public assa2d::Trigger {
 public:
 	struct Configuration : public assa2d::Trigger::Configuration {
 		b2Vec2 Position;					// Position of the nest.
-		float32 Radius = 18.0f;				// Radius of the nest.
+		float32 Radius = 15.0f;				// Radius of the nest.
 
 		std::size_t Resource = 30; 			// Number of resources.
-		std::size_t Package = 6;			// Number of packages.
+		std::size_t Package = 5;			// Number of packages.
 		int ResourceSupplement = -1;		// Policy for resource supplement,
 											// -1 means recreate immediately.
 		int PackageSupplement = -1;			// Policy for package supplement,

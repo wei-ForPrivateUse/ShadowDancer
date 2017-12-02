@@ -62,12 +62,12 @@ J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		rc.TrainingMode = conf->TrainingMode;
 
 		int l_count[7] = {38, 30, 22, 17, 9, 5 ,1};
-		float l_radius[7] = {16.0f, 13.3f, 10.6f, 7.8f, 5.0f, 2.3f, 0.0f};
+		float l_radius[7] = {16.0f, 13.0f, 10.5f, 7.8f, 5.0f, 2.3f, 0.0f};
 		bool flag[7][40] = {false};
 		for(std::size_t i = 0; i < conf->Robot; i++) {
 			int l, p;
 			do {
-				l = assa2d::RandomFloat(0.0f, 6.9f);
+				l = assa2d::RandomFloat(1.0f, 6.9f);
 				p = assa2d::RandomFloat(0.0f, l_count[l]-0.01f);
 			} while(flag[l][p]);
 			flag[l][p] = true;
@@ -136,7 +136,7 @@ J1_S_Field::J1_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		nc.Id = 500;
 		nc.Tag = MAKE_TAG('n', 'e', 's', 't');
 		nc.Position.SetZero();
-		nc.Radius = 18.0f;
+		nc.Radius = 15.0f;
 		nc.Resource = conf->Resource;
 		nc.Package = conf->Package;
 		nc.ResourceSupplement = conf->ResourceSupplement;
