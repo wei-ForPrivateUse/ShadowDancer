@@ -246,10 +246,7 @@ void J1_A_Robot::PreAct() {
 			float32 omni_range = static_cast<OmniTag<ResourcePred>*>(m_omni_resource)->GetRange();
 			float32 omni_range_squared = omni_range * omni_range;
 			if(dist_squared < omni_range_squared) {
-				unsigned int mask = resource->GetMask() & 0x1;
-				if(mask != 0x1) {
-					resource_count++;
-				}
+				resource_count++;
 			}
 
 		}
