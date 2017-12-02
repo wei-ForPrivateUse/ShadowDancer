@@ -130,7 +130,7 @@ double e0(double w[], int supplement) {
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 2.0f;
+	fitness /= 1.0f;
 
 	delete arbi;
 	delete w1;
