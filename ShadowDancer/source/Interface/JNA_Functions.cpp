@@ -269,7 +269,7 @@ double e0_test(double w[]) {
 		fc.World = world;
 		fc.TrainingMode = 0;
 		fc.Resource = 30;
-		fc.ResourceSupplement = 0;
+		fc.ResourceSupplement = 120;
 		fc.Robot = 30;
 		J1_M_M0 monitor;
 
