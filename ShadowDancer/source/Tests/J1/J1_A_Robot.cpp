@@ -8,6 +8,11 @@
 #include "J1_A_Robot.h"
 #include "J1_O_Package.h"
 
+/// Activation function.
+inline float32 Activation(float32 x, int32 c) {
+	return x / (std::fabs(x) + c);
+}
+
 /// Predicate for resource.
 struct ResourcePred : public TagPredicate {
 	ResourcePred(Configuration* conf): TagPredicate(conf){}
@@ -163,7 +168,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		J1_AC_Arbitrator::Configuration arbic;
 		arbic.Id = 30;
 		arbic.Priority = 1;
-		arbic.InputIndex = {10, 11, 12, 13, 14, 15};
+		arbic.InputIndex = {10, 11, 12, 13, 14, 40, 41, 42, 17};
 		arbic.OutputIndex = {40, 41, 42};
 		arbic.SubControllerId = {31, 32, 33};
 		m_arbi = AddComponent<J1_AC_Arbitrator>(&arbic);
@@ -172,12 +177,12 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		ac.Priority = 2;
 
 		ac.Id = 31;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 26, 27, 28, 16, 17};
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 26, 27, 28, 15, 16};
 		ac.OutputIndex = {50, 51};
 		m_a_s1 = AddComponent<ANN>(&ac);
 
 		ac.Id = 32;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 33, 16, 17};
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 33, 15, 16};
 		ac.OutputIndex = {50, 51};
 		m_a_s2 = AddComponent<ANN>(&ac);
 
@@ -195,7 +200,7 @@ J1_A_Robot::J1_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 	GetDataPool().Set<float>(61, 100.0f);
 
 	// Resize.
-	m_step_robot_count.resize(36000);
+	m_step_resource_count.resize(36000);
 }
 
 void J1_A_Robot::PreAct() {
@@ -276,25 +281,24 @@ void J1_A_Robot::PreAct() {
 		s_ang = l_pos.y / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
 	}
 
-	// Step robot count.
-	m_step_robot_count[GetSceneMgr()->GetCurrentStep()] = robot_s1_count + robot_s2_count + robot_s3_count;
+	// Step resource count.
+	m_step_resource_count[GetSceneMgr()->GetCurrentStep()] = resource_count;
 	std::size_t count = 0;
 	std::size_t start_step = GetSceneMgr()->GetCurrentStep()>=1200 ? GetSceneMgr()->GetCurrentStep()-1200 : 0;
 
 	for(std::size_t i = start_step; i < GetSceneMgr()->GetCurrentStep(); i++) {
-		count += m_step_robot_count[i];
+		count += m_step_resource_count[i];
 	}
 
 	// Set outputs.
-	GetDataPool().Set<float>(10, GetMode());
-	GetDataPool().Set<float>(11, robot_s1_count);
-	GetDataPool().Set<float>(12, robot_s2_count);
-	GetDataPool().Set<float>(13, robot_s3_count);
-	GetDataPool().Set<float>(14, resource_count);
-	GetDataPool().Set<float>(15, package_count);
-	GetDataPool().Set<float>(16, c_ang);
-	GetDataPool().Set<float>(17, s_ang);
-	GetDataPool().Set<float>(18, count/2000.0f);
+	GetDataPool().Set<float>(10, Activation(robot_s1_count, 2));
+	GetDataPool().Set<float>(11, Activation(robot_s2_count, 2));
+	GetDataPool().Set<float>(12, Activation(robot_s3_count, 2));
+	GetDataPool().Set<float>(13, Activation(resource_count, 1));
+	GetDataPool().Set<float>(14, Activation(package_count, 1));
+	GetDataPool().Set<float>(15, c_ang);
+	GetDataPool().Set<float>(16, s_ang);
+	GetDataPool().Set<float>(17, Activation(count, 200));
 
 	// Training modes.
 	switch(m_training_mode) {
