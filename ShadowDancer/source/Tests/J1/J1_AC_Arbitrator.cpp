@@ -32,8 +32,10 @@ void J1_AC_Arbitrator::Act() {
 	// Activate the chosen sub controller, deactivate others.
 	for(std::size_t i = 0; i < m_sub_controller_id.size(); i++) {
 		if(i == index) {
+			SetSharedData<float>(m_output_index[i], 1.0f);
 			static_cast<assa2d::Component*>(GetActor()->GetComponentById(m_sub_controller_id[i]))->SetActive(true);
 		} else {
+			SetSharedData<float>(m_output_index[i], 0.0f);
 			static_cast<assa2d::Component*>(GetActor()->GetComponentById(m_sub_controller_id[i]))->SetActive(false);
 		}
 	}
