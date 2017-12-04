@@ -124,12 +124,12 @@ double e0(double w[], int supplement) {
 	arbi->Set(w);
 
 	double fitness = 0.0;
-	for(int i = 0; i < 1; i++) {
+	for(int i = 0; i < 2; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
 		J1_S_Field::Configuration fc;
-		fc.MaxStep = 18000;
+		fc.MaxStep = 15000;
 		fc.World = world;
 		fc.TrainingMode = 0;
 		fc.ResourceSupplement = supplement;
@@ -143,7 +143,7 @@ double e0(double w[], int supplement) {
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 1.0f;
+	fitness /= 2.0f;
 
 	delete arbi;
 	delete w1;
@@ -299,12 +299,12 @@ double e0_np_test(double w[], int supplement) {
 	arbi->Set(w);
 
 	double fitness = 0.0;
-	for(int i = 0; i < 1; i++) {
+	for(int i = 0; i < 2; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
 		J1_S_Field::Configuration fc;
-		fc.MaxStep = 18000;
+		fc.MaxStep = 15000;
 		fc.World = world;
 		fc.TrainingMode = 0;
 		fc.Package = 0;
@@ -320,7 +320,7 @@ double e0_np_test(double w[], int supplement) {
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 1.0f;
+	fitness /= 2.0f;
 
 	delete arbi;
 	delete w1;
@@ -347,12 +347,12 @@ double e0_nr_test(double w[]) {
 	arbi->Set(w);
 
 	double fitness = 0.0;
-	for(int i = 0; i < 1; i++) {
+	for(int i = 0; i < 2; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
 		J1_S_Field::Configuration fc;
-		fc.MaxStep = 18000;
+		fc.MaxStep = 15000;
 		fc.World = world;
 		fc.TrainingMode = 0;
 		fc.Resource = 0;
@@ -367,7 +367,7 @@ double e0_nr_test(double w[]) {
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 1.0f;
+	fitness /= 2.0f;
 
 	delete arbi;
 	delete w1;
