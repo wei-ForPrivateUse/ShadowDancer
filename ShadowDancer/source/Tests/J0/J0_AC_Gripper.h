@@ -23,6 +23,13 @@ public:
 	J0_AC_Gripper(Configuration* conf);
 	virtual ~J0_AC_Gripper();
 
+	bool IsCatching() const {
+		if(m_gripping_resource) {
+			return true;
+		}
+		return false;
+	}
+
 protected:
 	/// Grip if possible.
 	virtual void Act() override;

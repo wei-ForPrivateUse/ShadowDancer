@@ -1,12 +1,12 @@
 /*
- * J0ARobot.h
+ * J0ARobotS.h
  *
  *  Created on: Apr 20, 2018
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_A_ROBOT_H_
-#define TESTS_J0_J0_A_ROBOT_H_
+#ifndef TESTS_J0_J0_A_ROBOT_S_H_
+#define TESTS_J0_J0_A_ROBOT_S_H_
 
 #include "Common/Component/MainBody.h"
 #include "Common/Component/Motor.h"
@@ -16,11 +16,10 @@
 #include "Common/Component/Camera/Omni/OmniTag.h"
 #include "Common/Object/Block.h"
 
-#include "../J1/J1_AC_Arbitrator.h"
 #include "J0_AC_Gripper.h"
 
 ///
-class J0_A_Robot : public assa2d::Actor {
+class J0_A_Robot_S : public assa2d::Actor {
 public:
 	struct Configuration : public assa2d::Actor::Configuration {
 		b2Vec2 Position;
@@ -29,20 +28,8 @@ public:
 		int TrainingMode = 0;
 	};
 
-	J0_A_Robot(Configuration* conf);
-	virtual ~J0_A_Robot() {}
-
-	/// Get mode.
-	int GetMode() const {
-		if(m_a_s1->IsActive()) {
-			return 1;
-		} else if(m_a_s2->IsActive()) {
-			return 2;
-		} else if(m_a_s3->IsActive()) {
-			return 3;
-		}
-		return 0;
-	}
+	J0_A_Robot_S(Configuration* conf);
+	virtual ~J0_A_Robot_S() {}
 
 protected:
 	///
@@ -57,14 +44,11 @@ public:
 	Motor* m_motor[2];
 	J0_AC_Gripper* m_gripper;
 
-	J1_AC_Arbitrator* m_arbi;
-
-	ANN* m_a_s1;
-	ANN* m_a_s2;
-	ANN* m_a_s3;
+	ANN* m_single_0;	//Gripper always on;
+	ANN* m_single_1;	//Gripper always on;
 
 private:
 	int m_training_mode;
 };
 
-#endif /* TESTS_J0_J0_A_ROBOT_H_ */
+#endif /* TESTS_J0_J0_A_ROBOT_S_H_ */

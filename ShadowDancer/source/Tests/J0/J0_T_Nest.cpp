@@ -17,7 +17,7 @@ J0_T_Nest::J0_T_Nest(Configuration* conf) : assa2d::Trigger(conf) {
 
 	count = 0;
 
-	m_new_resource_id = 1000000;
+	m_new_resource_id = conf->NewResourceID;
 }
 
 void J0_T_Nest::Act() {
@@ -34,11 +34,11 @@ void J0_T_Nest::Act() {
 			if(node->GetPosition().x>m_internal.x && node->GetPosition().x<m_internal.y) {
 				count++;
 				if(m_recreate) {
-					std::vector<b2Vec2> pos(12);
+					std::vector<b2Vec2> pos(6);
 					for(int i = 0; i < 2; i++) {
 						for(int j = 0; j < 3; j++) {
 							b2Vec2 l_pos;
-							l_pos.Set(i*2-1, j*2-2);
+							l_pos.Set(i*2.5-1.25, j*2.5-2.5);
 							pos[i*3+j] = node->GetBody()->GetWorldPoint(l_pos);
 						}
 					}
@@ -46,8 +46,8 @@ void J0_T_Nest::Act() {
 					Block::Configuration bc;
 					bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
 					bc.CircleShape.m_radius = 1.0f;
-					bc.GroundFrictionForce = 5.0f;
-					bc.GroundFrictionTorque = 5.0f;
+					bc.GroundFrictionForce = 3.0f;
+					bc.GroundFrictionTorque = 3.0f;
 					for(auto & p : pos) {
 						bc.Id = m_new_resource_id++;
 						bc.Position = p;

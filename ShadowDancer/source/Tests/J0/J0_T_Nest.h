@@ -18,10 +18,16 @@ public:
 		std::size_t TargetTag = 0;
 
 		bool recreate = false;
+
+		std::size_t NewResourceID = 0;
 	};
 
 	J0_T_Nest(Configuration* conf);
 	virtual ~J0_T_Nest() { };
+
+	std::size_t GetCount() const {
+		return count;
+	}
 
 protected:
 	virtual void Act() override;

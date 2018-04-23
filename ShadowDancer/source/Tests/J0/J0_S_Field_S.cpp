@@ -1,13 +1,13 @@
 /*
- * J0_S_Field.cpp
+ * J0_S_Field_S.cpp
  *
  *  Created on: Apr 20, 2018
  *      Author: wei
  */
 
-#include "J0_S_Field.h"
+#include "J0_S_Field_S.h"
 
-J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3) : assa2d::SceneMgr(conf) {
+J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa_d) : assa2d::SceneMgr(conf) {
 	// Walls.
 	{
 		Wall::Configuration wc;
@@ -77,7 +77,7 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 	// Robots.
 	{
 		srand(time(NULL));
-		J0_A_Robot::Configuration rc;
+		J0_A_Robot_S::Configuration rc;
 		rc.Tag = MAKE_TAG('r', 'o', 'b', 'o');
 		rc.TrainingMode = conf->TrainingMode;
 
@@ -98,11 +98,9 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
             rc.Position.Set(x, y);
             rc.Angle = assa2d::RandomFloat(0, M_PI*2.0f);
 
-            auto robot = AddNode<J0_A_Robot>(&rc);
-            robot->m_arbi->SetWeights(arbi);
-            robot->m_a_s1->SetWeights(w1);
-            robot->m_a_s2->SetWeights(w2);
-            robot->m_a_s3->SetWeights(w3);
+            auto robot = AddNode<J0_A_Robot_S>(&rc);
+            robot->m_single_0->SetWeights(wa_a);
+            robot->m_single_1->SetWeights(wa_d);
             m_robot.push_back(robot);
 		}
 	}

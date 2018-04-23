@@ -5,7 +5,7 @@
  *      Author: wei
  */
 
-#include "J0_A_Robot.h"
+#include "J0_A_Robot_S.h"
 
 /// Activation function.
 inline float32 Activation(float32 x, int32 c) {
@@ -20,7 +20,7 @@ struct ResourcePred : public TagPredicate {
 	}
 };
 
-J0_A_Robot::J0_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
+J0_A_Robot_S::J0_A_Robot_S(Configuration* conf) : assa2d::Actor(conf) {
 	// mainbody
 	{
 		MainBody::Configuration mbc;
@@ -146,31 +146,20 @@ J0_A_Robot::J0_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 
 	// anns
 	{
-		J1_AC_Arbitrator::Configuration arbic;
-		arbic.Id = 30;
-		arbic.Priority = 1;
-		arbic.InputIndex = {10, 11, 12, 13, 14, 40, 41, 42};
-		arbic.OutputIndex = {40, 41, 42};
-		arbic.SubControllerId = {31, 32, 33};
-		m_arbi = AddComponent<J1_AC_Arbitrator>(&arbic);
-
+		//m_single_0 //gripper always on
 		ANN::Configuration ac;
-		ac.Priority = 2;
-
-		ac.Id = 31;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25};
+		ac.Priority = 1;
+		ac.Id = 34;
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 30, 31, 32, 35, 36, 37, 13, 14, 15, 16, 17, 18, 19, 100};
 		ac.OutputIndex = {50, 51};
-		m_a_s1 = AddComponent<ANN>(&ac);
+		m_single_0 = AddComponent<ANN>(&ac);
 
-		ac.Id = 32;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 35, 36, 37, 17, 18};
-		ac.OutputIndex = {50, 51};
-		m_a_s2 = AddComponent<ANN>(&ac);
-
-		ac.Id = 33;
-		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 30, 31, 32, 15, 16, 100};
-		ac.OutputIndex = {50, 51};
-		m_a_s3 = AddComponent<ANN>(&ac);
+		//m_single_1
+		ac.Priority = 1;
+		ac.Id = 35;
+		ac.InputIndex = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 30, 31, 32, 35, 36, 37, 13, 14, 15, 16, 17, 18, 19, 100};
+		ac.OutputIndex = {50, 51, 101};
+		m_single_1 = AddComponent<ANN>(&ac);
 	}
 
 	// Training mode.
@@ -181,10 +170,8 @@ J0_A_Robot::J0_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 	GetDataPool().Set<float>(61, 100.0f);
 }
 
-void J0_A_Robot::PreAct() {
-	std::size_t robot_s1_count = 0;
-	std::size_t robot_s2_count = 0;
-	std::size_t robot_s3_count = 0;
+void J0_A_Robot_S::PreAct() {
+	std::size_t robot_count = 0;
 	std::size_t resource_count = 0;
 	std::size_t package_count = 0;
 
@@ -196,28 +183,13 @@ void J0_A_Robot::PreAct() {
 	// Count robots.
 	auto const& robot_list = GetSceneMgr()->GetNodesByTag(MAKE_TAG('r', 'o', 'b', 'o'));
 	for(auto node : robot_list) {
-		auto robot = static_cast<J0_A_Robot*>(node);
+		auto robot = static_cast<J0_A_Robot_S*>(node);
 		if(robot != this) {
 			float32 dist_squared = (robot->GetMainComponent()->GetPosition()-this->GetMainComponent()->GetPosition()).LengthSquared();
 			float32 omni_range = static_cast<OmniTag<TagPredicate>*>(m_omni_robot)->GetRange();
 			float32 omni_range_squared = omni_range * omni_range;
 			if(dist_squared < omni_range_squared) {
-				switch(robot->GetMode()) {
-				case 1: {
-					robot_s1_count++;
-				}
-					break;
-				case 2: {
-					robot_s2_count++;
-				}
-					break;
-				case 3: {
-					robot_s3_count++;
-				}
-					break;
-				default:
-					break;
-				}
+				robot_count++;
 			}
 		}
 	}
@@ -273,9 +245,6 @@ void J0_A_Robot::PreAct() {
 
 
 	// Set outputs.
-	GetDataPool().Set<float>(10, Activation(robot_s1_count, 2));
-	GetDataPool().Set<float>(11, Activation(robot_s2_count, 2));
-	GetDataPool().Set<float>(12, Activation(robot_s3_count, 2));
 	GetDataPool().Set<float>(13, Activation(resource_count, 1));
 	GetDataPool().Set<float>(14, Activation(package_count, 1));
 	GetDataPool().Set<float>(15, c_ang_resource);
@@ -283,58 +252,28 @@ void J0_A_Robot::PreAct() {
 	GetDataPool().Set<float>(17, c_ang_package);
 	GetDataPool().Set<float>(18, s_ang_package);
 
+	GetDataPool().Set<float>(19, Activation(robot_count, 2));
+
 	GetDataPool().Set<float>(100, m_gripper->IsCatching()?1.0f:0.0f);
 
 	// Training modes.
 	switch(m_training_mode) {
-	case 0: {
-		m_arbi -> SetActive(true);
-		m_a_s1 -> SetActive(false);
-		m_a_s2 -> SetActive(false);
-		m_a_s3 -> SetActive(false);
-	}
-		break;
-	case 1: {
-		m_arbi -> SetActive(false);
-		m_a_s1 -> SetActive(true);
-		m_a_s2 -> SetActive(false);
-		m_a_s3 -> SetActive(false);
-	}
-		break;
-	case 2: {
-		m_arbi -> SetActive(false);
-		m_a_s3 -> SetActive(false);
+	case -2: {
+		m_single_0 -> SetActive(true);
+		m_single_1 -> SetActive(false);
 
-		if(resource_count==0 && !m_gripper->IsCatching()) {
-			m_a_s1 -> SetActive(true);
-			m_a_s2 -> SetActive(false);
-		} else {
-			m_a_s1 -> SetActive(false);
-			m_a_s2 -> SetActive(true);
-		}
+		GetDataPool().Set<float>(101, 1.0);
 	}
 		break;
-	case 3: {
-		m_arbi -> SetActive(false);
-		m_a_s2 -> SetActive(false);
-
-		if(package_count == 0) {
-			m_a_s1 -> SetActive(true);
-			m_a_s3 -> SetActive(false);
-		} else {
-			m_a_s1 -> SetActive(false);
-			m_a_s3 -> SetActive(true);
-		}
+	case -1: {
+		m_single_0 -> SetActive(false);
+		m_single_1 -> SetActive(true);
 	}
 		break;
 	default:
 		break;
 	}
 
-	if(GetMode() == 2) {
-		m_gripper->SetActive(true);
-	} else {
-		m_gripper->SetActive(false);
-	}
+	m_gripper -> SetActive(GetDataPool().Get<float>(101)>0.0?true:false);
 }
 
