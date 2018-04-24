@@ -26,6 +26,7 @@ J0_A_Robot::J0_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		MainBody::Configuration mbc;
 
 		mbc.Id = 0;
+		mbc.Friction = 0.5f;
 		mbc.Position = conf->Position;
 		mbc.Angle = conf->Angle;
 		mbc.CircleShape.m_radius = 0.5;

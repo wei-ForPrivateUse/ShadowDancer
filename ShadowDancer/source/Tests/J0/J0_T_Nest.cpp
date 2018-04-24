@@ -46,7 +46,7 @@ void J0_T_Nest::Act() {
 					Block::Configuration bc;
 					bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
 					bc.CircleShape.m_radius = 1.0f;
-					bc.GroundFrictionForce = 3.0f;
+					bc.GroundFrictionForce = 1.0f;
 					bc.GroundFrictionTorque = 3.0f;
 					for(auto & p : pos) {
 						bc.Id = m_new_resource_id++;

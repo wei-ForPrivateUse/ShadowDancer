@@ -127,8 +127,8 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
 		bc.CircleShape.m_radius = 1.0f;
-		bc.GroundFrictionForce = 3.0f;
-		bc.GroundFrictionTorque = 3.0f;
+		bc.GroundFrictionForce = 1.0f;
+		bc.GroundFrictionTorque = 1.0f;
 
 		for(std::size_t i = 0; i < conf->Resource; i++) {
 			bc.Id = 1000 + i;
@@ -147,8 +147,10 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		bc.Tag = MAKE_TAG('p', 'a', 'c', 'k');
 		bc.ShapeType = assa2d::ShapeType::Polygon;
 		bc.PolygonShape.SetAsBox(2.5, 3.75);
-		bc.GroundFrictionForce = 3.0f;
-		bc.GroundFrictionTorque = 3.0f;
+		bc.Friction = 1.0f;
+		bc.Density = 0.3f;
+		bc.GroundFrictionForce = 1.0f;
+		bc.GroundFrictionTorque = 0.4f;
 
 		for(std::size_t i = 0; i < conf->Package; i++) {
 			bc.Id = 10000 + i;

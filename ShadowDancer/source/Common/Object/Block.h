@@ -22,7 +22,7 @@ public:
 		b2CircleShape CircleShape;
 
 		float32 Density = 1.0f;
-		float32 Friction = 0.2f;
+		float32 Friction = 0.3f;
 		float32 Restitution = 0.3f;
 
 		bool StaticBody = false;

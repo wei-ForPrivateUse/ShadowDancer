@@ -25,7 +25,7 @@ J0_AC_Gripper::J0_AC_Gripper(Configuration* conf) : assa2d::Component(conf) {
 	v[2].Set(-0.3f, -0.2f);
 	s.Set(v, 3);
 	fd.shape = &s;
-	fd.friction = 0.1f;
+	fd.friction = 0.4f;
 	fd.density = 1.0f;
 	fd.restitution = 0.3f;
 
