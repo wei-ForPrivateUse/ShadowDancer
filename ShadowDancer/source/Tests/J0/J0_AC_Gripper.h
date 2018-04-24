@@ -30,6 +30,13 @@ public:
 		return false;
 	}
 
+	bool IsTouching() const {
+		if(m_touching_resource) {
+			return true;
+		}
+		return false;
+	}
+
 protected:
 	/// Grip if possible.
 	virtual void Act() override;

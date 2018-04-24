@@ -81,6 +81,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		bc.ShapeType = assa2d::ShapeType::Polygon;
 		bc.PolygonShape.SetAsBox(0.3f, 2.5f);
 		bc.StaticBody = true;
+		bc.Friction = 0.0f;
 
 		for(std::size_t i = 0; i < 4; i++) {
 			bc.Id = 950 + i;

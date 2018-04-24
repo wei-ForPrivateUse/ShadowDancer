@@ -17,4 +17,6 @@
 
 #include <Tests/J0/J0_M_M1.h>
 
+#include <Tests/J0/J0_M_MA.h>
+
 #endif /* __SHADOWDANCER__ */

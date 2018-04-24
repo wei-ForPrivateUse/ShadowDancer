@@ -13,8 +13,8 @@ inline float32 Activation(float32 x, int32 c) {
 }
 
 /// Predicate for resource.
-struct ResourcePred : public TagPredicate {
-	ResourcePred(Configuration* conf): TagPredicate(conf){}
+struct ResourcePred_S : public TagPredicate {
+	ResourcePred_S(Configuration* conf): TagPredicate(conf){}
 	virtual bool FilterAdditional(assa2d::Node* node) override {
 		return node->CheckFlag(CATCHED_FLAG);
 	}
@@ -72,7 +72,7 @@ J0_A_Robot_S::J0_A_Robot_S(Configuration* conf) : assa2d::Actor(conf) {
 		IRSenser::Configuration irc;
 
 		irc.Priority = 0;
-		irc.Range = 2.0f;
+		irc.Range = 3.0f;
 		irc.Position.Set(0.0f, 0.0f);
 
 	    irc.Angle = M_PI / 10.0f;
@@ -122,7 +122,7 @@ J0_A_Robot_S::J0_A_Robot_S(Configuration* conf) : assa2d::Actor(conf) {
 		otc_rp.Predicate.DatumExemption = true;
 		m_omni_robot = AddComponent<OmniTag<TagPredicate>>(&otc_rp);
 
-		OmniTag<ResourcePred>::Configuration otc_rep;
+		OmniTag<ResourcePred_S>::Configuration otc_rep;
 		otc_rep.Id = 22;
 		otc_rep.Priority = 0;
 		otc_rep.Range = 8;
@@ -131,7 +131,7 @@ J0_A_Robot_S::J0_A_Robot_S(Configuration* conf) : assa2d::Actor(conf) {
 		otc_rep.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
 		otc_rep.Predicate.Datum = this;
 		otc_rep.Predicate.DatumExemption = true;
-		m_omni_resource = AddComponent<OmniTag<ResourcePred>>(&otc_rep);
+		m_omni_resource = AddComponent<OmniTag<ResourcePred_S>>(&otc_rep);
 
 		OmniTag<TagPredicate>::Configuration otc_tp;
 		otc_tp.Id = 23;
@@ -201,7 +201,7 @@ void J0_A_Robot_S::PreAct() {
 		for(auto node : resource_list) {
 			auto resource = static_cast<Block*>(node);
 			float32 dist_squared = (resource->GetPosition()-this->GetMainComponent()->GetPosition()).LengthSquared();
-			float32 omni_range = static_cast<OmniTag<ResourcePred>*>(m_omni_resource)->GetRange();
+			float32 omni_range = static_cast<OmniTag<ResourcePred_S>*>(m_omni_resource)->GetRange();
 			float32 omni_range_squared = omni_range * omni_range;
 			if(node->CheckFlag(CATCHED_FLAG)) {
 				continue;
