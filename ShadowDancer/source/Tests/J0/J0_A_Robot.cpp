@@ -305,7 +305,7 @@ void J0_A_Robot::PreAct() {
 		m_arbi -> SetActive(false);
 		m_a_s3 -> SetActive(false);
 
-		if(resource_count==0 && !m_gripper->IsCatching()) {
+		if(package_count == 0) {
 			m_a_s1 -> SetActive(true);
 			m_a_s2 -> SetActive(false);
 		} else {
@@ -318,7 +318,7 @@ void J0_A_Robot::PreAct() {
 		m_arbi -> SetActive(false);
 		m_a_s2 -> SetActive(false);
 
-		if(package_count == 0) {
+		if(resource_count==0 && !m_gripper->IsCatching()) {
 			m_a_s1 -> SetActive(true);
 			m_a_s3 -> SetActive(false);
 		} else {
@@ -331,7 +331,7 @@ void J0_A_Robot::PreAct() {
 		break;
 	}
 
-	if(GetMode() == 2) {
+	if(GetMode() == 3) {
 		m_gripper->SetActive(true);
 	} else {
 		m_gripper->SetActive(false);

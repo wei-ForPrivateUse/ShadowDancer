@@ -21,8 +21,8 @@ public:
 		int TrainingMode = 0; 			// -2, -1, 0, 1, 2, 3.
 
 		std::size_t Robot = 30;
-		std::size_t Resource = 16;
-		std::size_t Package = 8;
+		std::size_t Resource = 10;
+		std::size_t Package = 5;
 	};
 
 	J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa_d);

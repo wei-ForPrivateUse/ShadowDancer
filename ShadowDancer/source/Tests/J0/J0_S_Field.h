@@ -18,11 +18,11 @@
 class J0_S_Field : public assa2d::SceneMgr {
 public:
 	struct Configuration : assa2d::SceneMgr::Configuration {
-		int TrainingMode = 0; 			// -2, -1, 0, 1, 2, 3.
+		int TrainingMode = 0; 			// 0, 1, 2, 3.
 
 		std::size_t Robot = 30;
-		std::size_t Resource = 16;
-		std::size_t Package = 8;
+		std::size_t Resource = 10;
+		std::size_t Package = 5;
 	};
 
 	J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3);

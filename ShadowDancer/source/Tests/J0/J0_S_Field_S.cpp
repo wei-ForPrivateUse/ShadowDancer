@@ -74,6 +74,23 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		AddNode<Wall>(&wc);
 	}
 
+	// Barriers.
+	{
+		Block::Configuration bc;
+		bc.Tag = MAKE_TAG('b', 'a', 'r', 'r');
+		bc.ShapeType = assa2d::ShapeType::Polygon;
+		bc.PolygonShape.SetAsBox(0.3f, 2.5f);
+		bc.StaticBody = true;
+
+		for(std::size_t i = 0; i < 4; i++) {
+			bc.Id = 950 + i;
+			float32 x = -48.284f;
+			float32 y = -13.5 + i*9;
+			bc.Position.Set(x, y);
+			AddNode<Block>(&bc);
+		}
+	}
+
 	// Robots.
 	{
 		srand(time(NULL));
@@ -115,7 +132,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 
 		for(std::size_t i = 0; i < conf->Resource; i++) {
 			bc.Id = 1000 + i;
-			float32 r = assa2d::RandomFloat(5.0f, 44.0f);
+			float32 r = assa2d::RandomFloat(4.0f, 45.0f);
 			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
 			float32 x = r * std::cos(a);
 			float32 y = r * std::sin(a);
@@ -135,7 +152,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 
 		for(std::size_t i = 0; i < conf->Package; i++) {
 			bc.Id = 10000 + i;
-			float32 r = assa2d::RandomFloat(6.0f, 40.0f);
+			float32 r = assa2d::RandomFloat(8.0f, 40.0f);
 			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
 			float32 x = r * std::cos(a);
 			float32 y = r * std::sin(a);
