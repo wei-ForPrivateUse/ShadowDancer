@@ -16,6 +16,9 @@ double e3(double w[]);
 double e0_nr_test(double w[]);
 double e0_np_test(double w[], int supplement);
 
+////////J0
+double J0_s1(double w[], bool flag);
+
 ///------------- JNA interface function -----------------///
 double evaluateFcns(double individual[], int func_index) {
 	double fitness = 0.0;
@@ -99,11 +102,70 @@ double evaluateFcns(double individual[], int func_index) {
 	case 1000:
 		fitness = e0_nr_test(individual);
 		break;
+	case 10010:
+		fitness = J0_s1(individual, false);
+		break;
+	case 10011:
+		fitness = J0_s1(individual, true);
+		break;
 	default:
 		break;
 	}
 	return fitness;
 }
+
+/////////////////
+double J0_s1(double w[], bool flag) {
+	ANNWeights* arbi = new ANNWeights({8, 20, 3}, {false, true, false}, {false, true, true}, true);
+	ANNWeights* w1 = new ANNWeights({14, 20, 2}, {false, true, false}, {false, true, true}, true);
+	ANNWeights* w2 = new ANNWeights({19, 20, 2}, {false, true, false}, {false, true, true}, true);
+	ANNWeights* w3 = new ANNWeights({14, 20, 2}, {false, true, false}, {false, true, true}, true);
+
+	arbi->Randomize();
+	//w1->Randomize();
+	w2->Randomize();
+	w3->Randomize();
+
+	w1->Set(w);
+
+	double fitness_A = 0.0f;
+	double fitness_B = 0.0f;
+	for(int i = 0; i < 2; i++) {
+		b2Vec2 gravity;
+		gravity.Set(0.0f, 0.0f);
+		b2World* world = new b2World(gravity);
+
+		J0_S_Field::Configuration conf;
+		conf.World = world;
+		conf.TimeStep = 0.02f;
+		conf.MaxStep = 3000;
+		conf.TrainingMode = 1;
+
+		J0_M_M1 monitor;
+		assa2d::SceneMgr* scenemgr = new J0_S_Field(&conf, arbi, w1, w2, w3);
+		scenemgr->Run(&monitor);
+
+		delete scenemgr;
+		delete world;
+
+		fitness_A += monitor.GetFitnessA();
+		fitness_B += monitor.GetFitnessB();
+	}
+	fitness_A /= 2.0f;
+	fitness_B /= 2.0f;
+
+	delete arbi;
+	delete w1;
+	delete w2;
+	delete w3;
+
+	if(flag) {
+		return fitness_A;
+	} else {
+		return fitness_B;
+	}
+}
+
 ///------------------------------------------------------///
 
 
