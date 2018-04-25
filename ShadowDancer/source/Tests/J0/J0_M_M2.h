@@ -58,7 +58,9 @@ protected:
 			if(s->CountNodeById(node.first) == 0) {
 				fitness += node.second;
 			} else {
-				fitness += node.second - (static_cast<Block*>(s->GetNodeById(node.first))->GetPosition()-b2Vec2(70.0f, 0.0f)).Length();
+				if(node.second > (static_cast<Block*>(s->GetNodeById(node.first))->GetPosition()-b2Vec2(70.0f, 0.0f)).Length()) {
+					fitness += node.second - (static_cast<Block*>(s->GetNodeById(node.first))->GetPosition()-b2Vec2(70.0f, 0.0f)).Length();
+				}
 			}
 		}
 	};

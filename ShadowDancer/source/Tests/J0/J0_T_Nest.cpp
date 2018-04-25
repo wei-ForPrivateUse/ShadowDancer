@@ -34,20 +34,22 @@ void J0_T_Nest::Act() {
 			if(node->GetPosition().x>m_internal.x && node->GetPosition().x<m_internal.y) {
 				count++;
 				if(m_recreate) {
-					std::vector<b2Vec2> pos(6);
-					for(int i = 0; i < 2; i++) {
-						for(int j = 0; j < 3; j++) {
-							b2Vec2 l_pos;
-							l_pos.Set(i*2.5-1.25, j*2.5-2.5);
-							pos[i*3+j] = node->GetBody()->GetWorldPoint(l_pos);
-						}
-					}
+					std::vector<b2Vec2> pos(7);
+					pos[0] = node->GetBody()->GetWorldPoint(b2Vec2(0.0f, 0.0f));
+					pos[1] = node->GetBody()->GetWorldPoint(b2Vec2(1.25f, 2.165f));
+					pos[2] = node->GetBody()->GetWorldPoint(b2Vec2(-1.25f, 2.165f));
+					pos[3] = node->GetBody()->GetWorldPoint(b2Vec2(-2.5f, 0.0f));
+					pos[4] = node->GetBody()->GetWorldPoint(b2Vec2(-1.25f, -2.165f));
+					pos[5] = node->GetBody()->GetWorldPoint(b2Vec2(1.25f, -2.165f));
+					pos[6] = node->GetBody()->GetWorldPoint(b2Vec2(2.5f, 0.0f));
 
 					Block::Configuration bc;
 					bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
 					bc.CircleShape.m_radius = 1.0f;
+					bc.Density = 0.7f;
+					bc.Friction = 0.05f;
 					bc.GroundFrictionForce = 1.0f;
-					bc.GroundFrictionTorque = 3.0f;
+					bc.GroundFrictionTorque = 2.0f;
 					for(auto & p : pos) {
 						bc.Id = m_new_resource_id++;
 						bc.Position = p;

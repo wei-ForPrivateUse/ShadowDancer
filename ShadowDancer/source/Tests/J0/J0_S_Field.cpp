@@ -79,14 +79,14 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('b', 'a', 'r', 'r');
 		bc.ShapeType = assa2d::ShapeType::Polygon;
-		bc.PolygonShape.SetAsBox(0.3f, 2.5f);
+		bc.PolygonShape.SetAsBox(0.3f, 1.25f);
 		bc.StaticBody = true;
 		bc.Friction = 0.0f;
 
 		for(std::size_t i = 0; i < 4; i++) {
 			bc.Id = 950 + i;
 			float32 x = -48.284f;
-			float32 y = -13.5 + i*9;
+			float32 y = -12.75 + i*8.5;
 			bc.Position.Set(x, y);
 			AddNode<Block>(&bc);
 		}
@@ -130,8 +130,10 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
 		bc.CircleShape.m_radius = 1.0f;
+		bc.Density = 0.7f;
+		bc.Friction = 0.05f;
 		bc.GroundFrictionForce = 1.0f;
-		bc.GroundFrictionTorque = 1.0f;
+		bc.GroundFrictionTorque = 2.0f;
 
 		for(std::size_t i = 0; i < conf->Resource; i++) {
 			bc.Id = 1000 + i;
@@ -149,11 +151,18 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('p', 'a', 'c', 'k');
 		bc.ShapeType = assa2d::ShapeType::Polygon;
-		bc.PolygonShape.SetAsBox(2.5, 3.75);
+		b2Vec2 w_v[6];
+		w_v[5] = b2Vec2(2.0f, 3.464f);
+		w_v[4] = b2Vec2(-2.0f, 3.464f);
+		w_v[3] = b2Vec2(-4.0f, 0.0f);
+		w_v[2] = b2Vec2(-2.0f, -3.464f);
+		w_v[1] = b2Vec2(2.0f, -3.464f);
+		w_v[0] = b2Vec2(4.0f, 0.0f);
+		bc.PolygonShape.Set(w_v, 6);
 		bc.Friction = 1.0f;
 		bc.Density = 0.3f;
-		bc.GroundFrictionForce = 1.0f;
-		bc.GroundFrictionTorque = 0.4f;
+		bc.GroundFrictionForce = 0.5f;
+		bc.GroundFrictionTorque = 1.1f;
 
 		for(std::size_t i = 0; i < conf->Package; i++) {
 			bc.Id = 10000 + i;

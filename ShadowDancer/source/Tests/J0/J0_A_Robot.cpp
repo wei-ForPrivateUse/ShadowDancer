@@ -20,6 +20,17 @@ struct ResourcePred_Arbi : public TagPredicate {
 	}
 };
 
+/// Predicate for robot.
+struct RobotPred_Arbi : public TagPredicate {
+	RobotPred_Arbi(Configuration* conf): TagPredicate(conf){}
+	virtual bool FilterAdditional(assa2d::Node* node) override {
+		int mode = static_cast<J0_A_Robot*>(node)->GetMode();
+		if(mode != 1)
+			return true;
+		return false;
+	}
+};
+
 J0_A_Robot::J0_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 	// mainbody
 	{
@@ -111,7 +122,7 @@ J0_A_Robot::J0_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 
 	// omni-camera
 	{
-		OmniTag<TagPredicate>::Configuration otc_rp;
+		OmniTag<RobotPred_Arbi>::Configuration otc_rp;
 		otc_rp.Id = 21;
 		otc_rp.Priority = 0;
 		otc_rp.Range = 8;
@@ -120,7 +131,7 @@ J0_A_Robot::J0_A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		otc_rp.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
 		otc_rp.Predicate.Datum = this;
 		otc_rp.Predicate.DatumExemption = true;
-		m_omni_robot = AddComponent<OmniTag<TagPredicate>>(&otc_rp);
+		m_omni_robot = AddComponent<OmniTag<RobotPred_Arbi>>(&otc_rp);
 
 		OmniTag<ResourcePred_Arbi>::Configuration otc_rep;
 		otc_rep.Id = 22;
@@ -200,7 +211,7 @@ void J0_A_Robot::PreAct() {
 		auto robot = static_cast<J0_A_Robot*>(node);
 		if(robot != this) {
 			float32 dist_squared = (robot->GetMainComponent()->GetPosition()-this->GetMainComponent()->GetPosition()).LengthSquared();
-			float32 omni_range = static_cast<OmniTag<TagPredicate>*>(m_omni_robot)->GetRange();
+			float32 omni_range = static_cast<OmniTag<RobotPred_Arbi>*>(m_omni_robot)->GetRange();
 			float32 omni_range_squared = omni_range * omni_range;
 			if(dist_squared < omni_range_squared) {
 				switch(robot->GetMode()) {
