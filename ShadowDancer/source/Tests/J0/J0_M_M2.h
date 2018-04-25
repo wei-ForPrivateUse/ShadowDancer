@@ -27,38 +27,38 @@ public:
 
 protected:
 	virtual void Initialize() override {
-		auto a_s = static_cast<const J1_S_Field*>(GetSceneMgr());
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
 		a_s->GetContactMgr().AddContactListener(this);
 	}
 
 	virtual void Step() override {
-		auto a_s = static_cast<const J1_S_Field*>(GetSceneMgr());
-		auto s = const_cast<J1_S_Field*>(a_s);
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
+		auto s = const_cast<J0_S_Field*>(a_s);
 
 		// Record original position of resources.
-		if(s->CountNodesByTag(MAKE_TAG('r', 'e', 's', 'o')) > 0) {
-			for(auto node : s->GetNodesByTag(MAKE_TAG('r', 'e', 's', 'o'))) {
-				auto resource = static_cast<Block*>(node);
-				if(mapping.count(resource->GetId()) == 0) {
-					mapping[resource->GetId()] = resource->GetPosition().Length();
+		if(s->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k')) > 0) {
+			for(auto node : s->GetNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'))) {
+				auto package = static_cast<Block*>(node);
+				if(mapping.count(package->GetId()) == 0) {
+					mapping[package->GetId()] = (package->GetPosition()-b2Vec2(70.0f, 0.0f)).Length();
 				}
 			}
+		} else {
+			fitness += s->GetMaxStep() - s->GetCurrentStep();
+			s->Terminate();
 		}
 	}
 
 	virtual void Finalize() override {
-		auto a_s = static_cast<const J1_S_Field*>(GetSceneMgr());
-		auto s = const_cast<J1_S_Field*>(a_s);
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
+		auto s = const_cast<J0_S_Field*>(a_s);
 
-		// Direct bonus.
-		fitness += s->m_nest->GetResourceCollected() * 100.0f;
-
-		// Bootstrapping part.
-		if(s->CountNodesByTag(MAKE_TAG('r', 'e', 's', 'o')) > 0) {
-			for(auto node : s->GetNodesByTag(MAKE_TAG('r', 'e', 's', 'o'))) {
-				auto resource = static_cast<Block*>(node);
-
-				fitness += std::max(0.0f, mapping[resource->GetId()] - resource->GetPosition().Length());
+		//
+		for(auto& node : mapping) {
+			if(s->CountNodeById(node.first) == 0) {
+				fitness += node.second;
+			} else {
+				fitness += node.second - (static_cast<Block*>(s->GetNodeById(node.first))->GetPosition()-b2Vec2(70.0f, 0.0f)).Length();
 			}
 		}
 	};
@@ -76,16 +76,9 @@ protected:
 		auto tagA = nA->GetTag();
 		auto tagB = nB->GetTag();
 
-		if(tagA == MAKE_TAG('w', 'a', 'l', 'l') || tagB == MAKE_TAG('w', 'a', 'l', 'l')) {
-			fitness -= 1.0f;
-		}
-
-		if(ntA == assa2d::Node_Type::Actor_Component && ntB == assa2d::Node_Type::Actor_Component) {
-			auto robotA = static_cast<assa2d::Component*>(nA)->GetActor();
-			auto robotB = static_cast<assa2d::Component*>(nB)->GetActor();
-			if(robotA != robotB) {
-				fitness -= 1.0f;
-			}
+		if((ntA == assa2d::Node_Type::Actor_Component&&tagB == MAKE_TAG('p', 'a', 'c', 'k')) ||
+				(ntB == assa2d::Node_Type::Actor_Component&&tagA == MAKE_TAG('p', 'a', 'c', 'k'))) {
+			fitness += 0.001;
 		}
 	}
 

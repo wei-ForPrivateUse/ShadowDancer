@@ -16,34 +16,47 @@ class J0_M_M3 : public assa2d::Monitor, public assa2d::ContactListener {
 public:
 	J0_M_M3() {
 		fitness = 0.0f;
-		contact = 0;
 	};
 	virtual ~J0_M_M3() { };
 
 	float GetFitness() const {
-		return fitness * (1.0f - A(contact));
+		return fitness;
 	}
 
 protected:
 	virtual void Initialize() override {
-		auto a_s = static_cast<const J1_S_Field*>(GetSceneMgr());
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
 		a_s->GetContactMgr().AddContactListener(this);
 	}
 
-	virtual void Step() override { }
+	virtual void Step() override {
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
+		auto s = const_cast<J0_S_Field*>(a_s);
+
+		// Record original position of resources.
+		if(s->CountNodesByTag(MAKE_TAG('r', 'e', 's', 'o')) > 0) {
+			for(auto node : s->GetNodesByTag(MAKE_TAG('r', 'e', 's', 'o'))) {
+				auto package = static_cast<Block*>(node);
+				if(mapping.count(package->GetId()) == 0) {
+					mapping[package->GetId()] = (package->GetPosition()-b2Vec2(-70.0f, 0.0f)).Length();
+				}
+			}
+		} else {
+			fitness += s->GetMaxStep() - s->GetCurrentStep();
+			s->Terminate();
+		}
+	}
 
 	virtual void Finalize() override {
-		auto a_s = static_cast<const J1_S_Field*>(GetSceneMgr());
-		auto s = const_cast<J1_S_Field*>(a_s);
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
+		auto s = const_cast<J0_S_Field*>(a_s);
 
-		// Direct bonus.
-		fitness += s->m_nest->GetPackageCollected() * 1800.0f;
-
-		// Bootstrapping part.
-		if(s->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k')) > 0) {
-			for(auto node : s->GetNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'))) {
-				auto package = static_cast<J1_O_Package*>(node);
-				fitness += 1800.0f - package->GetRequiredTouch();
+		//
+		for(auto& node : mapping) {
+			if(s->CountNodeById(node.first) == 0) {
+				fitness += node.second;
+			} else {
+				fitness += node.second - (static_cast<Block*>(s->GetNodeById(node.first))->GetPosition()-b2Vec2(-70.0f, 0.0f)).Length();
 			}
 		}
 	};
@@ -61,28 +74,16 @@ protected:
 		auto tagA = nA->GetTag();
 		auto tagB = nB->GetTag();
 
-		if(tagA == MAKE_TAG('w', 'a', 'l', 'l') || tagB == MAKE_TAG('w', 'a', 'l', 'l')) {
-			contact++;
+		if((ntA == assa2d::Node_Type::Actor_Component&&tagB == MAKE_TAG('r', 'e', 's', 'o')) ||
+				(ntB == assa2d::Node_Type::Actor_Component&&tagA == MAKE_TAG('r', 'e', 's', 'o'))) {
+			fitness += 0.001;
 		}
-
-		if(ntA == assa2d::Node_Type::Actor_Component && ntB == assa2d::Node_Type::Actor_Component) {
-			auto robotA = static_cast<assa2d::Component*>(nA)->GetActor();
-			auto robotB = static_cast<assa2d::Component*>(nB)->GetActor();
-			if(robotA != robotB) {
-				contact++;
-			}
-		}
-	}
-
-	float32 A(float32 sum) const {
-		float32 t = sum + 10.0f;
-		float32 tmp = log10(t)/log10(100);
-		return -0.5f + 1.0f / (1.0f + expf(-tmp));
 	}
 
 private:
 	float32 fitness;
-	int32 contact;
+
+	std::unordered_map<std::size_t, float32> mapping;
 };
 
 #endif /* TESTS_J0_J0_M_M3_H_ */
