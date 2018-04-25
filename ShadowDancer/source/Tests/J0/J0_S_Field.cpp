@@ -162,7 +162,7 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		bc.Friction = 1.0f;
 		bc.Density = 0.3f;
 		bc.GroundFrictionForce = 0.5f;
-		bc.GroundFrictionTorque = 1.1f;
+		bc.GroundFrictionTorque = 0.6f;
 
 		for(std::size_t i = 0; i < conf->Package; i++) {
 			bc.Id = 10000 + i;
