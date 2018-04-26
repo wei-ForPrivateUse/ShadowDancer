@@ -78,7 +78,7 @@ protected:
 
 		if((ntA == assa2d::Node_Type::Actor_Component&&tagB == MAKE_TAG('r', 'e', 's', 'o')) ||
 				(ntB == assa2d::Node_Type::Actor_Component&&tagA == MAKE_TAG('r', 'e', 's', 'o'))) {
-			fitness += 0.001;
+			//fitness += 0.001;
 		}
 	}
 

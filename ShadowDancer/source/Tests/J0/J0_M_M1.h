@@ -12,7 +12,6 @@
 
 #include "J0_S_Field.h"
 
-
 class J0_M_M1 : public assa2d::Monitor, public assa2d::ContactListener {
 public:
 	J0_M_M1() {
@@ -35,13 +34,13 @@ protected:
 		a_s->GetContactMgr().AddContactListener(this);
 
 		CheckPoint cp;
-		for(int i = -55; i < 55; i = i + 8){
-			for(int j = -55; j < 55; j = j + 8) {
-				cp.Position.Set(i, j);
-				if(cp.Position.LengthSquared() < 2300) {
-					m_check_point_vector.push_back(cp);
-				}
-			}
+		for(int i = 0; i < 100; i++) {
+			float32 r = assa2d::RandomFloat(0.0f, 48.0f);
+			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
+			float32 x = r * std::cos(a);
+			float32 y = r * std::sin(a);
+			cp.Position.Set(x, y);
+			m_check_point_vector.push_back(cp);
 		}
 	}
 
@@ -71,10 +70,13 @@ protected:
 			fitness_A -= cp.record*0.01;
 		}
 
-		fitness_B += visited_count/m_check_point_vector.size();
+		fitness_B += visited_count;
 	}
 
-	virtual void Finalize() { };
+	virtual void Finalize() {
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
+		fitness_B /= a_s->GetMaxStep();
+	};
 
 	/// Obstacle avoidance.
 	virtual void PreSolve(const b2Contact* contact, const b2Manifold* oldManifold) override {
@@ -87,8 +89,8 @@ protected:
 		auto ntB = nB->GetType();
 
 		if(ntA == assa2d::Node_Type::Actor_Component || ntB == assa2d::Node_Type::Actor_Component) {
-			fitness_A -= 1.0f;
-			fitness_A -= 1.0f;
+			fitness_A -= 5.0f;
+			fitness_B -= 1.0f;
 		}
 	}
 
