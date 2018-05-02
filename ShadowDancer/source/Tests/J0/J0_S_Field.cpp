@@ -160,7 +160,7 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		w_v[0] = b2Vec2(4.0f, 0.0f);
 		bc.PolygonShape.Set(w_v, 6);
 		bc.Friction = 1.0f;
-		bc.Density = 0.7f;
+		bc.Density = 0.55f;
 		bc.GroundFrictionForce = 0.5f;
 		bc.GroundFrictionTorque = 0.6f;
 

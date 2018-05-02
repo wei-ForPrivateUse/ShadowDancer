@@ -128,7 +128,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
 		bc.CircleShape.m_radius = 1.0f;
-		bc.Density = 0.7f;
+		bc.Density = 0.55f;
 		bc.Friction = 0.05f;
 		bc.GroundFrictionForce = 1.0f;
 		bc.GroundFrictionTorque = 2.0f;
@@ -158,7 +158,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		w_v[0] = b2Vec2(4.0f, 0.0f);
 		bc.PolygonShape.Set(w_v, 6);
 		bc.Friction = 1.0f;
-		bc.Density = 0.7f;
+		bc.Density = 0.6f;
 		bc.GroundFrictionForce = 0.5f;
 		bc.GroundFrictionTorque = 0.6f;
 
