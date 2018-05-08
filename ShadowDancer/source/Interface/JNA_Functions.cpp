@@ -281,7 +281,7 @@ double J0_s1(double w[], bool flag) {
 
 	double fitness_A = 0.0f;
 	double fitness_B = 0.0f;
-	for(int i = 0; i < 2; i++) {
+	for(int i = 0; i < 10; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
@@ -302,8 +302,8 @@ double J0_s1(double w[], bool flag) {
 		fitness_A += monitor.GetFitnessA();
 		fitness_B += monitor.GetFitnessB();
 	}
-	fitness_A /= 2.0f;
-	fitness_B /= 2.0f;
+	fitness_A /= 10.0f;
+	fitness_B /= 10.0f;
 
 	delete arbi;
 	delete w1;
@@ -337,7 +337,7 @@ double J0_s2(double w[]) {
 	w2->Set(w);
 
 	double fitness = 0.0f;
-	for(int i = 0; i < 3; i++) {
+	for(int i = 0; i < 10; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
@@ -357,7 +357,7 @@ double J0_s2(double w[]) {
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 3.0f;
+	fitness /= 10.0f;
 
 	delete arbi;
 	delete w1;
@@ -387,7 +387,7 @@ double J0_s3(double w[]) {
 	w3->Set(w);
 
 	double fitness = 0.0f;
-	for(int i = 0; i < 3; i++) {
+	for(int i = 0; i < 10; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
@@ -407,7 +407,7 @@ double J0_s3(double w[]) {
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 3.0f;
+	fitness /= 10.0f;
 
 	delete arbi;
 	delete w1;
