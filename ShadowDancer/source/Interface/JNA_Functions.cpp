@@ -130,7 +130,10 @@ double evaluateFcns(double individual[], int func_index) {
 		fitness = J0_a(individual, 0.0f, 0.0f, 1.0f);
 		break;
 	case 888002:
-		fitness = J0_a(individual, 0.1f, 0.1f, 1.0f);
+		fitness = J0_a(individual, 0.0f, 1.0f, 0.0f);
+		break;
+	case 888003:
+		fitness = J0_a(individual, 0.0f, 10.0f, 1.0f);
 		break;
 	case 777001:
 		fitness = J0_d(individual, 0.0f, 0.0f, 1.0f);
