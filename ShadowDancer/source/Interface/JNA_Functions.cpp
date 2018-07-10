@@ -168,6 +168,24 @@ double evaluateFcns(double individual[], int func_index) {
 	case 7777003:
 		fitness = J0_d(individual, 10.0f, 10.0f, 1.0f);
 		break;
+	case 9999004:
+		fitness = J0_s0(individual, 100.0f, 100.0f, 1.0f);
+		break;
+	case 8888004:
+		fitness = J0_a(individual, 100.0f, 100.0f, 1.0f);
+		break;
+	case 7777004:
+		fitness = J0_d(individual, 100.0f, 100.0f, 1.0f);
+		break;
+	case 9999005:
+		fitness = J0_s0(individual, 1000.0f, 1000.0f, 1.0f);
+		break;
+	case 8888005:
+		fitness = J0_a(individual, 1000.0f, 1000.0f, 1.0f);
+		break;
+	case 7777005:
+		fitness = J0_d(individual, 1000.0f, 1000.0f, 1.0f);
+		break;
 	default:
 		break;
 	}
