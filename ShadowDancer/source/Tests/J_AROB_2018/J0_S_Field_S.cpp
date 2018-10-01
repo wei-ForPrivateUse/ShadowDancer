@@ -5,7 +5,7 @@
  *      Author: wei
  */
 
-#include <Tests/J_AROB_2018/J0_S_Field_S.h>
+#include "J0_S_Field_S.h"
 
 J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa_d) : assa2d::SceneMgr(conf) {
 	// Walls.

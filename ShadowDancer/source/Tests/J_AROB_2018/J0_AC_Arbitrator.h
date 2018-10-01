@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef TESTS_J1_J1_AC_ARBITRATOR_H_
-#define TESTS_J1_J1_AC_ARBITRATOR_H_
+#ifndef TESTS_J_AROB_2018_J0_AC_ARBITRATOR_H_
+#define TESTS_J_AROB_2018_J0_AC_ARBITRATOR_H_
 
 #include <vector>
 #include <stdexcept>
@@ -32,4 +32,4 @@ private:
 	std::vector<std::size_t> m_sub_controller_id;
 };
 
-#endif /* TESTS_J1_J1_AC_ARBITRATOR_H_ */
+#endif /* TESTS_J_AROB_2018_J0_AC_ARBITRATOR_H_ */

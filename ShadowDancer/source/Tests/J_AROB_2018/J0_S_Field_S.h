@@ -8,7 +8,6 @@
 #ifndef TESTS_J_AROB_2018_J0_S_FIELD_S_H_
 #define TESTS_J_AROB_2018_J0_S_FIELD_S_H_
 
-
 #include <cmath>
 
 #include "Common/Object/Block.h"
