@@ -5,7 +5,7 @@
  *      Author: wei
  */
 
-#include "J1_AC_Arbitrator.h"
+#include "J0_AC_Arbitrator.h"
 
 J1_AC_Arbitrator::J1_AC_Arbitrator(Configuration* conf) : ANN(conf) {
 	m_sub_controller_id = conf->SubControllerId;

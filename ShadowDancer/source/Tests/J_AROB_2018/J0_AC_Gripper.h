@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_AC_GRIPPER_H_
-#define TESTS_J0_J0_AC_GRIPPER_H_
+#ifndef TESTS_J_AROB_2018_J0_AC_GRIPPER_H_
+#define TESTS_J_AROB_2018_J0_AC_GRIPPER_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -62,4 +62,4 @@ private:
 	Block* m_touching_resource;
 };
 
-#endif /* TESTS_J0_J0_AC_GRIPPER_H_ */
+#endif /* TESTS_J_AROB_2018_J0_AC_GRIPPER_H_ */

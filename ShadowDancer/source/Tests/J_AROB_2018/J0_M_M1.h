@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_M_M1_H_
-#define TESTS_J0_J0_M_M1_H_
+#ifndef TESTS_J_AROB_2018_J0_M_M1_H_
+#define TESTS_J_AROB_2018_J0_M_M1_H_
 
 #include <assassin2d/assassin2d.h>
 
@@ -106,4 +106,4 @@ private:
 	std::vector<CheckPoint> m_check_point_vector;
 };
 
-#endif /* TESTS_J0_J0_M_M1_H_ */
+#endif /* TESTS_J_AROB_2018_J0_M_M1_H_ */

@@ -5,13 +5,15 @@
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_S_FIELD_S_H_
-#define TESTS_J0_J0_S_FIELD_S_H_
+#ifndef TESTS_J_AROB_2018_J0_S_FIELD_S_H_
+#define TESTS_J_AROB_2018_J0_S_FIELD_S_H_
+
 
 #include <cmath>
 
 #include "Common/Object/Block.h"
 #include "Common/Object/Wall.h"
+
 #include "J0_A_Robot_S.h"
 #include "J0_T_Nest.h"
 
@@ -37,4 +39,4 @@ public:
 };
 
 
-#endif /* TESTS_J0_J0_S_FIELD_S_H_ */
+#endif /* TESTS_J_AROB_2018_J0_S_FIELD_S_H_ */

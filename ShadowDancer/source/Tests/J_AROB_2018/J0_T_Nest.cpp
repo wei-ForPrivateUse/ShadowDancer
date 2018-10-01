@@ -5,8 +5,9 @@
  *      Author: wei
  */
 
-#include "J0_T_Nest.h"
 #include "Common/Object/Block.h"
+
+#include "J0_T_Nest.h"
 
 J0_T_Nest::J0_T_Nest(Configuration* conf) : assa2d::Trigger(conf) {
 	m_internal = conf->Internal;

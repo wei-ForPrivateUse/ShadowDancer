@@ -1,28 +1,28 @@
 /*
- * J0_M_MA.h
+ * J0_M_M0.h
  *
  *  Created on: Dec 1, 2017
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_M_MA_H_
-#define TESTS_J0_J0_M_MA_H_
+#ifndef TESTS_J_AROB_2018_J0_M_M0_H_
+#define TESTS_J_AROB_2018_J0_M_M0_H_
 
 #include <unordered_map>
 
 #include <assassin2d/assassin2d.h>
 
-#include "J0_S_Field_S.h"
+#include "J0_S_Field.h"
 
-class J0_M_MA : public assa2d::Monitor, public assa2d::ContactListener {
+class J0_M_M0 : public assa2d::Monitor, public assa2d::ContactListener {
 public:
-	J0_M_MA() {
+	J0_M_M0() {
 		fitness_s1 = 0.0f;
 		fitness_s2 = 0.0f;
 		fitness_s3 = 0.0f;
 		bonus = 0.0f;
 	};
-	virtual ~J0_M_MA() { };
+	virtual ~J0_M_M0() { };
 
 	float GetFitnessS1() const {
 		return fitness_s1;
@@ -42,7 +42,7 @@ public:
 
 protected:
 	virtual void Initialize() override {
-		auto a_s = static_cast<const J0_S_Field_S*>(GetSceneMgr());
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
 		a_s->GetContactMgr().AddContactListener(this);
 
 		CheckPoint cp;
@@ -57,8 +57,8 @@ protected:
 	}
 
 	virtual void Step() override {
-		auto a_s = static_cast<const J0_S_Field_S*>(GetSceneMgr());
-		auto s = const_cast<J0_S_Field_S*>(a_s);
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
+		auto s = const_cast<J0_S_Field*>(a_s);
 		/// s1
 		for(auto & cp : m_check_point_vector) {
 			bool visited = false;
@@ -113,8 +113,8 @@ protected:
 	}
 
 	virtual void Finalize() override {
-		auto a_s = static_cast<const J0_S_Field_S*>(GetSceneMgr());
-		auto s = const_cast<J0_S_Field_S*>(a_s);
+		auto a_s = static_cast<const J0_S_Field*>(GetSceneMgr());
+		auto s = const_cast<J0_S_Field*>(a_s);
 
 		// s1
 		fitness_s1 /= s->GetMaxStep();
@@ -162,4 +162,4 @@ private:
 	std::unordered_map<std::size_t, float32> mapping_s3;
 };
 
-#endif /* TESTS_J0_J0_M_MA_H_ */
+#endif /* TESTS_J_AROB_2018_J0_M_M0_H_ */

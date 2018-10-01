@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_M_M2_H_
-#define TESTS_J0_J0_M_M2_H_
+#ifndef TESTS_J_AROB_2018_J0_M_M2_H_
+#define TESTS_J_AROB_2018_J0_M_M2_H_
 
 #include <unordered_map>
 
@@ -90,4 +90,4 @@ private:
 	std::unordered_map<std::size_t, float32> mapping;
 };
 
-#endif /* TESTS_J0_J0_M_M2_H_ */
+#endif /* TESTS_J_AROB_2018_J0_M_M2_H_ */
