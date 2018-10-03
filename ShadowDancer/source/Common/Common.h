@@ -30,4 +30,32 @@ inline b2Vec2 const& GetNodePosition(assa2d::Node* node) {
 	}
 }
 
+//
+inline std::vector<b2Vec2> GetRandomPositions(float32 lower_bound, float32 upper_bound, int number, float32 distance) {
+	std::vector<b2Vec2> pos;
+	pos.resize(number);
+
+	for(int index = 0, attempt = 0; index < number; index++) {
+		b2Vec2 p;
+		bool flag = false;
+
+		do {
+			float32 r = assa2d::RandomFloat(lower_bound, upper_bound);
+			float32 a = assa2d::RandomFloat(0, M_PI * 2.0f);
+
+			p.Set(r*std::cos(a), r*std::sin(a));
+
+			for(auto& i : pos) {
+				if((i-p).LengthSquared() < distance*distance) {
+					flag = false;
+				}
+			}
+		} while(flag);
+
+		pos[index] = p;
+	}
+
+	return pos;
+}
+
 #endif /* COMMON_COMMON_H_ */

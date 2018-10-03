@@ -1,0 +1,134 @@
+/*
+ * A_Robot.cpp
+ *
+ *  Created on: Oct 1, 2018
+ *      Author: wei
+ */
+
+#include "A_Robot.h"
+
+A_Robot::A_Robot(Configuration* conf) : assa2d::Actor(conf) {
+	// mainbody
+	{
+		MainBody::Configuration mbc;
+
+		mbc.Id = 10000;
+		mbc.Friction = 0.5f;
+		mbc.Position = conf->Position;
+		mbc.Angle = conf->Angle;
+		mbc.CircleShape.m_radius = 0.5;
+		m_mainbody = AddComponent<MainBody>(&mbc);
+	}
+	SetMainComponent(m_mainbody);
+
+	// motors
+	{
+		Motor::Configuration mc;
+
+		mc.Priority = 2;
+		mc.ForwardAttributes = {15.0f, 8.0f, 60.0f};
+		mc.BackwardAttributes = {8.0f, 1.0f, 5.0f};
+		mc.PolygonShape.SetAsBox(0.25f, 0.1f);
+		mc.Anchor.Set(0.0f, 0.0f);
+
+		mc.Id = 100000;
+		mc.TargetSpeedIndex = 100000;
+		mc.PowerRequestIndex = 110000;
+		mc.Position.Set(0.0f, 0.45f);
+		m_motor[0] = AddComponent<Motor>(&mc);
+
+		mc.Id = 100001;
+		mc.TargetSpeedIndex = 100001;
+		mc.PowerRequestIndex = 110001;
+		mc.Position.Set(0.0f, -0.45f);
+		m_motor[1] = AddComponent<Motor>(&mc);
+	}
+
+	// ir sensors
+	{
+		IRSenser::Configuration irc;
+
+		irc.Priority = 0;
+		irc.Range = conf->IRSensorRange;
+		irc.Position.Set(0.0f, 0.0f);
+
+		for(int i = 0; i < conf->IRSensor; i++) {
+			irc.Angle = M_PI * 2.0f / conf->IRSensor * i;
+			irc.Id = i;
+			irc.OutputIndex = i;
+
+			m_ir_sensor[i] = AddComponent<IRSenser>(&irc);
+		}
+	}
+
+	// omni-camera
+	{
+		OmniTag<TagPredicate>::Configuration otc_rp;
+		otc_rp.Id = 50;
+		otc_rp.Priority = 0;
+		otc_rp.Range = conf->OMNICameraRange;
+		otc_rp.OutputCount = conf->OMNIRobot;
+		otc_rp.OutputIndexInterval.first = 50;
+		otc_rp.OutputIndexInterval.second = 50+conf->OMNIRobot*3-1;
+		otc_rp.TargetTag = MAKE_TAG('r', 'o', 'b', 'o');
+		otc_rp.Predicate.Datum = this;
+		otc_rp.Predicate.DatumExemption = true;
+		m_omni_robot = AddComponent<OmniTag<TagPredicate>>(&otc_rp);
+
+		OmniTag<TagPredicate>::Configuration otc_rep;
+		otc_rep.Id = 100;
+		otc_rep.Priority = 0;
+		otc_rep.Range = conf->OMNICameraRange;
+		otc_rep.OutputIndexInterval = {100, 102};
+		otc_rep.OutputCount = 1;
+		otc_rep.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
+		otc_rep.Predicate.Datum = this;
+		otc_rep.Predicate.DatumExemption = true;
+		m_omni_resource = AddComponent<OmniTag<TagPredicate>>(&otc_rep);
+	}
+
+	// anns
+	{
+		ANN::Configuration ac;
+		ac.Priority = 1;
+		ac.Id = 1000;
+		for(int i = 0; i < conf->IRSensor; i++) {
+			ac.InputIndex.push_back(i);
+		}
+		for(int i = 50; i < 50+conf->OMNIRobot*3; i++) {
+			ac.InputIndex.push_back(i);
+		}
+		for(int i = 100; i < 103; i++) {
+			ac.InputIndex.push_back(i);
+		}
+		ac.InputIndex.push_back(200);
+		ac.InputIndex.push_back(201);
+
+		ac.OutputIndex = {100000, 100001};
+		m_ann = AddComponent<ANN>(&ac);
+	}
+
+	// Set extra parameters for motors.
+	GetDataPool().Set<float>(110000, 100.0f);
+	GetDataPool().Set<float>(110001, 100.0f);
+}
+
+void A_Robot::PreAct() {
+
+	float32 c_nest = 1.0f;
+	float32 s_nest = 0.0f;
+
+	// Angle of the nest_resource & nest_package.
+	b2Vec2 const& pos = this->GetMainComponent()->GetPosition();
+	if(pos == b2Vec2(0.0f, 0.0f)) { }
+	else {
+		b2Vec2 const& l_pos = this->GetMainComponent()->GetBody()->GetLocalVector(b2Vec2(0.0f, 0.0f) - pos);
+		c_nest = l_pos.x / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
+		s_nest = l_pos.y / b2Sqrt(l_pos.x*l_pos.x + l_pos.y*l_pos.y);
+	}
+
+	// Set outputs.
+	GetDataPool().Set<float>(200, c_nest);
+	GetDataPool().Set<float>(201, s_nest);
+}
+
