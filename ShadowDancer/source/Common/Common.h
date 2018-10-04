@@ -30,19 +30,20 @@ inline b2Vec2 const& GetNodePosition(assa2d::Node* node) {
 	}
 }
 
-//
-inline std::vector<b2Vec2> GetRandomPositions(float32 lower_bound, float32 upper_bound, int number, float32 distance) {
+// Get random positions.
+inline std::vector<b2Vec2> GetRandomPositions(float32 lower_bound, float32 upper_bound, unsigned int number, float32 distance) {
 	std::vector<b2Vec2> pos;
 	while(pos.size()<number) {
 		b2Vec2 p;
-		bool flag = false;
-		int attempt = 0;
+		bool flag;
+		unsigned int attempt = 0;
 		do {
 			float32 r = assa2d::RandomFloat(lower_bound, upper_bound);
 			float32 a = assa2d::RandomFloat(0, M_PI * 2.0f);
 
 			p.Set(r*std::cos(a), r*std::sin(a));
 
+			flag = false;
 			for(auto& i : pos) {
 				if((i-p).LengthSquared() < distance*distance) {
 					flag = true;
@@ -57,6 +58,15 @@ inline std::vector<b2Vec2> GetRandomPositions(float32 lower_bound, float32 upper
 		pos.push_back(p);
 	}
 	return pos;
+}
+
+// Get a random position.
+inline b2Vec2 GetRandomPosition(float32 lower_bound, float32 upper_bound) {
+	b2Vec2 p;
+	float32 r = assa2d::RandomFloat(lower_bound, upper_bound);
+	float32 a = assa2d::RandomFloat(0, M_PI * 2.0f);
+	p.Set(r*std::cos(a), r*std::sin(a));
+	return p;
 }
 
 #endif /* COMMON_COMMON_H_ */

@@ -10,6 +10,8 @@
 
 #include <assassin2d/assassin2d.h>
 
+#include "Common/Common.h"
+
 class T_Nest : public assa2d::Trigger {
 public:
 	struct Configuration : public assa2d::Trigger::Configuration {

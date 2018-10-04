@@ -40,19 +40,7 @@ public:
 	/// Set ground friction.
 	void SetGroundFriction(bool flag, float32 gff, float32 gft);
 
-	/// Get mask.
-	unsigned int GetMask() const {
-		return m_mask;
-	}
-
-	/// Set mask.
-	void SetMask(unsigned int mask) {
-		m_mask = mask;
-	}
-
 private:
-	unsigned int m_mask;
-
 	b2Joint* m_ground_friction_joint;
 };
 
