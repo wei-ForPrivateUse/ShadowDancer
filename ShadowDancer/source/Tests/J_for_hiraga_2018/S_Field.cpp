@@ -14,43 +14,43 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 		wc.Tag = MAKE_TAG('w', 'a', 'l', 'l');
 
 		wc.Id = 900;
-		wc.StartPoint = b2Vec2(41.42136f, 100.0f);
-		wc.EndPoint = b2Vec2(-41.42136f, 100.0f);
+		wc.StartPoint = b2Vec2(24.85282f, 60.0f);
+		wc.EndPoint = b2Vec2(-24.85282f, 60.0f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 901;
-		wc.StartPoint = b2Vec2(-41.42136f, 100.0f);
-		wc.EndPoint = b2Vec2(-100.0f, 41.42136f);
+		wc.StartPoint = b2Vec2(-24.85282f, 60.0f);
+		wc.EndPoint = b2Vec2(-60.0f, 24.85282f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 902;
-		wc.StartPoint = b2Vec2(-100.0f, 41.42136f);
-		wc.EndPoint = b2Vec2(-100.0f, -41.42136f);
+		wc.StartPoint = b2Vec2(-60.0f, 24.85282f);
+		wc.EndPoint = b2Vec2(-60.0f, -24.85282f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 903;
-		wc.StartPoint = b2Vec2(-100.0f, -41.42136f);
-		wc.EndPoint = b2Vec2(-41.42136f, -100.0f);
+		wc.StartPoint = b2Vec2(-60.0f, -24.85282f);
+		wc.EndPoint = b2Vec2(-24.85282f, -60.0f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 904;
-		wc.StartPoint = b2Vec2(-41.42136f, -100.0f);
-		wc.EndPoint = b2Vec2(41.42136f, -100.0f);
+		wc.StartPoint = b2Vec2(-24.85282f, -60.0f);
+		wc.EndPoint = b2Vec2(24.85282f, -60.0f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 905;
-		wc.StartPoint = b2Vec2(41.42136f, -100.0f);
-		wc.EndPoint = b2Vec2(100.0f, -41.42136f);
+		wc.StartPoint = b2Vec2(24.85282f, -60.0f);
+		wc.EndPoint = b2Vec2(60.0f, -24.85282f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 906;
-		wc.StartPoint = b2Vec2(100.0f, -41.42136f);
-		wc.EndPoint = b2Vec2(100.0f, 41.42136f);
+		wc.StartPoint = b2Vec2(60.0f, -24.85282f);
+		wc.EndPoint = b2Vec2(60.0f, 24.85282f);
 		AddNode<Wall>(&wc);
 
 		wc.Id = 907;
-		wc.StartPoint = b2Vec2(100.0f, 41.42136f);
-		wc.EndPoint = b2Vec2(41.42136f, 100.0f);
+		wc.StartPoint = b2Vec2(60.0f, 24.85282f);
+		wc.EndPoint = b2Vec2(24.85282f, 60.0f);
 		AddNode<Wall>(&wc);
 	}
 
@@ -65,8 +65,8 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 		rc.OMNIRobot = conf->OMNIRobotNumber;
 		rc.OMNICameraRange = conf->OMNIRange;
 
-		std::vector<b2Vec2> robot_pos = GetRandomPositions(25, 90, conf->Robot, 1.5);
-		for(int i = 0; i < conf->Robot; i++) {
+		std::vector<b2Vec2> robot_pos = GetRandomPositions(0.0f, 14.0f, conf->Robot, 1.5f);
+		for(unsigned int i = 0; i < conf->Robot; i++) {
 			rc.Id = i;
 			rc.Position = robot_pos[i];
 			rc.Angle = assa2d::RandomFloat(0.0f, M_PI*2.0f);
@@ -77,46 +77,30 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 		}
 	}
 
-	///////////////////////////
 	// Resources.
 	{
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
-		bc.CircleShape.m_radius = 0.4f;
-		bc.GroundFrictionForce = 5.0f;
-		bc.GroundFrictionTorque = 5.0f;
+		bc.Density = 0.17f;
+		bc.Friction = 0.3f;
+		bc.GroundFrictionForce = 1.0f;
+		bc.GroundFrictionTorque = 1.0f;
 
-		for(std::size_t i = 0; i < conf->Resource; i++) {
+		std::vector<b2Vec2> pos = GetRandomPositions(25.0f, 50.0f, conf->Food+conf->Poison, 15.0f);
+
+		bc.CircleShape.m_radius = 5.0f;
+		for(std::size_t i = 0; i < conf->Food; i++) {
 			bc.Id = 1000 + i;
-			float32 r = assa2d::RandomFloat(20.0f, 90.0f);
-			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
-			float32 x = r * std::cos(a);
-			float32 y = r * std::sin(a);
-			bc.Position.Set(x, y);
+			bc.Position = pos[i];
 			AddNode<Block>(&bc);
 		}
-	}
 
-	// Packages.
-	{
-		J1_O_Package::Configuration pc;
-		pc.Tag = MAKE_TAG('p', 'a', 'c', 'k');
-		pc.StaticBody = true;
-		pc.ShapeType = assa2d::ShapeType::Polygon;
-		pc.PolygonShape.SetAsBox(1.5f, 2.0f);
-		pc.MinStepTouch = conf->MinStepTouch;
-		pc.MaxStepTouch = conf->MaxStepTouch;
-		pc.RequiredTouch = conf->RequiredTouch;
-
-		for(std::size_t i = 0; i < conf->Package; i++) {
-			pc.Id = 10000 + i;
-			float32 r = assa2d::RandomFloat(20.0f, 90.0f);
-			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
-			float32 x = r * std::cos(a);
-			float32 y = r * std::sin(a);
-			pc.Position.Set(x, y);
-			pc.Angle = assa2d::RandomFloat(0, M_PI*2.0f);
-			AddNode<J1_O_Package>(&pc);
+		bc.CircleShape.m_radius = 3.0f;
+		bc.Flag = 0x1;
+		for(std::size_t i = conf->Food; i < conf->Food+conf->Poison; i++) {
+			bc.Id = 1000 + i;
+			bc.Position = pos[i];
+			AddNode<Block>(&bc);
 		}
 	}
 

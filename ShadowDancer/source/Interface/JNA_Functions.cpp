@@ -7,6 +7,11 @@
 
 #include "JNA_Functions.h"
 
+////////---J_for_hiraga_2018---//////////
+double J_f_h_test(double w[], float32 penalty_s);
+////////---J_for_hiraga_2018---//////////
+
+
 ////////---J_AROB_2018---//////////
 double J0_s1(double w[], bool flag);
 double J0_s2(double w[]);
@@ -22,6 +27,16 @@ double evaluateFcns(double individual[], int func_index) {
 	double fitness = 0.0;
 	switch(func_index)
 	{
+	////////---J_for_hiraga_2018---//////////
+	case 1:
+		fitness = J_f_h_test(individual, 0.0f);
+		break;
+	case 2:
+		fitness = J_f_h_test(individual, -1.0f);
+		break;
+
+
+	////////---J_AROB_2018---//////////
 	case 10010:
 		fitness = J0_s1(individual, false);
 		break;
@@ -103,6 +118,39 @@ double evaluateFcns(double individual[], int func_index) {
 	default:
 		break;
 	}
+	return fitness;
+}
+
+////////---J_for_hiraga_2018---//////////
+double J_f_h_test(double w[], float32 penalty_s) {
+	ANNWeights* weights = new ANNWeights({19, 20, 2}, {false, true, false}, {false, true, true}, true);
+	weights -> Set(w);
+
+	double fitness = 0.0f;
+	for(int i = 0; i < 2; i++) {
+		b2Vec2 gravity;
+		gravity.Set(0.0f, 0.0f);
+		b2World* world = new b2World(gravity);
+
+		S_Field::Configuration sc;
+		sc.World = world;
+		sc.TimeStep = 0.02;
+		sc.MaxStep = 6000;
+
+		M_M0 monitor;
+		monitor.penalty_s = penalty_s;
+		assa2d::SceneMgr* scenemgr = new S_Field(&sc, weights);
+		scenemgr -> Run(&monitor);
+
+		delete scenemgr;
+		delete world;
+
+		fitness += monitor.GetFitness();
+	}
+	fitness /= 2.0f;
+
+	delete weights;
+
 	return fitness;
 }
 

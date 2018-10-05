@@ -31,15 +31,15 @@ A_Robot::A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		mc.PolygonShape.SetAsBox(0.25f, 0.1f);
 		mc.Anchor.Set(0.0f, 0.0f);
 
-		mc.Id = 100000;
-		mc.TargetSpeedIndex = 100000;
-		mc.PowerRequestIndex = 110000;
+		mc.Id = 150;
+		mc.TargetSpeedIndex = 150;
+		mc.PowerRequestIndex = 160;
 		mc.Position.Set(0.0f, 0.45f);
 		m_motor[0] = AddComponent<Motor>(&mc);
 
-		mc.Id = 100001;
-		mc.TargetSpeedIndex = 100001;
-		mc.PowerRequestIndex = 110001;
+		mc.Id = 151;
+		mc.TargetSpeedIndex = 151;
+		mc.PowerRequestIndex = 161;
 		mc.Position.Set(0.0f, -0.45f);
 		m_motor[1] = AddComponent<Motor>(&mc);
 	}
@@ -101,20 +101,20 @@ A_Robot::A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		for(int i = 100; i < 103; i++) {
 			ac.InputIndex.push_back(i);
 		}
-		ac.InputIndex.push_back(200);
-		ac.InputIndex.push_back(201);
+		ac.InputIndex.push_back(110);
+		ac.InputIndex.push_back(111);
 
-		ac.OutputIndex = {100000, 100001};
+		ac.OutputIndex = {150, 151};
 		m_ann = AddComponent<ANN>(&ac);
 	}
 
 	// Set extra parameters for motors.
-	GetDataPool().Set<float>(110000, 100.0f);
-	GetDataPool().Set<float>(110001, 100.0f);
+	GetDataPool().Resize(256);
+	GetDataPool().Set<float>(160, 100.0f);
+	GetDataPool().Set<float>(161, 100.0f);
 }
 
 void A_Robot::PreAct() {
-
 	float32 c_nest = 1.0f;
 	float32 s_nest = 0.0f;
 
@@ -128,7 +128,7 @@ void A_Robot::PreAct() {
 	}
 
 	// Set outputs.
-	GetDataPool().Set<float>(200, c_nest);
-	GetDataPool().Set<float>(201, s_nest);
+	GetDataPool().Set<float>(110, c_nest);
+	GetDataPool().Set<float>(111, s_nest);
 }
 

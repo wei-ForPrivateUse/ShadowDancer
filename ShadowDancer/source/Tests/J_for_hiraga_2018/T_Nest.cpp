@@ -44,13 +44,13 @@ void T_Nest::Act() {
 				if(m_recreate) {
 					Block::Configuration bc;
 					bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
-					bc.CircleShape.m_radius = flag==0 ? 3 : 1.5;
-					bc.Density = 0.7f;
-					bc.Friction = 0.2f;
+					bc.CircleShape.m_radius = flag==0 ? 5.0f : 3.0f;
+					bc.Density = 0.17f;
+					bc.Friction = 0.3f;
 					bc.GroundFrictionForce = 1.0f;
-					bc.GroundFrictionTorque = 2.0f;
+					bc.GroundFrictionTorque = 1.0f;
 					bc.Id = m_new_resource_id++;
-					bc.Position = GetRandomPosition(m_range+10, 90);
+					bc.Position = GetRandomPosition(m_range+10, 50);
 					bc.Flag = flag;
 
 					GetSceneMgr()->AddNode<Block>(&bc);

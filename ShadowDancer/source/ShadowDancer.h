@@ -16,5 +16,7 @@
 #include <Tests/J_AROB_2018/J0_M_M3.h>
 #include <Tests/J_AROB_2018/J0_M_MA.h>
 
+#include <Tests/J_for_hiraga_2018/M_M0.h>
+
 
 #endif /* __SHADOWDANCER__ */
