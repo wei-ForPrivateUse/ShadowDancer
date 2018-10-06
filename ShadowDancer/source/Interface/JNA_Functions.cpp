@@ -8,7 +8,7 @@
 #include "JNA_Functions.h"
 
 ////////---J_for_hiraga_2018---//////////
-double J_f_h_test(double w[], float32 penalty_s);
+double J_f_h_test(double w[], float32 penalty_goal, float32 penalty_boot, unsigned int IRNumber, unsigned int OMNIRobotNumber);
 ////////---J_for_hiraga_2018---//////////
 
 
@@ -29,10 +29,16 @@ double evaluateFcns(double individual[], int func_index) {
 	{
 	////////---J_for_hiraga_2018---//////////
 	case 1:
-		fitness = J_f_h_test(individual, 0.0f);
+		fitness = J_f_h_test(individual, -1.0f, 0.0f, 8, 2);
 		break;
 	case 2:
-		fitness = J_f_h_test(individual, -1.0f);
+		fitness = J_f_h_test(individual, -0.5f, -0.5f, 8, 2);
+		break;
+	case 3:
+		fitness = J_f_h_test(individual, -1.0f, -1.0f, 8, 2);
+		break;
+	case 4:
+		fitness = J_f_h_test(individual, -1.0f, 0.0f, 16, 2);
 		break;
 
 
@@ -122,8 +128,9 @@ double evaluateFcns(double individual[], int func_index) {
 }
 
 ////////---J_for_hiraga_2018---//////////
-double J_f_h_test(double w[], float32 penalty_s) {
-	ANNWeights* weights = new ANNWeights({19, 20, 2}, {false, true, false}, {false, true, true}, true);
+double J_f_h_test(double w[], float32 penalty_goal, float32 penalty_boot, unsigned int IRNumber, unsigned int OMNIRobotNumber) {
+	unsigned int input_size = IRNumber + OMNIRobotNumber*3 + 3 + 2;
+	ANNWeights* weights = new ANNWeights({input_size, 20, 2}, {false, true, false}, {false, true, true}, true);
 	weights -> Set(w);
 
 	double fitness = 0.0f;
@@ -135,10 +142,13 @@ double J_f_h_test(double w[], float32 penalty_s) {
 		S_Field::Configuration sc;
 		sc.World = world;
 		sc.TimeStep = 0.02;
-		sc.MaxStep = 6000;
+		sc.MaxStep = 9000;
+		sc.IRSensorNumber = IRNumber;
+		sc.OMNIRobotNumber = OMNIRobotNumber;
 
 		M_M0 monitor;
-		monitor.penalty_s = penalty_s;
+		monitor.penalty_goal = penalty_goal;
+		monitor.penalty_boot = penalty_boot;
 		assa2d::SceneMgr* scenemgr = new S_Field(&sc, weights);
 		scenemgr -> Run(&monitor);
 

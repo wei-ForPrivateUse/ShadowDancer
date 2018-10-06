@@ -11,6 +11,7 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 	// Walls.
 	{
 		Wall::Configuration wc;
+		wc.Friction = 0.0f;
 		wc.Tag = MAKE_TAG('w', 'a', 'l', 'l');
 
 		wc.Id = 900;
@@ -81,8 +82,8 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 	{
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
-		bc.Density = 0.17f;
-		bc.Friction = 0.3f;
+		bc.Density = 0.12f;
+		bc.Friction = 0.1f;
 		bc.GroundFrictionForce = 1.0f;
 		bc.GroundFrictionTorque = 1.0f;
 
@@ -95,7 +96,7 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 			AddNode<Block>(&bc);
 		}
 
-		bc.CircleShape.m_radius = 3.0f;
+		bc.CircleShape.m_radius = 2.5f;
 		bc.Flag = 0x1;
 		for(std::size_t i = conf->Food; i < conf->Food+conf->Poison; i++) {
 			bc.Id = 1000 + i;

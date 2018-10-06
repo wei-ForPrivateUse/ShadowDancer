@@ -20,7 +20,8 @@ public:
 	M_M0() {
 		fitness = 0.0f;
 
-		penalty_s = 0.0f;
+		penalty_goal = 0.0f;
+		penalty_boot = 0.0f;
 	};
 	virtual ~M_M0() { };
 
@@ -28,7 +29,8 @@ public:
 		return fitness;
 	}
 
-	float32 penalty_s;
+	float32 penalty_goal;
+	float32 penalty_boot;
 
 protected:
 	virtual void Initialize() override { }
@@ -54,12 +56,12 @@ protected:
 
 		//
 		for(auto& node : mapping) {
-			float32 scaler = node.second.flag==0 ? 1.0f : penalty_s;
-
 			if(s->CountNodeById(node.first) == 0) {
+				float32 scaler = node.second.flag==0 ? 1.0f : penalty_goal;
 				fitness += node.second.ori_dis * scaler;
 			} else {
 				if(node.second.ori_dis > static_cast<Block*>(s->GetNodeById(node.first))->GetPosition().Length()) {
+					float32 scaler = node.second.flag==0 ? 1.0f : penalty_boot;
 					fitness += (node.second.ori_dis - static_cast<Block*>(s->GetNodeById(node.first))->GetPosition().Length()) * scaler;
 				}
 			}

@@ -13,7 +13,7 @@ A_Robot::A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		MainBody::Configuration mbc;
 
 		mbc.Id = 10000;
-		mbc.Friction = 0.5f;
+		mbc.Friction = 0.1f;
 		mbc.Position = conf->Position;
 		mbc.Angle = conf->Angle;
 		mbc.CircleShape.m_radius = 0.5;

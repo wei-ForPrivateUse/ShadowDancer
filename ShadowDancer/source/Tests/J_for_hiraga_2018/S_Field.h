@@ -28,7 +28,7 @@ public:
 		int OMNIRobotNumber = 2;
 
 		float32 IRRange = 3.0f;
-		float32 OMNIRange = 15.0f;
+		float32 OMNIRange = 12.0f;
 	};
 
 	S_Field(Configuration* conf, ANNWeights* w);

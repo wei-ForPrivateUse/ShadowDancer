@@ -44,9 +44,9 @@ void T_Nest::Act() {
 				if(m_recreate) {
 					Block::Configuration bc;
 					bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
-					bc.CircleShape.m_radius = flag==0 ? 5.0f : 3.0f;
-					bc.Density = 0.17f;
-					bc.Friction = 0.3f;
+					bc.CircleShape.m_radius = flag==0 ? 5.0f : 2.5f;
+					bc.Density = 0.12f;
+					bc.Friction = 0.1f;
 					bc.GroundFrictionForce = 1.0f;
 					bc.GroundFrictionTorque = 1.0f;
 					bc.Id = m_new_resource_id++;

@@ -25,7 +25,7 @@ public:
 		int OMNIRobot = 2;
 
 		float32 IRSensorRange = 3.0f;
-		float32 OMNICameraRange = 15.0f;
+		float32 OMNICameraRange = 12.0f;
 	};
 
 	A_Robot(Configuration* conf);
