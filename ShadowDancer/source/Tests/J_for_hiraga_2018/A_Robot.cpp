@@ -53,7 +53,7 @@ A_Robot::A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		irc.Position.Set(0.0f, 0.0f);
 
 		for(int i = 0; i < conf->IRSensor; i++) {
-			irc.Angle = M_PI * 2.0f / conf->IRSensor * i;
+			irc.Angle = M_PI * 2.0f / conf->IRSensor * i + M_PI / conf->IRSensor;
 			irc.Id = i;
 			irc.OutputIndex = i;
 
@@ -79,8 +79,9 @@ A_Robot::A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		otc_rep.Id = 100;
 		otc_rep.Priority = 0;
 		otc_rep.Range = conf->OMNICameraRange;
-		otc_rep.OutputIndexInterval = {100, 102};
-		otc_rep.OutputCount = 1;
+		otc_rep.OutputCount = conf->OMNIResource;
+		otc_rep.OutputIndexInterval.first = 100;
+		otc_rep.OutputIndexInterval.second = 100+conf->OMNIResource*3-1;
 		otc_rep.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
 		otc_rep.Predicate.Datum = this;
 		otc_rep.Predicate.DatumExemption = true;
@@ -98,11 +99,11 @@ A_Robot::A_Robot(Configuration* conf) : assa2d::Actor(conf) {
 		for(int i = 50; i < 50+conf->OMNIRobot*3; i++) {
 			ac.InputIndex.push_back(i);
 		}
-		for(int i = 100; i < 103; i++) {
+		for(int i = 100; i < 100+conf->OMNIResource*3; i++) {
 			ac.InputIndex.push_back(i);
 		}
-		ac.InputIndex.push_back(110);
-		ac.InputIndex.push_back(111);
+		ac.InputIndex.push_back(120);
+		ac.InputIndex.push_back(121);
 
 		ac.OutputIndex = {150, 151};
 		m_ann = AddComponent<ANN>(&ac);
@@ -128,7 +129,7 @@ void A_Robot::PreAct() {
 	}
 
 	// Set outputs.
-	GetDataPool().Set<float>(110, c_nest);
-	GetDataPool().Set<float>(111, s_nest);
+	GetDataPool().Set<float>(120, c_nest);
+	GetDataPool().Set<float>(121, s_nest);
 }
 

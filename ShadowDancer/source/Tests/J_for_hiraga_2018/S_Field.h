@@ -26,9 +26,10 @@ public:
 		// for each robot
 		int IRSensorNumber = 8;
 		int OMNIRobotNumber = 2;
+		int OMNIResourceNumber =2;
 
 		float32 IRRange = 3.0f;
-		float32 OMNIRange = 12.0f;
+		float32 OMNIRange = 15.0f;
 	};
 
 	S_Field(Configuration* conf, ANNWeights* w);

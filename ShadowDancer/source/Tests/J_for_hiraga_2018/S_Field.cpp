@@ -64,6 +64,7 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 		rc.IRSensor = conf->IRSensorNumber;
 		rc.IRSensorRange = conf->IRRange;
 		rc.OMNIRobot = conf->OMNIRobotNumber;
+		rc.OMNIResource = conf->OMNIResourceNumber;
 		rc.OMNICameraRange = conf->OMNIRange;
 
 		std::vector<b2Vec2> robot_pos = GetRandomPositions(0.0f, 14.0f, conf->Robot, 1.5f);
