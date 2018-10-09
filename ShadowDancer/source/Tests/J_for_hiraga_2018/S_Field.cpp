@@ -83,21 +83,22 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 	{
 		Block::Configuration bc;
 		bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
-		bc.Density = 0.12f;
 		bc.Friction = 0.1f;
 		bc.GroundFrictionForce = 1.0f;
 		bc.GroundFrictionTorque = 1.0f;
 
 		std::vector<b2Vec2> pos = GetRandomPositions(25.0f, 50.0f, conf->Food+conf->Poison, 15.0f);
 
-		bc.CircleShape.m_radius = 5.0f;
+		bc.CircleShape.m_radius = conf->FoodRadius;
+		bc.Density = conf->FoodDensity;
 		for(std::size_t i = 0; i < conf->Food; i++) {
 			bc.Id = 1000 + i;
 			bc.Position = pos[i];
 			AddNode<Block>(&bc);
 		}
 
-		bc.CircleShape.m_radius = 2.5f;
+		bc.CircleShape.m_radius = conf->PoisonRadius;
+		bc.Density = conf->PoisonDensity;
 		bc.Flag = 0x1;
 		for(std::size_t i = conf->Food; i < conf->Food+conf->Poison; i++) {
 			bc.Id = 1000 + i;
@@ -113,6 +114,11 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 		nc.Tag = MAKE_TAG('n', 'e', 's', 't');
 		nc.Range = 15.0f;
 		nc.TargetTag = MAKE_TAG('r', 'e', 's', 'o');
+
+		nc.FoodRadius = conf->FoodRadius;
+		nc.PoisonRadius = conf->PoisonRadius;
+		nc.FoodDensity = conf->FoodDensity;
+		nc.PoisonDensity = conf->PoisonDensity;
 
 		m_nest = AddNode<T_Nest>(&nc);
 	}

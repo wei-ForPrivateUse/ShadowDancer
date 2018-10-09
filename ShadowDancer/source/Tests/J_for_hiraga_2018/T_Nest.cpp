@@ -13,6 +13,11 @@ T_Nest::T_Nest(Configuration* conf) : assa2d::Trigger(conf) {
 	m_range = conf->Range;
 	m_target_tag = conf->TargetTag;
 
+	m_food_radius = conf->FoodRadius;
+	m_poison_radius = conf->PoisonRadius;
+	m_food_density = conf->FoodDensity;
+	m_poison_density = conf->PoisonDensity;
+
 	m_recreate = conf->Recreate;
 	m_new_resource_id = conf->NewResourceID;
 
@@ -44,14 +49,15 @@ void T_Nest::Act() {
 				if(m_recreate) {
 					Block::Configuration bc;
 					bc.Tag = MAKE_TAG('r', 'e', 's', 'o');
-					bc.CircleShape.m_radius = flag==0 ? 5.0f : 2.5f;
-					bc.Density = 0.12f;
 					bc.Friction = 0.1f;
 					bc.GroundFrictionForce = 1.0f;
 					bc.GroundFrictionTorque = 1.0f;
 					bc.Id = m_new_resource_id++;
-					bc.Position = GetRandomPosition(m_range+10, 50);
 					bc.Flag = flag;
+
+					bc.CircleShape.m_radius = flag==0 ? m_food_radius : m_poison_radius;
+					bc.Density = flag==0 ? m_food_density : m_poison_density;
+					bc.Position = GetRandomPosition(m_range+10, 50);
 
 					GetSceneMgr()->AddNode<Block>(&bc);
 				}

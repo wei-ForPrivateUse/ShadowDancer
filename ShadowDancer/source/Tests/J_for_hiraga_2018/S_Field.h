@@ -23,6 +23,11 @@ public:
 		std::size_t Food = 5;
 		std::size_t Poison = 5;
 
+		float32 FoodRadius = 5.0f;
+		float32 PoisonRadius = 4.0f;
+		float32 FoodDensity = 0.12f;
+		float32 PoisonDensity = 0.12f;
+
 		// for each robot
 		int IRSensorNumber = 8;
 		int OMNIRobotNumber = 2;

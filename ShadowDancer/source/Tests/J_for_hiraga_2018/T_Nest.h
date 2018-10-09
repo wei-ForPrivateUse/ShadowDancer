@@ -18,6 +18,11 @@ public:
 		float32 Range;
 		std::size_t TargetTag = 0;
 
+		float32 FoodRadius = 5.0f;
+		float32 PoisonRadius = 4.0f;
+		float32 FoodDensity = 0.12f;
+		float32 PoisonDensity = 0.12f;
+
 		bool Recreate = true;
 		std::size_t NewResourceID = 200000;
 	};
@@ -39,6 +44,11 @@ protected:
 private:
 	float32 m_range;
 	std::size_t m_target_tag;
+
+	float32 m_food_radius;
+	float32 m_poison_radius;
+	float32 m_food_density;
+	float32 m_poison_density;
 
 	bool m_recreate;
 	std::size_t m_new_resource_id;
