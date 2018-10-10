@@ -8,7 +8,7 @@
 #include "JNA_Functions.h"
 
 ////////---J_for_hiraga_2018---//////////
-double jfh_poison_radius(double w[], float32 poison_radius);
+double jfh_robot_number(double w[], std::size_t robot);
 ////////---J_for_hiraga_2018---//////////
 
 
@@ -28,14 +28,35 @@ double evaluateFcns(double individual[], int func_index) {
 	switch(func_index)
 	{
 	////////---J_for_hiraga_2018---//////////
-	case 1:
-		fitness = jfh_poison_radius(individual, 3.5f);
+	case 10:
+		fitness = jfh_robot_number(individual, 10);
 		break;
-	case 2:
-		fitness = jfh_poison_radius(individual, 4.0f);
+	case 20:
+		fitness = jfh_robot_number(individual, 20);
 		break;
-	case 3:
-		fitness = jfh_poison_radius(individual, 4.5f);
+	case 30:
+		fitness = jfh_robot_number(individual, 30);
+		break;
+	case 40:
+		fitness = jfh_robot_number(individual, 40);
+		break;
+	case 50:
+		fitness = jfh_robot_number(individual, 50);
+		break;
+	case 60:
+		fitness = jfh_robot_number(individual, 60);
+		break;
+	case 70:
+		fitness = jfh_robot_number(individual, 70);
+		break;
+	case 80:
+		fitness = jfh_robot_number(individual, 80);
+		break;
+	case 90:
+		fitness = jfh_robot_number(individual, 90);
+		break;
+	case 100:
+		fitness = jfh_robot_number(individual, 100);
 		break;
 
 
@@ -125,7 +146,7 @@ double evaluateFcns(double individual[], int func_index) {
 }
 
 ////////---J_for_hiraga_2018---//////////
-double jfh_poison_radius(double w[], float32 poison_radius) {
+double jfh_robot_number(double w[], std::size_t robot) {
 	ANNWeights* weights = new ANNWeights({22, 20, 2}, {false, true, false}, {false, true, true}, true);
 	weights -> Set(w);
 
@@ -139,7 +160,9 @@ double jfh_poison_radius(double w[], float32 poison_radius) {
 		sc.World = world;
 		sc.TimeStep = 0.02;
 		sc.MaxStep = 9000;
-		sc.PoisonRadius = poison_radius;
+		sc.PoisonRadius = 2.5f;
+		sc.PoisonDensity = 0.48;
+		sc.Robot = robot;
 
 		M_M0 monitor;
 		monitor.penalty_goal = -1.0f;
