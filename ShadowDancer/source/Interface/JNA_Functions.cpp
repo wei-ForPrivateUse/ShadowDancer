@@ -151,7 +151,7 @@ double jfh_robot_number(double w[], std::size_t robot) {
 	weights -> Set(w);
 
 	double fitness = 0.0f;
-	for(int i = 0; i < 2; i++) {
+	for(int i = 0; i < 20; i++) {
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
@@ -175,7 +175,7 @@ double jfh_robot_number(double w[], std::size_t robot) {
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 2.0f;
+	fitness /= 20.0f;
 
 	delete weights;
 

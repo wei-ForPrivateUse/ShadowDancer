@@ -20,13 +20,13 @@ class S_Field : public assa2d::SceneMgr {
 public:
 	struct Configuration : assa2d::SceneMgr::Configuration {
 		std::size_t Robot = 50;
-		std::size_t Food = 5;
-		std::size_t Poison = 5;
+		std::size_t Food = 4;
+		std::size_t Poison = 4;
 
 		float32 FoodRadius = 5.0f;
-		float32 PoisonRadius = 4.0f;
+		float32 PoisonRadius = 2.5f;
 		float32 FoodDensity = 0.12f;
-		float32 PoisonDensity = 0.12f;
+		float32 PoisonDensity = 0.48f;
 
 		// for each robot
 		int IRSensorNumber = 8;
