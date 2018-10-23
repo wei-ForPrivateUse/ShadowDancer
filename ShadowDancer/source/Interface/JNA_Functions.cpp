@@ -8,7 +8,7 @@
 #include "JNA_Functions.h"
 
 ////////---J_for_hiraga_2018---//////////
-double jfh_robot_number(double w[], std::size_t robot);
+double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], double double_buffer[], int add_info_length);
 ////////---J_for_hiraga_2018---//////////
 
 
@@ -23,40 +23,40 @@ double J0_d(double w[], float ws1, float ws2, float ws3);
 ////////---J_AROB_2018---//////////
 
 ///------------- JNA interface function -----------------///
-double evaluateFcns(double individual[], int func_index) {
+double evaluateFcns(double individual[], int func_index, long long_buffer[], double double_buffer[], int add_info_length) {
 	double fitness = 0.0;
 	switch(func_index)
 	{
 	////////---J_for_hiraga_2018---//////////
 	case 10:
-		fitness = jfh_robot_number(individual, 10);
+		fitness = jfh_robot_number(individual, 10, long_buffer, double_buffer, add_info_length);
 		break;
 	case 20:
-		fitness = jfh_robot_number(individual, 20);
+		fitness = jfh_robot_number(individual, 20, long_buffer, double_buffer, add_info_length);
 		break;
 	case 30:
-		fitness = jfh_robot_number(individual, 30);
+		fitness = jfh_robot_number(individual, 30, long_buffer, double_buffer, add_info_length);
 		break;
 	case 40:
-		fitness = jfh_robot_number(individual, 40);
+		fitness = jfh_robot_number(individual, 40, long_buffer, double_buffer, add_info_length);
 		break;
 	case 50:
-		fitness = jfh_robot_number(individual, 50);
+		fitness = jfh_robot_number(individual, 50, long_buffer, double_buffer, add_info_length);
 		break;
 	case 60:
-		fitness = jfh_robot_number(individual, 60);
+		fitness = jfh_robot_number(individual, 60, long_buffer, double_buffer, add_info_length);
 		break;
 	case 70:
-		fitness = jfh_robot_number(individual, 70);
+		fitness = jfh_robot_number(individual, 70, long_buffer, double_buffer, add_info_length);
 		break;
 	case 80:
-		fitness = jfh_robot_number(individual, 80);
+		fitness = jfh_robot_number(individual, 80, long_buffer, double_buffer, add_info_length);
 		break;
 	case 90:
-		fitness = jfh_robot_number(individual, 90);
+		fitness = jfh_robot_number(individual, 90, long_buffer, double_buffer, add_info_length);
 		break;
 	case 100:
-		fitness = jfh_robot_number(individual, 100);
+		fitness = jfh_robot_number(individual, 100, long_buffer, double_buffer, add_info_length);
 		break;
 
 
@@ -146,12 +146,15 @@ double evaluateFcns(double individual[], int func_index) {
 }
 
 ////////---J_for_hiraga_2018---//////////
-double jfh_robot_number(double w[], std::size_t robot) {
+double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], double double_buffer[], int add_info_length) {
 	ANNWeights* weights = new ANNWeights({22, 20, 2}, {false, true, false}, {false, true, true}, true);
 	weights -> Set(w);
 
 	double fitness = 0.0f;
-	for(int i = 0; i < 20; i++) {
+	for(int i = 0; i < 5; i++) {
+		long random_seed = time(NULL);
+		srand(random_seed);
+
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		b2World* world = new b2World(gravity);
@@ -170,12 +173,14 @@ double jfh_robot_number(double w[], std::size_t robot) {
 		assa2d::SceneMgr* scenemgr = new S_Field(&sc, weights);
 		scenemgr -> Run(&monitor);
 
+		long_buffer[i] = random_seed;
+
 		delete scenemgr;
 		delete world;
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 20.0f;
+	fitness /= 5.0f;
 
 	delete weights;
 

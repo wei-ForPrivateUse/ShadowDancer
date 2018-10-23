@@ -12,7 +12,7 @@
 
 extern "C"
 {
-	double evaluateFcns(double individual[], int func_index);
+	double evaluateFcns(double individual[], int func_index, long long_buffer[], double double_buffer[], int add_info_length);
 }
 
 #endif /* __Interface_for_JNA__ */

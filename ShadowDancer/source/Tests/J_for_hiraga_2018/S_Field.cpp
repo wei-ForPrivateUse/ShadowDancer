@@ -57,7 +57,6 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 
 	// Robots.
 	{
-		srand(time(NULL));
 		A_Robot::Configuration rc;
 		rc.Tag = MAKE_TAG('r', 'o', 'b', 'o');
 
