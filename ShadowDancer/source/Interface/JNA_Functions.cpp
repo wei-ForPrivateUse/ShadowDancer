@@ -151,7 +151,7 @@ double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], doubl
 	weights -> Set(w);
 
 	double fitness = 0.0f;
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < 3; i++) {
 		long random_seed = time(NULL);
 		srand(random_seed);
 
@@ -163,8 +163,6 @@ double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], doubl
 		sc.World = world;
 		sc.TimeStep = 0.02;
 		sc.MaxStep = 9000;
-		sc.PoisonRadius = 2.5f;
-		sc.PoisonDensity = 0.48;
 		sc.Robot = robot;
 
 		M_M0 monitor;
@@ -180,7 +178,7 @@ double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], doubl
 
 		fitness += monitor.GetFitness();
 	}
-	fitness /= 5.0f;
+	fitness /= 3.0f;
 
 	delete weights;
 

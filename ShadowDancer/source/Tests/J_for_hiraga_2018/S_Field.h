@@ -20,8 +20,8 @@ class S_Field : public assa2d::SceneMgr {
 public:
 	struct Configuration : assa2d::SceneMgr::Configuration {
 		std::size_t Robot = 50;
-		std::size_t Food = 4;
-		std::size_t Poison = 4;
+		std::size_t Food = 8;
+		std::size_t Poison = 8;
 
 		float32 FoodRadius = 5.0f;
 		float32 PoisonRadius = 2.5f;

@@ -86,22 +86,23 @@ S_Field::S_Field(Configuration* conf, ANNWeights* w) : assa2d::SceneMgr(conf) {
 		bc.GroundFrictionForce = 1.0f;
 		bc.GroundFrictionTorque = 1.0f;
 
-		std::vector<b2Vec2> pos = GetRandomPositions(25.0f, 50.0f, conf->Food+conf->Poison, 15.0f);
+		std::vector<b2Vec2> pos_food = GetFixedTotalRandomPositions(30.0f, 50.0f, 40.0f, conf->Food, 10.0f, nullptr);
+		std::vector<b2Vec2> pos_poison = GetFixedTotalRandomPositions(30.0f, 50.0f, 40.0f, conf->Poison, 10.0f, &pos_food);
 
 		bc.CircleShape.m_radius = conf->FoodRadius;
 		bc.Density = conf->FoodDensity;
 		for(std::size_t i = 0; i < conf->Food; i++) {
 			bc.Id = 1000 + i;
-			bc.Position = pos[i];
+			bc.Position = pos_food[i];
 			AddNode<Block>(&bc);
 		}
 
 		bc.CircleShape.m_radius = conf->PoisonRadius;
 		bc.Density = conf->PoisonDensity;
 		bc.Flag = 0x1;
-		for(std::size_t i = conf->Food; i < conf->Food+conf->Poison; i++) {
-			bc.Id = 1000 + i;
-			bc.Position = pos[i];
+		for(std::size_t i = 0; i < conf->Poison; i++) {
+			bc.Id = 1000 + i + conf->Food;
+			bc.Position = pos_poison[i];
 			AddNode<Block>(&bc);
 		}
 	}

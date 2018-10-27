@@ -57,7 +57,7 @@ void T_Nest::Act() {
 
 					bc.CircleShape.m_radius = flag==0 ? m_food_radius : m_poison_radius;
 					bc.Density = flag==0 ? m_food_density : m_poison_density;
-					bc.Position = GetRandomPosition(m_range+10, 50);
+					bc.Position = GetRandomPosition(30.0f, 50.0f);
 
 					GetSceneMgr()->AddNode<Block>(&bc);
 				}
