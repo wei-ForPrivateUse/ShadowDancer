@@ -18,15 +18,24 @@
 class M_M0 : public assa2d::Monitor {
 public:
 	M_M0() {
-		fitness = 0.0f;
+		bonus = 0.0f;
+		penalty = 0.0f;
 
 		penalty_goal = 0.0f;
 		penalty_boot = 0.0f;
 	};
 	virtual ~M_M0() { };
 
-	float GetFitness() const {
-		return fitness;
+	float32 GetFitness() const {
+		return bonus - penalty;
+	}
+
+	float32 GetBonus() const {
+		return bonus;
+	}
+
+	float32 GetPenalty() const {
+		return penalty;
 	}
 
 	float32 penalty_goal;
@@ -57,12 +66,18 @@ protected:
 		//
 		for(auto& node : mapping) {
 			if(s->CountNodeById(node.first) == 0) {
-				float32 scaler = node.second.flag==0 ? 1.0f : penalty_goal;
-				fitness += node.second.ori_dis * scaler;
+				if(node.second.flag == 0) {
+					bonus += node.second.ori_dis;
+				} else {
+					penalty += node.second.ori_dis * penalty_goal;
+				}
 			} else {
 				if(node.second.ori_dis > static_cast<Block*>(s->GetNodeById(node.first))->GetPosition().Length()) {
-					float32 scaler = node.second.flag==0 ? 1.0f : penalty_boot;
-					fitness += (node.second.ori_dis - static_cast<Block*>(s->GetNodeById(node.first))->GetPosition().Length()) * scaler;
+					if(node.second.flag == 0) {
+						bonus += node.second.ori_dis - static_cast<Block*>(s->GetNodeById(node.first))->GetPosition().Length();
+					} else {
+						penalty += (node.second.ori_dis - static_cast<Block*>(s->GetNodeById(node.first))->GetPosition().Length()) * penalty_boot;
+					}
 				}
 			}
 		}
@@ -77,8 +92,8 @@ private:
 		unsigned int flag;
 
 	};
-
-	float32 fitness;
+	float32 bonus;
+	float32 penalty;
 
 	std::unordered_map<std::size_t, NodeInfo> mapping;
 };

@@ -166,12 +166,18 @@ double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], doubl
 		sc.Robot = robot;
 
 		M_M0 monitor;
-		monitor.penalty_goal = -1.0f;
-		monitor.penalty_boot = -1.0f;
+		monitor.penalty_goal = 1.0f;
+		monitor.penalty_boot = 1.0f;
 		assa2d::SceneMgr* scenemgr = new S_Field(&sc, weights);
 		scenemgr -> Run(&monitor);
 
-		long_buffer[i] = random_seed;
+		long_buffer[i*2] = static_cast<S_Field*>(scenemgr)->m_nest->GetFoodCount();
+		long_buffer[i*2+1] = static_cast<S_Field*>(scenemgr)->m_nest->GetPoisonCount();
+
+		long_buffer[i+7] = random_seed;
+
+		double_buffer[i*2] = monitor.GetBonus();
+		double_buffer[i*2+1] = monitor.GetPenalty();
 
 		delete scenemgr;
 		delete world;
