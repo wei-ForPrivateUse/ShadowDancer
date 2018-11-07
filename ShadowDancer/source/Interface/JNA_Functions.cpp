@@ -9,6 +9,8 @@
 
 ////////---J_for_hiraga_2018---//////////
 double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], double double_buffer[], int add_info_length);
+double jfh_poison_size(double w[], float32 radius, float32 density, long long_buffer[], double double_buffer[], int add_info_length);
+double jfh_robot_spec(double w[], int IRSensor, int OMNI_Robot, int OMNI_Resource, long long_buffer[], double double_buffer[], int add_info_length);
 ////////---J_for_hiraga_2018---//////////
 
 
@@ -57,6 +59,44 @@ double evaluateFcns(double individual[], int func_index, long long_buffer[], dou
 		break;
 	case 100:
 		fitness = jfh_robot_number(individual, 100, long_buffer, double_buffer, add_info_length);
+		break;
+
+	case 110701:
+		fitness = jfh_poison_size(individual, 3.5f, 0.245f, long_buffer, double_buffer, add_info_length);
+		break;
+	case 110702:
+		fitness = jfh_poison_size(individual, 4.5f, 0.148f, long_buffer, double_buffer, add_info_length);
+		break;
+
+	case 11071821:
+		fitness = jfh_robot_spec(individual, 8, 2, 1, long_buffer, double_buffer, add_info_length);
+		break;
+	case 11071823:
+		fitness = jfh_robot_spec(individual, 8, 2, 3, long_buffer, double_buffer, add_info_length);
+		break;
+	case 11071802:
+		fitness = jfh_robot_spec(individual, 8, 0, 2, long_buffer, double_buffer, add_info_length);
+		break;
+	case 11071812:
+		fitness = jfh_robot_spec(individual, 8, 1, 2, long_buffer, double_buffer, add_info_length);
+		break;
+	case 11071832:
+		fitness = jfh_robot_spec(individual, 8, 3, 2, long_buffer, double_buffer, add_info_length);
+		break;
+	case 11071842:
+		fitness = jfh_robot_spec(individual, 8, 4, 2, long_buffer, double_buffer, add_info_length);
+		break;
+	case 11071022:
+		fitness = jfh_robot_spec(individual, 0, 2, 2, long_buffer, double_buffer, add_info_length);
+		break;
+	case 11071422:
+		fitness = jfh_robot_spec(individual, 4, 2, 2, long_buffer, double_buffer, add_info_length);
+		break;
+	case 110711622:
+		fitness = jfh_robot_spec(individual, 16, 2, 2, long_buffer, double_buffer, add_info_length);
+		break;
+	case 110713222:
+		fitness = jfh_robot_spec(individual, 32, 2, 2, long_buffer, double_buffer, add_info_length);
 		break;
 
 
@@ -164,6 +204,102 @@ double jfh_robot_number(double w[], std::size_t robot, long long_buffer[], doubl
 		sc.TimeStep = 0.02;
 		sc.MaxStep = 9000;
 		sc.Robot = robot;
+
+		M_M0 monitor;
+		monitor.penalty_goal = 1.0f;
+		monitor.penalty_boot = 1.0f;
+		assa2d::SceneMgr* scenemgr = new S_Field(&sc, weights);
+		scenemgr -> Run(&monitor);
+
+		long_buffer[i*2] = static_cast<S_Field*>(scenemgr)->m_nest->GetFoodCount();
+		long_buffer[i*2+1] = static_cast<S_Field*>(scenemgr)->m_nest->GetPoisonCount();
+
+		long_buffer[i+7] = random_seed;
+
+		double_buffer[i*2] = monitor.GetBonus();
+		double_buffer[i*2+1] = monitor.GetPenalty();
+
+		delete scenemgr;
+		delete world;
+
+		fitness += monitor.GetFitness();
+	}
+	fitness /= 3.0f;
+
+	delete weights;
+
+	return fitness;
+}
+
+double jfh_poison_size(double w[], float32 radius, float32 density, long long_buffer[], double double_buffer[], int add_info_length) {
+	ANNWeights* weights = new ANNWeights({22, 20, 2}, {false, true, false}, {false, true, true}, true);
+	weights -> Set(w);
+
+	double fitness = 0.0f;
+	for(int i = 0; i < 3; i++) {
+		long random_seed = time(NULL);
+		srand(random_seed);
+
+		b2Vec2 gravity;
+		gravity.Set(0.0f, 0.0f);
+		b2World* world = new b2World(gravity);
+
+		S_Field::Configuration sc;
+		sc.World = world;
+		sc.TimeStep = 0.02;
+		sc.MaxStep = 9000;
+		sc.Robot = 30;
+		sc.PoisonRadius = radius;
+		sc.PoisonDensity = density;
+
+		M_M0 monitor;
+		monitor.penalty_goal = 1.0f;
+		monitor.penalty_boot = 1.0f;
+		assa2d::SceneMgr* scenemgr = new S_Field(&sc, weights);
+		scenemgr -> Run(&monitor);
+
+		long_buffer[i*2] = static_cast<S_Field*>(scenemgr)->m_nest->GetFoodCount();
+		long_buffer[i*2+1] = static_cast<S_Field*>(scenemgr)->m_nest->GetPoisonCount();
+
+		long_buffer[i+7] = random_seed;
+
+		double_buffer[i*2] = monitor.GetBonus();
+		double_buffer[i*2+1] = monitor.GetPenalty();
+
+		delete scenemgr;
+		delete world;
+
+		fitness += monitor.GetFitness();
+	}
+	fitness /= 3.0f;
+
+	delete weights;
+
+	return fitness;
+}
+
+double jfh_robot_spec(double w[], int IRSensor, int OMNI_Robot, int OMNI_Resource, long long_buffer[], double double_buffer[], int add_info_length) {
+	long unsigned int input_size = IRSensor + OMNI_Robot * 3 + OMNI_Resource * 3 + 2;
+	ANNWeights* weights = new ANNWeights({input_size, 20, 2}, {false, true, false}, {false, true, true}, true);
+	weights -> Set(w);
+
+	double fitness = 0.0f;
+	for(int i = 0; i < 3; i++) {
+		long random_seed = time(NULL);
+		srand(random_seed);
+
+		b2Vec2 gravity;
+		gravity.Set(0.0f, 0.0f);
+		b2World* world = new b2World(gravity);
+
+		S_Field::Configuration sc;
+		sc.World = world;
+		sc.TimeStep = 0.02;
+		sc.MaxStep = 9000;
+		sc.Robot = 30;
+		sc.IRSensorNumber = IRSensor;
+		sc.OMNIRobotNumber = OMNI_Robot;
+		sc.OMNIResourceNumber = OMNI_Resource;
 
 		M_M0 monitor;
 		monitor.penalty_goal = 1.0f;
