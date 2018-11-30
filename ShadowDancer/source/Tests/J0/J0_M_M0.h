@@ -21,6 +21,16 @@ public:
 		fitness_s2 = 0.0f;
 		fitness_s3 = 0.0f;
 		bonus = 0.0f;
+
+		resource_6000 = 0.0f;
+		package_6000 = 0.0f;
+		resource_8000 = 0.0f;
+		package_8000 = 0.0f;
+		resource_10000 = 0.0f;
+		package_10000 = 0.0f;
+		resource_12000 = 0.0f;
+		package_12000 = 0.0f;
+
 	};
 	virtual ~J0_M_M0() { };
 
@@ -106,9 +116,27 @@ protected:
 			}
 		}
 
-		if(s->CountNodesByTag(MAKE_TAG('r', 'e', 's', 'o'))==0 && s->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'))==0) {
-			bonus = s->GetMaxStep() - s->GetCurrentStep();
-			s->Terminate();
+//		if(s->CountNodesByTag(MAKE_TAG('r', 'e', 's', 'o'))==0 && s->CountNodesByTag(MAKE_TAG('p', 'a', 'c', 'k'))==0) {
+//			bonus = s->GetMaxStep() - s->GetCurrentStep();
+//			s->Terminate();
+//		}
+
+		//////
+		if(GetSceneMgr()->GetCurrentStep() == 6000) {
+			resource_6000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
+			package_6000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
+		}
+		if(GetSceneMgr()->GetCurrentStep() == 8000) {
+			resource_8000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
+			package_8000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
+		}
+		if(GetSceneMgr()->GetCurrentStep() == 10000) {
+			resource_10000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
+			package_10000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
+		}
+		if(GetSceneMgr()->GetCurrentStep() == 12000) {
+			resource_12000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
+			package_12000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
 		}
 	}
 
@@ -147,6 +175,16 @@ private:
 	float32 fitness_s2;
 	float32 fitness_s3;
 	float32 bonus;
+public:
+	float32 resource_6000;
+	float32 package_6000;
+	float32 resource_8000;
+	float32 package_8000;
+	float32 resource_10000;
+	float32 package_10000;
+	float32 resource_12000;
+	float32 package_12000;
+
 
 	/// s1
 	struct CheckPoint {

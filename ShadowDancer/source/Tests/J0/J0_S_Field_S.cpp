@@ -11,6 +11,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 	// Walls.
 	{
 		Wall::Configuration wc;
+		wc.Friction = 0.0f;
 		wc.Tag = MAKE_TAG('w', 'a', 'l', 'l');
 
 		wc.Id = 900;
@@ -158,7 +159,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		w_v[0] = b2Vec2(4.0f, 0.0f);
 		bc.PolygonShape.Set(w_v, 6);
 		bc.Friction = 1.0f;
-		bc.Density = 0.6f;
+		bc.Density = 0.5f;
 		bc.GroundFrictionForce = 0.5f;
 		bc.GroundFrictionTorque = 0.6f;
 
