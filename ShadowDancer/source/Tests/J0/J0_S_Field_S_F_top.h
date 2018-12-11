@@ -1,26 +1,24 @@
 /*
- * J0_S_Field.h
+ * J0_S_Field_S.h
  *
  *  Created on: Apr 20, 2018
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_S_FIELD_H_
-#define TESTS_J0_J0_S_FIELD_H_
+#ifndef TESTS_J0_J0_S_FIELD_S_F_TOP_H_
+#define TESTS_J0_J0_S_FIELD_S_F_TOP_H_
 
 #include <cmath>
-#include <algorithm>
-#include <random>
 
 #include "Common/Object/Block.h"
 #include "Common/Object/Wall.h"
-#include "J0_A_Robot.h"
+#include "J0_A_Robot_S.h"
 #include "J0_T_Nest.h"
 
-class J0_S_Field : public assa2d::SceneMgr {
+class J0_S_Field_S_F_top : public assa2d::SceneMgr {
 public:
 	struct Configuration : assa2d::SceneMgr::Configuration {
-		int TrainingMode = 0; 			// 0, 1, 2, 3.
+		int TrainingMode = 0; 			// -2, -1, 0, 1, 2, 3.
 
 		std::size_t Robot = 30;
 		std::size_t Resource = 10;
@@ -29,12 +27,12 @@ public:
 		int robust_test = 0;
 	};
 
-	J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3);
-	virtual ~J0_S_Field() { }
+	J0_S_Field_S_F_top(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa_d);
+	virtual ~J0_S_Field_S_F_top() { }
 
 public:
 	// Nodes.
-	std::vector<J0_A_Robot*> m_robot;
+	std::vector<J0_A_Robot_S*> m_robot;
 
 	J0_T_Nest* m_nest_resource;
 	J0_T_Nest* m_nest_package;
@@ -62,4 +60,4 @@ protected:
 };
 
 
-#endif /* TESTS_J0_J0_S_FIELD_H_ */
+#endif /* TESTS_J0_J0_S_FIELD_S_F_TOP_H_ */

@@ -100,21 +100,10 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		rc.Tag = MAKE_TAG('r', 'o', 'b', 'o');
 		rc.TrainingMode = conf->TrainingMode;
 
-		bool flag[5][8] = {false};
+		std::vector<b2Vec2> robot_pos = GetRandomPositions(b2Vec2(-67.284f, 19.0f), b2Vec2(-49.284, -19.0f), conf->Robot, 1.3f);
 		for(std::size_t i = 0; i < conf->Robot; i++) {
-			int d1, d2;
-			do {
-				d1 = assa2d::RandomFloat(0.0f, 4.99f);
-				d2 = assa2d::RandomFloat(0.0f, 7.99f);
-			} while(flag[d1][d2]);
-			flag[d1][d2] = true;
-
-			float32 x, y;
-			x = -66 + d1*4.0f + assa2d::RandomFloat()*1.5f;
-			y = -17.5 + d2*5.0f + assa2d::RandomFloat()*2.0f;
-
 			rc.Id = i;
-            rc.Position.Set(x, y);
+            rc.Position = robot_pos[i];
             rc.Angle = assa2d::RandomFloat(0, M_PI*2.0f);
 
             auto robot = AddNode<J0_A_Robot_S>(&rc);
@@ -124,6 +113,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		}
 	}
 
+	std::vector<b2Vec2> pos = GetRandomPositions(3.0f, 40.0f, conf->Resource + conf->Package, 9.0f);
 	// Resources.
 	{
 		Block::Configuration bc;
@@ -136,11 +126,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 
 		for(std::size_t i = 0; i < conf->Resource; i++) {
 			bc.Id = 1000 + i;
-			float32 r = assa2d::RandomFloat(4.0f, 45.0f);
-			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
-			float32 x = r * std::cos(a);
-			float32 y = r * std::sin(a);
-			bc.Position.Set(x, y);
+			bc.Position = pos[i];
 			AddNode<Block>(&bc);
 		}
 	}
@@ -165,11 +151,7 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 
 		for(std::size_t i = 0; i < conf->Package; i++) {
 			bc.Id = 10000 + i;
-			float32 r = assa2d::RandomFloat(8.0f, 40.0f);
-			float32 a = assa2d::RandomFloat(0, M_PI*2.0f);
-			float32 x = r * std::cos(a);
-			float32 y = r * std::sin(a);
-			bc.Position.Set(x, y);
+			bc.Position = pos[conf->Resource+i];
 			bc.Angle = assa2d::RandomFloat(0, M_PI*2.0f);
 			AddNode<Block>(&bc);
 		}
@@ -196,4 +178,6 @@ J0_S_Field_S::J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa
 		nc.NewResourceID = 1000000;
 		m_nest_package = AddNode<J0_T_Nest>(&nc);
 	}
+
+	robust_test = conf->robust_test;
 }

@@ -5,29 +5,29 @@
  *      Author: wei
  */
 
-#include "J0_S_Field.h"
+#include "J0_S_Field_F_top.h"
 
-J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3) : assa2d::SceneMgr(conf) {
+J0_S_Field_F_top::J0_S_Field_F_top(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3) : assa2d::SceneMgr(conf) {
 	// Walls.
 	{
 		Wall::Configuration wc;
 		wc.Friction = 0.0f;
 		wc.Tag = MAKE_TAG('w', 'a', 'l', 'l');
 
-		wc.Id = 900;
-		wc.StartPoint = b2Vec2(68.284f, 20.0f);
-		wc.EndPoint = b2Vec2(48.284f, 20.0f);
-		AddNode<Wall>(&wc);
+		//wc.Id = 900;
+		//wc.StartPoint = b2Vec2(68.284f, 20.0f);
+		//wc.EndPoint = b2Vec2(48.284f, 20.0f);
+		//AddNode<Wall>(&wc);
 
 		wc.Id = 901;
 		wc.StartPoint = b2Vec2(48.284f, 20.0f);
 		wc.EndPoint = b2Vec2(20.0, 48.284f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 902;
-		wc.StartPoint = b2Vec2(20.0, 48.284f);
-		wc.EndPoint = b2Vec2(-20.0f, 48.284f);
-		AddNode<Wall>(&wc);
+		//wc.Id = 902;
+		//wc.StartPoint = b2Vec2(20.0, 48.284f);
+		//wc.EndPoint = b2Vec2(-20.0f, 48.284f);
+		//AddNode<Wall>(&wc);
 
 		wc.Id = 903;
 		wc.StartPoint = b2Vec2(-20.0f, 48.284f);
@@ -64,15 +64,36 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 		wc.EndPoint = b2Vec2(48.284f, -20.0f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 910;
+		//wc.Id = 910;
+		//wc.StartPoint = b2Vec2(48.284f, -20.0f);
+		//wc.EndPoint = b2Vec2(68.284f, -20.0f);
+		//AddNode<Wall>(&wc);
+
+		//wc.Id = 911;
+		//wc.StartPoint = b2Vec2(68.284f, -20.0f);
+		//wc.EndPoint = b2Vec2(68.284f, 20.0f);
+		//AddNode<Wall>(&wc);
+
+		wc.Id = 912;
 		wc.StartPoint = b2Vec2(48.284f, -20.0f);
-		wc.EndPoint = b2Vec2(68.284f, -20.0f);
+		wc.EndPoint = b2Vec2(48.284f, 20.0f);
 		AddNode<Wall>(&wc);
 
-		wc.Id = 911;
-		wc.StartPoint = b2Vec2(68.284f, -20.0f);
-		wc.EndPoint = b2Vec2(68.284f, 20.0f);
+		wc.Id = 913;
+		wc.StartPoint = b2Vec2(20.0f, 48.284f);
+		wc.EndPoint = b2Vec2(20.0f, 68.284f);
 		AddNode<Wall>(&wc);
+
+		wc.Id = 914;
+		wc.StartPoint = b2Vec2(20.0f, 68.284f);
+		wc.EndPoint = b2Vec2(-20.0f, 68.284f);
+		AddNode<Wall>(&wc);
+
+		wc.Id = 915;
+		wc.StartPoint = b2Vec2(-20.0f, 48.284f);
+		wc.EndPoint = b2Vec2(-20.0f, 68.284f);
+		AddNode<Wall>(&wc);
+
 	}
 
 	// Barriers.
@@ -173,6 +194,7 @@ J0_S_Field::J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, AN
 	{
 		J0_T_Nest::Configuration nc;
 		nc.Id = 501;
+		nc.axis = 'y';
 		nc.Tag = MAKE_TAG('n', 'e', 's', 't');
 		nc.TargetTag = MAKE_TAG('p', 'a', 'c', 'k');
 		nc.recreate = true;

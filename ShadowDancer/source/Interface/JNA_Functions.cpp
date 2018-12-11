@@ -733,28 +733,28 @@ double e0_nr_test(double w[]) {
 ///////////////////////////
 ///////////////////////////
 ///////////////////////////
-void s0(double individual[], double buffer[], int length);
-void a(double individual[], double buffer[], int length);
-void d(double individual[], double buffer[], int length);
+void s0(double individual[], double buffer[]);
+void a(double individual[], double buffer[]);
+void d(double individual[], double buffer[]);
 //////////////////
-void e_final(double individual[], int func_index, double buffer[], int length) {
+void e_final(double individual[], int func_index, double buffer[]) {
 	switch(func_index)
 	{
 	case 1:
-		s0(individual, buffer, length);
+		s0(individual, buffer);
 		break;
 	case 2:
-		a(individual, buffer, length);
+		a(individual, buffer);
 		break;
 	case 3:
-		d(individual, buffer, length);
+		d(individual, buffer);
 		break;
 	default:
 		break;
 	}
 }
 
-void s0(double individual[], double buffer[], int length){
+void s0(double individual[], double buffer[]){
 	ANNWeights* arbi = new ANNWeights({8, 20, 3}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* w1 = new ANNWeights({14, 20, 2}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* w2 = new ANNWeights({19, 20, 2}, {false, true, false}, {false, true, true}, true);
@@ -769,30 +769,30 @@ void s0(double individual[], double buffer[], int length){
 	w2->Set(w2_c);
 	w3->Set(w3_c);
 
-
 	b2Vec2 gravity;
 	gravity.Set(0.0f, 0.0f);
 	b2World* world = new b2World(gravity);
 
-	J0_S_Field::Configuration conf;
+	J0_S_Field_F_top::Configuration conf;
 	conf.World = world;
 	conf.TimeStep = 0.02f;
-	conf.MaxStep = 12001;
+	conf.MaxStep = 18001;
 	conf.TrainingMode = 0;
 
 	J0_M_M0 monitor;
-	assa2d::SceneMgr* scenemgr = new J0_S_Field(&conf, arbi, w1, w2, w3);
+	assa2d::SceneMgr* scenemgr = new J0_S_Field_F_top(&conf, arbi, w1, w2, w3);
 	scenemgr->Run(&monitor);
 
 	buffer[0] = monitor.package_6000;
-	buffer[1] = monitor.package_8000;
-	buffer[2] = monitor.package_10000;
-	buffer[3] = monitor.package_12000;
-	buffer[4] = 0.0;
+	buffer[1] = monitor.package_9000;
+	buffer[2] = monitor.package_12000;
+	buffer[3] = monitor.package_15000;
+	buffer[4] = monitor.package_18000;
 	buffer[5] = monitor.resource_6000;
-	buffer[6] = monitor.resource_8000;
-	buffer[7] = monitor.resource_10000;
-	buffer[8] = monitor.resource_12000;
+	buffer[6] = monitor.resource_9000;
+	buffer[7] = monitor.resource_12000;
+	buffer[8] = monitor.resource_15000;
+	buffer[9] = monitor.resource_18000;
 
 	delete scenemgr;
 	delete world;
@@ -803,7 +803,7 @@ void s0(double individual[], double buffer[], int length){
 	delete w3;
 }
 
-void a(double individual[], double buffer[], int length) {
+void a(double individual[], double buffer[]) {
 	ANNWeights* wa_a = new ANNWeights({28, 20, 2}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* wa_d = new ANNWeights({28, 20, 3}, {false, true, false}, {false, true, true}, true);
 
@@ -814,25 +814,26 @@ void a(double individual[], double buffer[], int length) {
 	gravity.Set(0.0f, 0.0f);
 	b2World* world = new b2World(gravity);
 
-	J0_S_Field_S::Configuration conf;
+	J0_S_Field_S_F_top::Configuration conf;
 	conf.World = world;
 	conf.TimeStep = 0.02f;
-	conf.MaxStep = 12001;
+	conf.MaxStep = 18001;
 	conf.TrainingMode = -2;
 
 	J0_M_MA monitor;
-	assa2d::SceneMgr* scenemgr = new J0_S_Field_S(&conf, wa_a, wa_d);
+	assa2d::SceneMgr* scenemgr = new J0_S_Field_S_F_top(&conf, wa_a, wa_d);
 	scenemgr->Run(&monitor);
 
 	buffer[0] = monitor.package_6000;
-	buffer[1] = monitor.package_8000;
-	buffer[2] = monitor.package_10000;
-	buffer[3] = monitor.package_12000;
-	buffer[4] = 0.0;
+	buffer[1] = monitor.package_9000;
+	buffer[2] = monitor.package_12000;
+	buffer[3] = monitor.package_15000;
+	buffer[4] = monitor.package_18000;
 	buffer[5] = monitor.resource_6000;
-	buffer[6] = monitor.resource_8000;
-	buffer[7] = monitor.resource_10000;
-	buffer[8] = monitor.resource_12000;
+	buffer[6] = monitor.resource_9000;
+	buffer[7] = monitor.resource_12000;
+	buffer[8] = monitor.resource_15000;
+	buffer[9] = monitor.resource_18000;
 
 	delete scenemgr;
 	delete world;
@@ -841,7 +842,7 @@ void a(double individual[], double buffer[], int length) {
 	delete wa_d;
 }
 
-void d(double individual[], double buffer[], int length) {
+void d(double individual[], double buffer[]) {
 	ANNWeights* wa_a = new ANNWeights({28, 20, 2}, {false, true, false}, {false, true, true}, true);
 	ANNWeights* wa_d = new ANNWeights({28, 20, 3}, {false, true, false}, {false, true, true}, true);
 
@@ -852,25 +853,26 @@ void d(double individual[], double buffer[], int length) {
 	gravity.Set(0.0f, 0.0f);
 	b2World* world = new b2World(gravity);
 
-	J0_S_Field_S::Configuration conf;
+	J0_S_Field_S_F_top::Configuration conf;
 	conf.World = world;
 	conf.TimeStep = 0.02f;
-	conf.MaxStep = 12001;
+	conf.MaxStep = 18001;
 	conf.TrainingMode = -1;
 
 	J0_M_MA monitor;
-	assa2d::SceneMgr* scenemgr = new J0_S_Field_S(&conf, wa_a, wa_d);
+	assa2d::SceneMgr* scenemgr = new J0_S_Field_S_F_top(&conf, wa_a, wa_d);
 	scenemgr->Run(&monitor);
 
 	buffer[0] = monitor.package_6000;
-	buffer[1] = monitor.package_8000;
-	buffer[2] = monitor.package_10000;
-	buffer[3] = monitor.package_12000;
-	buffer[4] = 0.0;
+	buffer[1] = monitor.package_9000;
+	buffer[2] = monitor.package_12000;
+	buffer[3] = monitor.package_15000;
+	buffer[4] = monitor.package_18000;
 	buffer[5] = monitor.resource_6000;
-	buffer[6] = monitor.resource_8000;
-	buffer[7] = monitor.resource_10000;
-	buffer[8] = monitor.resource_12000;
+	buffer[6] = monitor.resource_9000;
+	buffer[7] = monitor.resource_12000;
+	buffer[8] = monitor.resource_15000;
+	buffer[9] = monitor.resource_18000;
 
 	delete scenemgr;
 	delete world;

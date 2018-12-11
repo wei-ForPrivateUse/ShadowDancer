@@ -13,6 +13,7 @@
 #include <assassin2d/assassin2d.h>
 
 #include "J0_S_Field_S.h"
+#include "J0_S_Field_S_F_top.h"
 
 class J0_M_MA : public assa2d::Monitor, public assa2d::ContactListener {
 public:
@@ -24,12 +25,14 @@ public:
 
 		resource_6000 = 0.0f;
 		package_6000 = 0.0f;
-		resource_8000 = 0.0f;
-		package_8000 = 0.0f;
-		resource_10000 = 0.0f;
-		package_10000 = 0.0f;
+		resource_9000 = 0.0f;
+		package_9000 = 0.0f;
 		resource_12000 = 0.0f;
 		package_12000 = 0.0f;
+		resource_15000 = 0.0f;
+		package_15000 = 0.0f;
+		resource_18000 = 0.0f;
+		package_18000 = 0.0f;
 	};
 	virtual ~J0_M_MA() { };
 
@@ -125,17 +128,21 @@ protected:
 			resource_6000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
 			package_6000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
 		}
-		if(GetSceneMgr()->GetCurrentStep() == 8000) {
-			resource_8000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
-			package_8000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
-		}
-		if(GetSceneMgr()->GetCurrentStep() == 10000) {
-			resource_10000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
-			package_10000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
+		if(GetSceneMgr()->GetCurrentStep() == 9000) {
+			resource_9000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
+			package_9000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
 		}
 		if(GetSceneMgr()->GetCurrentStep() == 12000) {
 			resource_12000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
 			package_12000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
+		}
+		if(GetSceneMgr()->GetCurrentStep() == 15000) {
+			resource_15000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
+			package_15000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
+		}
+		if(GetSceneMgr()->GetCurrentStep() == 18000) {
+			resource_18000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_resource->GetCount();
+			package_18000 = static_cast<const J0_S_Field*>(GetSceneMgr())->m_nest_package->GetCount();
 		}
 
 	}
@@ -178,12 +185,15 @@ private:
 public:
 	float32 resource_6000;
 	float32 package_6000;
-	float32 resource_8000;
-	float32 package_8000;
-	float32 resource_10000;
-	float32 package_10000;
+	float32 resource_9000;
+	float32 package_9000;
 	float32 resource_12000;
 	float32 package_12000;
+	float32 resource_15000;
+	float32 package_15000;
+	float32 resource_18000;
+	float32 package_18000;
+
 
 	/// s1
 	struct CheckPoint {

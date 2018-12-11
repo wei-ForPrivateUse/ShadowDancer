@@ -23,6 +23,8 @@ public:
 		std::size_t Robot = 30;
 		std::size_t Resource = 10;
 		std::size_t Package = 5;
+
+		int robust_test = 0;
 	};
 
 	J0_S_Field_S(Configuration* conf, ANNWeights* wa_a, ANNWeights* wa_d);
@@ -34,6 +36,27 @@ public:
 
 	J0_T_Nest* m_nest_resource;
 	J0_T_Nest* m_nest_package;
+
+	int robust_test;
+
+protected:
+	virtual void PreStep() override {
+		if(GetCurrentStep() == 1500) {
+			std::vector<int> vec;
+			for(int i = 0; i < m_robot.size(); i++) {
+				vec.push_back(i);
+			}
+			std::random_device seed_gen;
+			std::mt19937 eng(seed_gen());
+			std::shuffle(vec.begin(), vec.end(), eng);
+			for(int i = 0; i < robust_test; i++) {
+				m_robot[vec[i]]->m_gripper->SetActive(false);
+				m_robot[vec[i]]->SetActive(false);
+			}
+
+
+		}
+	}
 };
 
 

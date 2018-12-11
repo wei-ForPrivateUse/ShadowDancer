@@ -18,6 +18,8 @@ J0_T_Nest::J0_T_Nest(Configuration* conf) : assa2d::Trigger(conf) {
 	count = 0;
 
 	m_new_resource_id = conf->NewResourceID;
+
+	axis = conf->axis;
 }
 
 void J0_T_Nest::Act() {
@@ -31,7 +33,14 @@ void J0_T_Nest::Act() {
 			auto iter = begin++;
 			Block* node = static_cast<Block*>(*iter);
 			//if the target is in the nest
-			if(node->GetPosition().x>m_internal.x && node->GetPosition().x<m_internal.y) {
+			bool condition = false;
+			if(axis == 'x') {
+				condition = node->GetPosition().x>m_internal.x && node->GetPosition().x<m_internal.y;
+			} else {
+				condition = node->GetPosition().y>m_internal.x && node->GetPosition().y<m_internal.y;
+			}
+
+			if(condition) {
 				count++;
 				if(m_recreate) {
 					std::vector<b2Vec2> pos(7);

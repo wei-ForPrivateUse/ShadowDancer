@@ -20,6 +20,8 @@ public:
 		bool recreate = false;
 
 		std::size_t NewResourceID = 0;
+
+		char axis = 'x';
 	};
 
 	J0_T_Nest(Configuration* conf);
@@ -42,6 +44,8 @@ private:
 	std::size_t count;
 
 	std::size_t m_new_resource_id;
+
+	char axis;
 };
 
 #endif /* TESTS_J0_J0_T_NEST_H_ */

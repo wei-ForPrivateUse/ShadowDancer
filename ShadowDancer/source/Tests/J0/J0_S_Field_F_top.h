@@ -5,8 +5,8 @@
  *      Author: wei
  */
 
-#ifndef TESTS_J0_J0_S_FIELD_H_
-#define TESTS_J0_J0_S_FIELD_H_
+#ifndef TESTS_J0_J0_S_FIELD_F_TOP_H_
+#define TESTS_J0_J0_S_FIELD_F_TOP_H_
 
 #include <cmath>
 #include <algorithm>
@@ -17,7 +17,7 @@
 #include "J0_A_Robot.h"
 #include "J0_T_Nest.h"
 
-class J0_S_Field : public assa2d::SceneMgr {
+class J0_S_Field_F_top : public assa2d::SceneMgr {
 public:
 	struct Configuration : assa2d::SceneMgr::Configuration {
 		int TrainingMode = 0; 			// 0, 1, 2, 3.
@@ -29,8 +29,8 @@ public:
 		int robust_test = 0;
 	};
 
-	J0_S_Field(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3);
-	virtual ~J0_S_Field() { }
+	J0_S_Field_F_top(Configuration* conf, ANNWeights* arbi, ANNWeights* w1, ANNWeights* w2, ANNWeights* w3);
+	virtual ~J0_S_Field_F_top() { }
 
 public:
 	// Nodes.
@@ -62,4 +62,4 @@ protected:
 };
 
 
-#endif /* TESTS_J0_J0_S_FIELD_H_ */
+#endif /* TESTS_J0_J0_S_FIELD_F_TOP_H_ */
